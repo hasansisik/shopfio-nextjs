@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { GalleryVerticalEnd, MailCheck } from "lucide-react"
 
@@ -17,7 +17,7 @@ import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { verifyEmail, againEmail } from "@/redux/actions/userActions"
 
-export default function DogrulamaPage() {
+function DogrulamaForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
@@ -67,7 +67,7 @@ export default function DogrulamaPage() {
             <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            Acme Inc.
+            Shopfio Inc.
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
@@ -169,6 +169,18 @@ export default function DogrulamaPage() {
         />
       </div>
     </div>
+  )
+}
+
+export default function DogrulamaPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-svh items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+      </div>
+    }>
+      <DogrulamaForm />
+    </Suspense>
   )
 }
 

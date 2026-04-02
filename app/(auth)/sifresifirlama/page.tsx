@@ -1,5 +1,5 @@
+import { Suspense } from "react"
 import { GalleryVerticalEnd } from "lucide-react"
-
 import { SifreSifirlamaForm } from "@/components/sifre-sifirlama-form"
 
 export default function SifreSifirlamaPage() {
@@ -11,12 +11,18 @@ export default function SifreSifirlamaPage() {
             <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            Acme Inc.
+            Shopfio Inc.
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <SifreSifirlamaForm />
+            <Suspense fallback={
+              <div className="flex items-center justify-center p-8">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+              </div>
+            }>
+              <SifreSifirlamaForm />
+            </Suspense>
           </div>
         </div>
       </div>
