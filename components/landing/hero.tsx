@@ -15,42 +15,42 @@ export function Hero() {
         <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-[oklch(0.985_0.01_145)] to-transparent"></div>
       </div>
 
-      {/* Built For Shopify Badge */}
-      <div className="mb-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-gray-100 shadow-sm transition-all hover:shadow-md hover:scale-[1.02] duration-300">
-        <div className="flex items-center justify-center bg-[#95bf47]/10 w-8 h-8 rounded-lg overflow-hidden p-1.5">
-          <Image src="/shopify.png" alt="Shopify" width={20} height={20} className="object-contain" />
+      {/* Enhanced Trust Badge */}
+      <div className="mb-12 inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all hover:scale-[1.02] duration-300">
+        <div className="flex items-center gap-2 pr-4 border-r border-gray-100">
+          <Image src="/shopify.png" alt="Shopify" width={18} height={18} className="object-contain grayscale opacity-70" />
+          <div className="w-4 h-4 bg-[#7AB55C] rounded-sm flex items-center justify-center p-0.5">
+             <span className="text-[8px] font-bold text-white">W</span>
+          </div>
+          <div className="w-4 h-4 bg-[#00B67A] rounded-sm flex items-center justify-center p-0.5">
+             <span className="text-[8px] font-bold text-white">★</span>
+          </div>
         </div>
-        <span className="text-sm font-bold tracking-tight text-gray-700">Shopify İçin Tasarlandı</span>
+        <div className="flex items-center gap-2">
+            <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((i) => (
+                    <span key={i} className="text-yellow-400 text-sm">★</span>
+                ))}
+            </div>
+            <span className="text-[12px] font-bold text-gray-500 whitespace-nowrap pt-0.5">
+                20 Yorum üzerinden <span className="text-gray-900">5 / 5 Puan</span>
+            </span>
+        </div>
       </div>
 
-      {/* Heading */}
-      <h1 className="max-w-5xl text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter text-black mb-8 leading-[1.1] md:leading-[1] px-4">
-        Hemen Mağazanızı <br />
-        <span className="flex items-center justify-center gap-2 md:gap-4 flex-wrap mt-2">
-          Kurun ve{" "}
-          <span className="relative inline-flex items-center">
-            <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-[#95BF47] rounded-xl md:rounded-2xl shadow-xl shadow-green-500/10 mr-2 md:mr-4 transform rotate-[-2deg] shrink-0">
-              <div className="relative transform scale-75 md:scale-100">
-                <div className="w-6 h-6 md:w-8 md:h-8 border-2 border-white rounded-full flex items-center justify-center overflow-hidden">
-                   <div className="w-3 h-3 md:w-4 md:h-4 bg-white rounded-full mt-4"></div>
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 md:w-4 md:h-4 bg-white rounded-full border-2 border-[#95BF47] flex items-center justify-center">
-                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#95BF47] rounded-full"></div>
-                </div>
-              </div>
-            </div>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">
-              Büyütün
-            </span>
-          </span>
-        </span>
+      {/* Heading - Exactly as per reference but with Brand Green */}
+      <h1 className="max-w-5xl text-[36px] sm:text-[56px] md:text-[84px] font-bold tracking-tight text-black mb-10 leading-[1.1] md:leading-[1] px-4">
+        Büyüyen <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">e-ticaretler</span> <br className="hidden md:block" />
+        için <span className="italic font-serif text-[#95BF47] font-medium">akıllı</span> kargo altyapısı.
       </h1>
 
-      {/* Subheading */}
-      <p className="max-w-xl text-xl text-gray-500 font-medium mb-12 leading-relaxed px-4">
-        Kurulumdan ölçeklendirmeye: Shopify mağazanızı <br className="hidden md:block" /> 
-        otomatik pilotta büyütmek için ihtiyacınız olan her şey.
-      </p>
+      {/* Subheading - Exactly as per reference */}
+      <div className="max-w-3xl flex flex-col items-center gap-4 mb-14 px-4 px-4 overflow-hidden">
+        <p className="text-lg md:text-xl text-gray-400 font-medium leading-relaxed text-center">
+            Kargo süreçlerinizi otomatikleştirin, zaman kazanın ve işinizi büyütün. <br className="hidden md:block" />
+            Müşterilerinize en iyi hizmeti sunun. <span className="text-gray-600 font-bold">Yüzlerce Satıcının Güvendiği Kargo Altyapısı</span>
+        </p>
+      </div>
 
       {/* Hero CTA & Buttons */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
@@ -72,8 +72,23 @@ export function Hero() {
         </Link>
       </div>
 
+      {/* Transparent Floating Hero Product Preview */}
+      <div className="relative w-full max-w-6xl mx-auto px-4 mb-24 group">
+         <div className="relative w-full aspect-[16/10] md:aspect-[16/9] overflow-hidden">
+            <Image 
+                src="/hero.png" 
+                alt="Product Dashboard" 
+                fill
+                className="object-top object-contain scale-[1.01] transform transition-transform duration-1000 group-hover:scale-[1.03]"
+                priority
+            />
+            {/* Soft Gradient Overlay to blend the bottom edge naturally */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.985_0.01_145)] via-[oklch(0.985_0.01_145)]/20 to-transparent pt-[400px]" />
+         </div>
+      </div>
+
       {/* Shopify Partner Trust Banner */}
-      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-16 opacity-90">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-16 opacity-90 relative z-10 px-4">
         <div className="flex items-center gap-8">
             <Image 
                 src="/shopify-partners-logo.webp" 
@@ -96,7 +111,7 @@ export function Hero() {
         <div className="flex items-center gap-4">
             <div className="flex -space-x-3">
                 {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-gray-100 overflow-hidden">
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-gray-100 overflow-hidden shadow-sm">
                         <img 
                             src={`https://i.pravatar.cc/100?u=shopfio-${i}`} 
                             alt="User" 
