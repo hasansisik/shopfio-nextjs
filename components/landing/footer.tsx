@@ -53,7 +53,7 @@ export function Footer() {
         </nav>
 
         {/* Contact CTA */}
-        <div className="flex flex-col items-center gap-4 mb-24">
+        <div className="flex flex-col items-center gap-4 mb-16">
             <a 
                 href="https://wa.me/your-number" 
                 target="_blank" 
@@ -63,6 +63,18 @@ export function Footer() {
                 WhatsApp Destek Hattı
             </a>
             <p className="text-[12px] text-gray-400 tracking-widest mt-2 uppercase font-bold">7/24 Aktif</p>
+        </div>
+
+        {/* Payment Methods / Infrastructure */}
+        <div className="mb-12 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 duration-500">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-400">Güvenli Ödeme Altyapısı</span>
+            <Image 
+                src="/logo_band_colored@2x.png" 
+                alt="Iyzico Payment Infrastructure" 
+                width={300} 
+                height={40} 
+                className="h-8 w-auto object-contain"
+            />
         </div>
 
         {/* Bottom Bar - Positioned over background logo */}
