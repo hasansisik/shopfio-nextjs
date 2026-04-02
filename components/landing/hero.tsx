@@ -24,13 +24,13 @@ export function Hero() {
       </div>
 
       {/* Heading */}
-      <h1 className="max-w-5xl text-6xl md:text-8xl font-bold tracking-tighter text-black mb-8 leading-[1]">
+      <h1 className="max-w-5xl text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter text-black mb-8 leading-[1.1] md:leading-[1] px-4">
         Hemen Mağazanızı <br />
-        <span className="flex items-center justify-center gap-4 flex-wrap mt-2">
+        <span className="flex items-center justify-center gap-2 md:gap-4 flex-wrap mt-2">
           Kurun ve{" "}
           <span className="relative inline-flex items-center">
-            <div className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-[#95BF47] rounded-2xl shadow-xl shadow-green-500/10 mr-4 transform rotate-[-2deg]">
-              <div className="relative">
+            <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-[#95BF47] rounded-xl md:rounded-2xl shadow-xl shadow-green-500/10 mr-2 md:mr-4 transform rotate-[-2deg] shrink-0">
+              <div className="relative transform scale-75 md:scale-100">
                 <div className="w-6 h-6 md:w-8 md:h-8 border-2 border-white rounded-full flex items-center justify-center overflow-hidden">
                    <div className="w-3 h-3 md:w-4 md:h-4 bg-white rounded-full mt-4"></div>
                 </div>
