@@ -52,17 +52,65 @@ export function Hero() {
         otomatik pilotta büyütmek için ihtiyacınız olan her şey.
       </p>
 
-      {/* Hero CTA */}
-      <Link
-        href="/get-started"
-        className="group relative inline-flex items-center gap-3 px-10 py-4.5 rounded-full text-white font-bold text-lg transition-all active:scale-95 shadow-[0_15px_35px_rgba(149,191,71,0.3)] hover:shadow-[0_20px_40px_rgba(149,191,71,0.4)] duration-300 overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#95BF47] to-[#5BB13C] transition-opacity group-hover:opacity-90"></div>
-        <span className="relative z-10 flex items-center gap-2">
-          Ücretsiz Ön Görüşme
-          <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-        </span>
-      </Link>
+      {/* Hero CTA & Buttons */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+        <Link
+          href="/randevu"
+          className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full text-white font-bold text-lg transition-all active:scale-95 shadow-[0_15px_35px_rgba(149,191,71,0.3)] hover:shadow-[0_20px_40px_rgba(149,191,71,0.4)] duration-300 overflow-hidden shrink-0"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-[#95BF47] to-[#5BB13C] transition-opacity group-hover:opacity-90"></div>
+          <span className="relative z-10 flex items-center gap-2">
+            Ücretsiz Ön Görüşme
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+          </span>
+        </Link>
+        <Link
+          href="#cta"
+          className="group inline-flex items-center gap-3 px-10 py-4 rounded-full text-gray-900 border-2 border-gray-200 font-bold text-lg transition-all hover:border-[#95BF47] hover:text-[#95BF47] active:scale-95 duration-300 shrink-0"
+        >
+          Hemen Başla
+        </Link>
+      </div>
+
+      {/* Shopify Partner Trust Banner */}
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-16 opacity-90">
+        <div className="flex items-center gap-8">
+            <Image 
+                src="/shopify-partners-logo.webp" 
+                alt="Shopify Partners" 
+                width={180} 
+                height={40} 
+                className="h-8 md:h-10 w-auto object-contain"
+            />
+            <Image 
+                src="/shopify-parnetr-icon.webp" 
+                alt="Shopify Commerce Coach" 
+                width={60} 
+                height={60} 
+                className="h-12 md:h-14 w-auto object-contain"
+            />
+        </div>
+        
+        <div className="hidden md:block w-px h-12 bg-gray-200" />
+
+        <div className="flex items-center gap-4">
+            <div className="flex -space-x-3">
+                {[1, 2, 3].map((i) => (
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-gray-100 overflow-hidden">
+                        <img 
+                            src={`https://i.pravatar.cc/100?u=shopfio-${i}`} 
+                            alt="User" 
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                ))}
+            </div>
+            <div className="flex flex-col items-start gap-0.5">
+                <span className="text-[14px] font-bold text-gray-900 leading-none">1.000'den Fazla Memnun Müşteri</span>
+                <span className="text-[12px] font-medium text-gray-400">Shopify ekosisteminde güvenle büyüyün</span>
+            </div>
+        </div>
+      </div>
 
       {/* Hero Animation Section */}
       <HeroAnimation />
