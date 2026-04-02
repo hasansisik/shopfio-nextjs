@@ -10,6 +10,7 @@ export function Footer() {
 
   const links = [
       { name: "Özellikler", href: "#features" },
+      { name: "Nasıl Çalışır?", href: "#onboarding" },
       { name: "Başarı Hikayeleri", href: "#case-studies" },
       { name: "Ücretlendirme", href: "#pricing" },
       { name: "SSS", href: "#faq" },
