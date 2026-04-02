@@ -33,7 +33,7 @@ export function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0)
 
   return (
-    <section id="faqs" className="relative w-full py-24 bg-white overflow-hidden">
+    <section id="faqs" className="relative w-full py-24 overflow-hidden">
       <div className="max-w-[900px] mx-auto px-6">
         
         {/* Header Area - Consistent with other sections */}

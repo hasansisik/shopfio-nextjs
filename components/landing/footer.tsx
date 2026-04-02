@@ -17,7 +17,7 @@ export function Footer() {
   ]
 
   return (
-    <footer className="w-full bg-white pt-24 pb-10 relative overflow-hidden">
+    <footer className="w-full pt-24 pb-10 relative overflow-hidden">
       <div className="max-w-[1240px] mx-auto px-6 flex flex-col items-center text-center relative z-10">
         
         {/* Central Focal Point: Shopify Partner Badge */}

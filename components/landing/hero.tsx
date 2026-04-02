@@ -12,7 +12,7 @@ export function Hero() {
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] pointer-events-none -z-10 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#95BF47]/10 via-transparent to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-[#F9F9F9] to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-[#F4F9F1] to-transparent"></div>
       </div>
 
       {/* Built For Shopify Badge */}
