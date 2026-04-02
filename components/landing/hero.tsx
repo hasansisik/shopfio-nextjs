@@ -18,9 +18,11 @@ export function Hero() {
       {/* Enhanced Trust Badge */}
       <div className="mb-12 inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all hover:scale-[1.02] duration-300">
         <div className="flex items-center gap-2 pr-4 border-r border-gray-100">
-          <Image src="/shopify.png" alt="Shopify" width={18} height={18} className="object-contain grayscale opacity-70" />
+          <div className="flex items-center justify-center bg-[#95BF47]/10 w-5 h-5 rounded-md p-1">
+            <Image src="/shopify.png" alt="Shopify" width={14} height={14} className="object-contain" />
+          </div>
           <div className="w-4 h-4 bg-[#7AB55C] rounded-sm flex items-center justify-center p-0.5">
-             <span className="text-[8px] font-bold text-white">W</span>
+             <span className="text-[8px] font-bold text-white">S</span>
           </div>
           <div className="w-4 h-4 bg-[#00B67A] rounded-sm flex items-center justify-center p-0.5">
              <span className="text-[8px] font-bold text-white">★</span>
@@ -33,27 +35,27 @@ export function Hero() {
                 ))}
             </div>
             <span className="text-[12px] font-bold text-gray-500 whitespace-nowrap pt-0.5">
-                20 Yorum üzerinden <span className="text-gray-900">5 / 5 Puan</span>
+                500+ Mağaza Üzerinden <span className="text-gray-900">5 / 5 Puan</span>
             </span>
         </div>
       </div>
 
-      {/* Heading - Exactly as per reference but with Brand Green */}
+      {/* Heading - Aligned with Shopfio Project */}
       <h1 className="max-w-5xl text-[36px] sm:text-[56px] md:text-[84px] font-bold tracking-tight text-black mb-10 leading-[1.1] md:leading-[1] px-4">
         Büyüyen <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">e-ticaretler</span> <br className="hidden md:block" />
-        için <span className="italic font-serif text-[#95BF47] font-medium">akıllı</span> kargo altyapısı.
+        için <span className="italic font-serif text-[#95BF47] font-medium">akıllı</span> büyüme altyapısı.
       </h1>
 
-      {/* Subheading - Exactly as per reference */}
-      <div className="max-w-3xl flex flex-col items-center gap-4 mb-14 px-4 px-4 overflow-hidden">
+      {/* Subheading - Aligned with Shopfio Project */}
+      <div className="max-w-3xl flex flex-col items-center gap-4 mb-14 px-4 overflow-hidden">
         <p className="text-lg md:text-xl text-gray-400 font-medium leading-relaxed text-center">
-            Kargo süreçlerinizi otomatikleştirin, zaman kazanın ve işinizi büyütün. <br className="hidden md:block" />
-            Müşterilerinize en iyi hizmeti sunun. <span className="text-gray-600 font-bold">Yüzlerce Satıcının Güvendiği Kargo Altyapısı</span>
+            Abonelik modelleri, akıllı upsell sayfaları ve veri odaklı analizlerle Shopify <br className="hidden md:block" />
+            mağazanızı otomatik pilotta ölçeklendirin. <span className="text-gray-600 font-bold font-bold leading-tight">Yüzlerce Mağazanın Güvendiği Büyüme Altyapısı</span>
         </p>
       </div>
 
       {/* Hero CTA & Buttons */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
         <Link
           href="/randevu"
           className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full text-white font-bold text-lg transition-all active:scale-95 shadow-[0_15px_35px_rgba(149,191,71,0.3)] hover:shadow-[0_20px_40px_rgba(149,191,71,0.4)] duration-300 overflow-hidden shrink-0"
@@ -66,28 +68,13 @@ export function Hero() {
         </Link>
         <Link
           href="#cta"
-          className="group inline-flex items-center gap-3 px-10 py-4 rounded-full text-gray-900 border-2 border-gray-200 font-bold text-lg transition-all hover:border-[#95BF47] hover:text-[#95BF47] active:scale-95 duration-300 shrink-0"
+          className="group inline-flex items-center gap-3 px-10 py-4 rounded-full text-[#95BF47] border-2 border-[#95BF47]/20 font-bold text-lg transition-all hover:border-[#95BF47] hover:bg-[#95BF47]/5 active:scale-95 duration-300 shrink-0"
         >
           Hemen Başla
         </Link>
       </div>
 
-      {/* Transparent Floating Hero Product Preview */}
-      <div className="relative w-full max-w-6xl mx-auto px-4 mb-24 group">
-         <div className="relative w-full aspect-[16/10] md:aspect-[16/9] overflow-hidden">
-            <Image 
-                src="/hero.png" 
-                alt="Product Dashboard" 
-                fill
-                className="object-top object-contain scale-[1.01] transform transition-transform duration-1000 group-hover:scale-[1.03]"
-                priority
-            />
-            {/* Soft Gradient Overlay to blend the bottom edge naturally */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.985_0.01_145)] via-[oklch(0.985_0.01_145)]/20 to-transparent pt-[400px]" />
-         </div>
-      </div>
-
-      {/* Shopify Partner Trust Banner */}
+      {/* Trust Banner - Now above the image */}
       <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-16 opacity-90 relative z-10 px-4">
         <div className="flex items-center gap-8">
             <Image 
@@ -121,10 +108,25 @@ export function Hero() {
                 ))}
             </div>
             <div className="flex flex-col items-start gap-0.5">
-                <span className="text-[14px] font-bold text-gray-900 leading-none">1.000'den Fazla Memnun Müşteri</span>
+                <span className="text-[14px] font-bold text-gray-900 leading-none">100'den Fazla Memnun Müşteri</span>
                 <span className="text-[12px] font-medium text-gray-400">Shopify ekosisteminde güvenle büyüyün</span>
             </div>
         </div>
+      </div>
+
+      {/* Transparent Floating Hero Product Preview - Now below the trust banner */}
+      <div className="relative w-full max-w-6xl mx-auto px-4 mb-24 group">
+         <div className="relative w-full aspect-[16/10] md:aspect-[16/9] overflow-hidden">
+            <Image 
+                src="/hero.png" 
+                alt="Product Dashboard" 
+                fill
+                className="object-top object-contain scale-[1.01] transform transition-transform duration-1000 group-hover:scale-[1.03]"
+                priority
+            />
+            {/* Soft Gradient Overlay to blend the bottom edge naturally */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.985_0.01_145)] via-[oklch(0.985_0.01_145)]/20 to-transparent pt-[400px]" />
+         </div>
       </div>
 
       {/* Hero Animation Section */}

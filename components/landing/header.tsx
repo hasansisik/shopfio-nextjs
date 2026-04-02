@@ -37,20 +37,22 @@ export function Header() {
             : "w-full max-w-7xl bg-transparent px-6 py-6"
         )}
       >
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-1 group">
-          <Image 
-            src="/logo.png" 
-            alt="shopfio logo" 
-            width={160} 
-            height={60}
-            className={cn(
-                "w-auto transition-all duration-500",
-                isScrolled ? "h-8" : "h-9"
-            )}
-            priority
-          />
-        </Link>
+        {/* Logo Group */}
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center gap-1 group">
+            <Image 
+              src="/logo.png" 
+              alt="shopfio logo" 
+              width={200} 
+              height={80}
+              className={cn(
+                  "w-auto transition-all duration-500",
+                  isScrolled ? "h-10" : "h-12"
+              )}
+              priority
+            />
+          </Link>
+        </div>
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
@@ -66,14 +68,14 @@ export function Header() {
         </nav>
 
         {/* Global CTA & Mobile Toggle */}
-        <div className="flex items-center gap-3 pointer-events-auto">
+        <div className="flex items-center gap-4 pointer-events-auto">
           <Link
             href="#cta"
             className={cn(
-              "hidden sm:flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300",
+              "hidden sm:flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
               isScrolled 
-                ? "bg-[#1C1C1C] text-white hover:bg-[#333333] shadow-lg shadow-black/10"
-                : "bg-[#1C1C1C] text-white hover:bg-[#333333]"
+                ? "bg-[#95BF47] text-white hover:bg-[#5BB13C] shadow-lg shadow-[#95BF47]/20"
+                : "bg-[#95BF47] text-white hover:bg-[#5BB13C]"
             )}
           >
             Hemen Başla
