@@ -9,11 +9,11 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   const links = [
-      { name: "Features", href: "#features" },
-      { name: "Onboarding", href: "#onboarding" },
-      { name: "Calculator", href: "#calculator" },
-      { name: "Pricing", href: "#pricing" },
-      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Özellikler", href: "#features" },
+      { name: "Başarı Hikayeleri", href: "#case-studies" },
+      { name: "Ücretlendirme", href: "#pricing" },
+      { name: "SSS", href: "#faq" },
+      { name: "Gizlilik Politikası", href: "/privacy" },
   ]
 
   return (
@@ -25,7 +25,7 @@ export function Footer() {
             <div className="flex items-center justify-center bg-[#95bf47]/10 w-8 h-8 rounded-lg overflow-hidden p-1.5">
                 <Image src="/shopify.png" alt="Shopify" width={20} height={20} className="object-contain" />
             </div>
-            <span className="text-sm font-bold tracking-tight text-gray-700">Official Shopify Partner</span>
+            <span className="text-sm font-bold tracking-tight text-gray-700">Resmi Shopify Partneri</span>
         </div>
 
         {/* Central Logo */}
@@ -60,21 +60,44 @@ export function Footer() {
                 className="inline-flex items-center gap-2.5 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-[14px] shadow-lg shadow-green-500/10 transition-all hover:scale-105 active:scale-95"
             >
                 <MessageCircle className="w-5 h-5 fill-white/10" />
-                WhatsApp Support
+                WhatsApp Destek Hattı
             </a>
-            <p className="text-[12px] text-gray-400 tracking-widest mt-2">Available 24/7</p>
+            <p className="text-[12px] text-gray-400 tracking-widest mt-2 uppercase font-bold">7/24 Aktif</p>
         </div>
 
         {/* Bottom Bar - Positioned over background logo */}
-        <div className="w-full pt-10 border-t border-gray-100/50 flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="text-[13px] font-bold text-gray-600">
-                © {currentYear} Shopfio Inc. Build with precision.
+        <div className="w-full pt-10 border-t border-gray-100/50 flex flex-col md:flex-row items-center justify-between gap-8">
+            {/* Copyright */}
+            <p className="text-[13px] font-bold text-gray-500 md:w-1/3 md:text-left">
+                © {currentYear} Shopfio Inc.
             </p>
+
+            {/* Gegify Attribution - Center aligned White Badge */}
+            <div className="flex items-center justify-center md:w-1/3">
+                <Link 
+                    href="https://gegify.com" 
+                    target="_blank" 
+                    className="group flex items-center gap-3 px-5 py-2 rounded-full bg-white border border-black/10 shadow-sm transition-all hover:shadow-md hover:scale-[1.02] active:scale-95 select-none"
+                >
+                    <Image 
+                        src="https://gegify.com/assets/images/logo-black.png" 
+                        alt="Gegify" 
+                        width={120} 
+                        height={36} 
+                        className="h-7 w-auto object-contain grayscale opacity-60 group-hover:opacity-100 transition-opacity"
+                    />
+                    <div className="h-3 w-[1px] bg-black/10 mx-0.5" />
+                    <span className="text-[11px] font-bold text-gray-400 group-hover:text-gray-600 transition-colors whitespace-nowrap pt-0.5">
+                        Bir Gegify Sitesidir
+                    </span>
+                </Link>
+            </div>
             
-            <div className="flex items-center gap-8 text-[13px] font-bold text-gray-600">
-                <Link href="/terms" className="hover:text-black transition-colors">Terms of Service</Link>
-                <Link href="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link>
-                <Link href="/refund" className="hover:text-black transition-colors">Cookies Policy</Link>
+            {/* Legal Links - Right aligned */}
+            <div className="flex items-center md:justify-end gap-6 text-[13px] font-bold text-gray-500 md:w-1/3">
+                <Link href="/terms" className="hover:text-black transition-colors">Kullanım Şartları</Link>
+                <Link href="/privacy" className="hover:text-black transition-colors">Gizlilik Politikası</Link>
+                <Link href="/refund" className="hover:text-black transition-colors">Çerez Politikası</Link>
             </div>
         </div>
       </div>

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shopfio - Shopify Partner",
-  description: "Stop patching apps together, Shopfio handles subscriptions, payments, and growth in one place.",
+  title: "Shopfio - Shopify Mağaza Kurulumu & Ödeme Altyapısı",
+  description: "Shopify mağaza kurulumundan abonelik sistemlerine, ödeme altyapılarından büyümeye kadar tüm e-ticaret çözümleri tek bir adreste.",
 };
 
 export default function RootLayout({

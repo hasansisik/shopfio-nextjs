@@ -13,16 +13,16 @@ export function Features() {
   ]
 
   const chartData = [
-    { label: "JAN", height: "35%", val: "$106K" },
-    { label: "FEB", height: "30%", val: "$230K" },
-    { label: "MAR", height: "45%", val: "$320K" },
-    { label: "APR", height: "55%", val: "$390K" },
-    { label: "MAY", height: "70%", val: "$450K" },
-    { label: "JUN", height: "100%", val: "$720K", highlight: true },
+    { label: "OCA", height: "35%", val: "106K₺" },
+    { label: "ŞUB", height: "30%", val: "230K₺" },
+    { label: "MAR", height: "45%", val: "320K₺" },
+    { label: "NİS", height: "55%", val: "390K₺" },
+    { label: "MAY", height: "70%", val: "450K₺" },
+    { label: "HAZ", height: "100%", val: "720K₺", highlight: true },
   ]
 
   return (
-    <section className="relative w-full pt-0 pb-12  overflow-hidden">
+    <section id="features" className="relative w-full pt-0 pb-12  overflow-hidden">
       <div className="max-w-[1240px] mx-auto px-6">
 
         {/* Header Area - Hero Badge Style */}
@@ -31,23 +31,23 @@ export function Features() {
             <div className="flex items-center justify-center bg-[#95bf47]/10 w-8 h-8 rounded-lg overflow-hidden p-1.5">
               <Image src="/shopify.png" alt="Shopify" width={20} height={20} className="object-contain" />
             </div>
-            <span className="text-sm font-bold tracking-tight text-gray-700">Built For Shopify</span>
+            <span className="text-sm font-bold tracking-tight text-gray-700">Shopify İçin Tasarlandı</span>
           </div>
 
           <div className="flex flex-col items-center">
             <h2 className="max-w-[850px] text-[32px] md:text-[52px] font-bold tracking-tight text-black leading-[1.1] mb-2 text-center">
-              Transform Your eCom Store Into a
+              E-Ticaret Mağazanızı Bir
             </h2>
             <div className="flex items-center justify-center gap-3 md:gap-4 flex-wrap">
-              <span className="text-[32px] md:text-[52px] font-bold tracking-tight text-black">Subscription</span>
+              <span className="text-[32px] md:text-[52px] font-bold tracking-tight text-black">Abonelik</span>
               <div className="relative w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-[#95BF47] to-[#5BB13C] rounded-2xl shadow-[0_12px_24px_rgba(149,191,71,0.25)] flex items-center justify-center rotate-[-12deg]">
                 <Rocket className="w-5 h-5 md:w-7 md:h-7 text-white fill-white/20" />
               </div>
-              <span className="text-[32px] md:text-[52px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">Powerhouse</span>
+              <span className="text-[32px] md:text-[52px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">Devine Dönüştürün</span>
             </div>
           </div>
           <p className="max-w-[540px] text-base md:text-lg text-gray-500 font-medium leading-[1.6] mt-10 text-center">
-            Stop patching apps together, Shopfio handles subscriptions, payments, and growth in one place.
+            Uygulamaları tek tek yamalamayı bırakın, Shopfio abonelik, ödeme ve büyümeyi tek bir yerden yönetmenizi sağlar.
           </p>
         </div>
 
@@ -56,8 +56,8 @@ export function Features() {
 
           {/* Card 1: Subscriptions */}
           <FeatureCard
-            title="Create & Manage Subscriptions"
-            description="Turn one-time buyers into subscribers without lifting a finger. We don't just, 'manage subscriptions' we build you a growth engine."
+            title="Abonelikleri Oluşturun ve Yönetin"
+            description="Tek seferlik alıcıları zahmetsizce aboneye dönüştürün. Biz sadece 'abonelik yönetmiyoruz', size bir büyüme motoru kuruyoruz."
           >
             <div className="relative mt-8 flex flex-col items-center w-full gap-3">
               {subscribers.map((item, i) => (
@@ -71,9 +71,9 @@ export function Features() {
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-0.5">
                       <span className="font-bold text-gray-900 text-[14px]">Shopify</span>
-                      <span className="text-[9px] font-medium text-gray-400 capitalize">{item.time}</span>
+                      <span className="text-[9px] font-medium text-gray-400 capitalize">{item.time === "1m ago" ? "1 dk önce" : item.time}</span>
                     </div>
-                    <p className="text-[12px] font-medium text-gray-500 tracking-tight">New Subscriber - {item.amount}</p>
+                    <p className="text-[12px] font-medium text-gray-500 tracking-tight">Yeni Abone - {item.amount}</p>
                   </div>
                 </div>
               ))}
@@ -82,17 +82,17 @@ export function Features() {
 
           {/* Card 2: Checkouts */}
           <FeatureCard
-            title="Custom Checkouts & Upsells"
-            description="Convert more visitors with smart checkouts, built-in upsells, and flexible payments."
+            title="Özel Ödeme Sayfaları ve Upsell"
+            description="Akıllı ödeme sayfaları, yerleşik satış artırma araçları ve esnek ödeme yöntemleriyle daha fazla satış yapın."
           >
             <div className="relative mt-8 flex flex-col bg-[#F3F4F6] rounded-t-[20px] p-6  border-2 -mb-10 group-hover:-translate-y-4 transition-transform duration-700 ease-out h-[360px] overflow-hidden shadow-2xl">
               {/* Cart Top Bar */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="w-3.5 h-3.5 text-gray-900" />
-                  <span className="text-[13px] font-medium text-gray-900">Your cart</span>
+                  <span className="text-[13px] font-medium text-gray-900">Sepetiniz</span>
                 </div>
-                <span className="text-[10px] font-medium text-gray-400">1 items</span>
+                <span className="text-[10px] font-medium text-gray-400">1 ürün</span>
               </div>
 
               {/* Upsell Card - Exactly as per reference image */}
@@ -107,12 +107,12 @@ export function Features() {
                     />
                   </div>
                   <div className="flex flex-col justify-center gap-0.5">
-                    <p className="text-[11px] font-medium text-gray-600">Add One More Item For</p>
-                    <p className="text-[14px] font-bold text-[#95BF47] tracking-tight">Free Shipping!</p>
+                    <p className="text-[11px] font-medium text-gray-600">Ücretsiz Kargo İçin</p>
+                    <p className="text-[14px] font-bold text-[#95BF47] tracking-tight">Bir Ürün Daha Ekleyin!</p>
                   </div>
                 </div>
                 <button className="w-full bg-[#1A1A1A] text-white text-[11px] font-bold py-3 rounded-[10px] hover:bg-black transition-all">
-                  Add To Cart
+                  Sepete Ekle
                 </button>
               </div>
 
@@ -131,16 +131,16 @@ export function Features() {
 
           {/* Card 3: Analytics */}
           <FeatureCard
-            title="Analyze Revenue & Projections"
-            description="See real-time revenue insights and forecasts to make smarter business decisions that help you scale faster."
+            title="Analiz ve Gelir Tahminleri"
+            description="Gelir tahminlerini ve analizlerini gerçek zamanlı görerek, mağazanızı daha hızlı ölçeklendirecek akıllı kararlar alın."
           >
             <div className="relative mt-8 flex flex-col group-hover:-translate-y-6 transition-transform duration-700 ease-out">
               <div className="mb-0 px-1">
-                <p className="text-[11px] font-medium text-gray-400 mb-2 leading-tight">Revenue Forecasts - 2024</p>
+                <p className="text-[11px] font-medium text-gray-400 mb-2 leading-tight">Gelir Tahminleri - 2024</p>
                 <div className="flex flex-col mb-10">
-                  <span className="text-4xl font-bold text-black tracking-tighter leading-none mb-1">$2,445,890</span>
+                  <span className="text-4xl font-bold text-black tracking-tighter leading-none mb-1">2.445.890₺</span>
                   <div className="flex items-center gap-1 text-[#95BF47] text-[11px] font-bold">
-                    <span>+35% from last year</span>
+                    <span>geçen yıla göre +%35</span>
                   </div>
                 </div>
               </div>

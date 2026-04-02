@@ -5,28 +5,28 @@ import { Check, X, ShoppingBag, CreditCard, RefreshCw, Share2, Globe, Sparkles, 
 import { cn } from "@/lib/utils"
 
 const plans = [
-    { name: "Small", price: "4.999", description: "Perfect for new merchants starting their journey." },
-    { name: "Medium", price: "9.999", description: "Best for growing businesses with steady volume.", highlight: true },
-    { name: "Full Paket", price: "13.999", description: "Everything you need for enterprise scaling." },
+    { name: "Başlangıç", price: "4.999", description: "Yolculuğuna yeni başlayan satıcılar için mükemmel." },
+    { name: "Profesyonel", price: "9.999", description: "Düzenli cirosu olan büyüyen işletmeler için en iyisi.", highlight: true },
+    { name: "Full Paket", price: "13.999", description: "Kurumsal ölçeklendirme için ihtiyacınız olan her şey." },
 ]
 
 const comparisonFeatures = [
-    { name: "Customizable Checkout", icon: ShoppingBag, small: true, medium: true, full: true },
-    { name: "Auto Generate VIP Portals", icon: CreditCard, small: true, medium: true, full: true },
-    { name: "Chargeback Mitigation", icon: RefreshCw, small: false, medium: true, full: true },
-    { name: "MID Management & Routing", icon: Share2, small: false, medium: true, full: true },
-    { name: "Multi-Currency Support", icon: Globe, small: true, medium: true, full: true },
-    { name: "Smart Salvage AI", icon: Sparkles, small: false, medium: true, full: true },
-    { name: "Fraud Prevention", icon: ShieldCheck, small: false, medium: true, full: true },
-    { name: "24/7 Dedicated Support", icon: Headphones, small: false, medium: false, full: true },
-    { name: "Start Selling Within 24h", icon: Zap, small: false, medium: false, full: true },
-    { name: "Unmatched Approval Rates", icon: TrendingUp, small: false, medium: true, full: true },
-    { name: "Engineered For Scale", icon: Maximize, small: false, medium: true, full: true },
+    { name: "Özelleştirilebilir Ödeme Sayfası", icon: ShoppingBag, small: true, medium: true, full: true },
+    { name: "Otomatik VIP Portalları", icon: CreditCard, small: true, medium: true, full: true },
+    { name: "Chargeback (İtiraz) Yönetimi", icon: RefreshCw, small: false, medium: true, full: true },
+    { name: "MID Yönetimi ve Yönlendirme", icon: Share2, small: false, medium: true, full: true },
+    { name: "Çoklu Para Birimi Desteği", icon: Globe, small: true, medium: true, full: true },
+    { name: "Akıllı Kayıp Kurtarma AI", icon: Sparkles, small: false, medium: true, full: true },
+    { name: "Dolandırıcılık Önleme", icon: ShieldCheck, small: false, medium: true, full: true },
+    { name: "7/24 Özel Teknik Destek", icon: Headphones, small: false, medium: false, full: true },
+    { name: "24 Saatte Satışa Başlayın", icon: Zap, small: false, medium: false, full: true },
+    { name: "Yüksek Ödeme Onay Oranları", icon: TrendingUp, small: false, medium: true, full: true },
+    { name: "Ölçeklenebilir Mimari", icon: Maximize, small: false, medium: true, full: true },
 ]
 
 export function Pricing() {
     return (
-        <section className="relative w-full pt-0 pb-20  overflow-hidden">
+        <section id="pricing" className="relative w-full pt-0 pb-20  overflow-hidden">
             <div className="max-w-[1100px] mx-auto px-6">
 
                 {/* Header Area - Balanced & Refined */}
@@ -35,15 +35,15 @@ export function Pricing() {
                         <div className="flex items-center justify-center bg-[#95bf47]/10 w-6 h-6 rounded-md p-1">
                             <Image src="/shopify.png" alt="Shopify" width={16} height={16} className="object-contain" />
                         </div>
-                        <span className="text-[12px] font-bold tracking-tight text-gray-600">Built For Shopify</span>
+                        <span className="text-[12px] font-bold tracking-tight text-gray-600">Shopify İçin Tasarlandı</span>
                     </div>
 
                     <h2 className="max-w-[700px] text-[28px] md:text-[42px] font-bold tracking-tight text-black leading-tight mb-4">
-                        Choose the Best Plan for Your <br />
-                        Subscription <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">Success</span>
+                        Abonelik Başarınız İçin En İyi <br />
+                        Planı <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">Seçin</span>
                     </h2>
                     <p className="max-w-[480px] text-sm md:text-base text-gray-500 font-medium leading-relaxed">
-                        Stop patching apps together, Shopfio handles subscriptions, payments, and growth in one place.
+                        Uygulamaları tek tek yamalamayı bırakın, Shopfio abonelik, ödeme ve büyümeyi tek bir yerden yönetmenizi sağlar.
                     </p>
                 </div>
 

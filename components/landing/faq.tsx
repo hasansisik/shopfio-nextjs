@@ -8,24 +8,24 @@ import { cn } from "@/lib/utils"
 
 const faqData = [
   {
-    question: "How does Shopfio work with my business?",
-    answer: "Shopfio implements innovative Subscription Models that boost revenue with zero upfront costs, no additional work, and no processing risk. We handle setup, payment processing, billing, and support—all while being PCI DSS Level 1 compliant. Think of us as an extension of your team, focused on increasing AOV (Average Order Value) and CLTV (Customer Lifetime Value)."
+    question: "Shopfio işletmemle nasıl çalışır?",
+    answer: "Shopfio, e-ticaret siteniz için gelirleri artıran yenilikçi Abonelik Modellerini; kurulum maliyeti, ek iş yükü ve işlem riski olmadan hayata geçirir. Kurulum, ödeme işleme, faturalandırma ve destek süreçlerini biz yönetiyoruz—üstelik tüm bunlar PCI DSS Seviye 1 uyumluluğuyla gerçekleşiyor. Bizi ekibinizin bir parçası gibi düşünün; Ortalama Sipariş Değeri (AOV) ve Müşteri Yaşam Boyu Değerini (CLTV) artırmaya odaklanıyoruz."
   },
   {
-    question: "What happens to my subscriptions if my payment processor gets closed or shut down?",
-    answer: "Your business continuity is our priority. Shopfio uses a multi-processor routing system. If one processor goes down, we automatically route transactions through your backup processors, ensuring your subscription revenue never stops flowing."
+    question: "Ödeme altyapım kapanırsa aboneliklerime ne olur?",
+    answer: "İş sürekliliğiniz bizim önceliğimizdir. Shopfio, çoklu işlemci (multi-processor) yönlendirme sistemi kullanır. Eğer bir işlemci devre dışı kalırsa, işlemlerinizi otomatik olarak yedek işlemcileriniz üzerinden yönlendiririz, böylece abonelik gelirleriniz asla kesintiye uğramaz."
   },
   {
-    question: "Can I apply for payment processing with Shopfio?",
-    answer: "Absolutely. We have direct partnerships with leading high-risk and low-risk merchant account providers. We assist you throughout the application process to ensure you get the best rates and the most stable processing environment for your Shopify store."
+    question: "Shopfio ile ödeme altyapısı başvurusu yapabilir miyim?",
+    answer: "Kesinlikle. Önde gelen yüksek riskli ve düşük riskli ticari hesap sağlayıcılarıyla doğrudan ortaklıklarımız var. Shopify mağazanız için en iyi oranları ve en kararlı işlem ortamını elde etmenizi sağlamak için tüm başvuru süreci boyunca size destek oluyoruz."
   },
   {
-    question: "What payment processors are supported?",
-    answer: "We support a wide range of global processors including Stripe, Authorize.net, NMI, PayPal, and specialized high-risk merchant accounts. Our system is designed to be processor-agnostic, giving you the flexibility to use the providers that best fit your business needs."
+    question: "Hangi ödeme altyapıları destekleniyor?",
+    answer: "Stripe, Authorize.net, NMI, PayPal ve özel yüksek riskli ticari hesaplar dahil olmak üzere çok çeşitli küresel işlemcileri destekliyoruz. Sistemimiz her işlemciyle çalışacak şekilde tasarlanmıştır, bu da size iş ihtiyaçlarınıza en uygun sağlayıcıları seçme esnekliği sunar."
   },
   {
-    question: "What verticals/niches are supported?",
-    answer: "While we specialize in Shopify e-commerce, we support a variety of verticals including Health & Beauty, Supplements, SaaS, Digital Goods, and Subscription Boxes. If you have a recurring revenue model on Shopify, Shopfio is built for you."
+    question: "Hangi dikey pazar/niş alanlar destekleniyor?",
+    answer: "Shopify e-ticaretinde uzmanlaşmış olsak da; Sağlık & Güzellik, Takviye Edici Gıdalar, SaaS, Dijital Ürünler ve Abonelik Kutuları dahil olmak üzere birçok alanı destekliyoruz. Shopify üzerinde tekrarlayan gelir modeliniz varsa, Shopfio tam size göre inşa edilmiştir."
   }
 ]
 
@@ -33,7 +33,7 @@ export function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0)
 
   return (
-    <section id="faqs" className="relative w-full py-24 overflow-hidden">
+    <section id="faq" className="relative w-full py-24 overflow-hidden">
       <div className="max-w-[900px] mx-auto px-6">
         
         {/* Header Area - Consistent with other sections */}
@@ -42,23 +42,23 @@ export function FAQ() {
             <div className="flex items-center justify-center bg-[#95bf47]/10 w-6 h-6 rounded-md p-1">
                 <Image src="/shopify.png" alt="Shopify" width={16} height={16} className="object-contain" />
             </div>
-            <span className="text-[12px] font-bold tracking-tight text-gray-600 uppercase">FAQs</span>
+            <span className="text-[12px] font-bold tracking-tight text-gray-600 uppercase">SSS</span>
           </div>
 
           <div className="flex items-center justify-center gap-3 md:gap-4 mb-4 flex-wrap">
             <h2 className="text-[32px] md:text-[52px] font-bold tracking-tight text-black leading-tight text-center">
-              Curated
+              Sıkça
             </h2>
             <div className="relative w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-[#95BF47] to-[#5BB13C] rounded-2xl shadow-[0_12px_24px_rgba(149,191,71,0.2)] flex items-center justify-center rotate-[6deg]">
                <MessageSquare className="w-5 h-5 md:w-7 md:h-7 text-white fill-white/20" />
             </div>
             <h2 className="text-[32px] md:text-[52px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">
-                Questions
+                Sorulan Sorular
             </h2>
           </div>
           
           <p className="max-w-[480px] text-base md:text-lg text-gray-500 font-medium leading-relaxed mt-6">
-            Book a call or reach out anytime, we&apos;re here to help.
+            Bir görüşme ayarlayın veya diletiginiz zaman bize ulaşın, yardımcı olmaktan mutluluk duyarız.
           </p>
         </div>
 

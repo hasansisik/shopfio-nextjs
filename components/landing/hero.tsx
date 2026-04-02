@@ -12,7 +12,7 @@ export function Hero() {
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] pointer-events-none -z-10 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#95BF47]/10 via-transparent to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-[#F4F9F1] to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-[oklch(0.985_0.01_145)] to-transparent"></div>
       </div>
 
       {/* Built For Shopify Badge */}
@@ -20,14 +20,14 @@ export function Hero() {
         <div className="flex items-center justify-center bg-[#95bf47]/10 w-8 h-8 rounded-lg overflow-hidden p-1.5">
           <Image src="/shopify.png" alt="Shopify" width={20} height={20} className="object-contain" />
         </div>
-        <span className="text-sm font-bold tracking-tight text-gray-700">Built For Shopify</span>
+        <span className="text-sm font-bold tracking-tight text-gray-700">Shopify İçin Tasarlandı</span>
       </div>
 
       {/* Heading */}
       <h1 className="max-w-5xl text-6xl md:text-8xl font-bold tracking-tighter text-black mb-8 leading-[1]">
-        Turn Your Shoppers <br />
+        Hemen Mağazanızı <br />
         <span className="flex items-center justify-center gap-4 flex-wrap mt-2">
-          Into{" "}
+          Kurun ve{" "}
           <span className="relative inline-flex items-center">
             <div className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-[#95BF47] rounded-2xl shadow-xl shadow-green-500/10 mr-4 transform rotate-[-2deg]">
               <div className="relative">
@@ -40,7 +40,7 @@ export function Hero() {
               </div>
             </div>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">
-              Subscribers
+              Büyütün
             </span>
           </span>
         </span>
@@ -48,8 +48,8 @@ export function Hero() {
 
       {/* Subheading */}
       <p className="max-w-xl text-xl text-gray-500 font-medium mb-12 leading-relaxed px-4">
-        From setup to scale: everything you need to grow <br className="hidden md:block" /> 
-        subscriptions on autopilot.
+        Kurulumdan ölçeklendirmeye: Shopify mağazanızı <br className="hidden md:block" /> 
+        otomatik pilotta büyütmek için ihtiyacınız olan her şey.
       </p>
 
       {/* Hero CTA */}
@@ -59,7 +59,7 @@ export function Hero() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-[#95BF47] to-[#5BB13C] transition-opacity group-hover:opacity-90"></div>
         <span className="relative z-10 flex items-center gap-2">
-          Request a Demo
+          Ücretsiz Ön Görüşme
           <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
         </span>
       </Link>

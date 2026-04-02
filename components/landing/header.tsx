@@ -18,11 +18,10 @@ export function Header() {
   }, [])
 
   const navLinks = [
-    { name: "Features", href: "#features" },
-    { name: "Onboarding", href: "#onboarding" },
-    { name: "Calculator", href: "#calculator" },
-    { name: "FAQs", href: "#faqs" },
-    { name: "Blog", href: "#blog" },
+    { name: "Özellikler", href: "#features" },
+    { name: "Başarı Hikayeleri", href: "#case-studies" },
+    { name: "Ücretlendirme", href: "#pricing" },
+    { name: "SSS", href: "#faq" },
   ]
 
   return (
@@ -65,7 +64,7 @@ export function Header() {
 
         {/* CTA Button */}
         <Link
-          href="/demo"
+          href="#cta"
           className={cn(
             "flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300",
             isScrolled 
@@ -73,7 +72,7 @@ export function Header() {
               : "bg-[#1C1C1C] text-white hover:bg-[#333333]"
           )}
         >
-          Request a Demo
+          Hemen Başla
           <ChevronRight className="w-4 h-4" />
         </Link>
       </header>
