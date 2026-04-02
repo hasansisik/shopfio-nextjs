@@ -8,7 +8,7 @@ import { HeroAnimation } from "./hero-animation"
 
 export function Hero() {
   return (
-    <section className="relative w-full pt-48 pb-12 overflow-hidden flex flex-col items-center text-center bg-[#F9F9F9]">
+    <section className="relative w-full pt-48 pb-12 overflow-hidden flex flex-col items-center text-center ">
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] pointer-events-none -z-10 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#95BF47]/10 via-transparent to-transparent"></div>

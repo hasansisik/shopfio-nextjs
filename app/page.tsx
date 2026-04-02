@@ -1,6 +1,9 @@
 import { Header } from "@/components/landing/header"
 import { Hero } from "@/components/landing/hero"
 import { Features } from "@/components/landing/features"
+import { Pricing } from "@/components/landing/pricing"
+import { FAQ } from "@/components/landing/faq"
+import { Footer } from "@/components/landing/footer"
 
 export default function Home() {
   return (
@@ -9,10 +12,9 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
-
-        <section className="h-screen bg-white flex items-center justify-center">
-          <h2 className="text-4xl font-bold text-gray-200 uppercase tracking-widest">End of Landing Page</h2>
-        </section>
+        <Pricing />
+        <FAQ />
+        <Footer />
       </main>
     </div>
   )

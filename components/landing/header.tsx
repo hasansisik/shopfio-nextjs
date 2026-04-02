@@ -31,7 +31,7 @@ export function Header() {
         className={cn(
           "flex items-center justify-between transition-all duration-500 ease-in-out pointer-events-auto",
           isScrolled
-            ? "w-full max-w-[900px] bg-white/80 backdrop-blur-md rounded-full border border-gray-200/50 shadow-[0_8px_30px_rgb(0,0,0,0.06)] px-4 py-2 mt-2"
+            ? "w-full max-w-[1100px] bg-white/30 backdrop-blur-md rounded-full border border-gray-200/50 shadow-[0_8px_30px_rgb(0,0,0,0.06)] px-4 py-3 mt-2"
             : "w-full max-w-7xl bg-transparent px-6 py-6"
         )}
       >
@@ -39,10 +39,13 @@ export function Header() {
         <Link href="/" className="flex items-center gap-1 group">
           <Image 
             src="/logo.png" 
-            alt="cpptics logo" 
-            width={200} 
-            height={80}
-            className="h-12 w-auto object-contain"
+            alt="shopfio logo" 
+            width={160} 
+            height={60}
+            className={cn(
+                "w-auto transition-all duration-500",
+                isScrolled ? "h-8" : "h-9"
+            )}
             priority
           />
         </Link>

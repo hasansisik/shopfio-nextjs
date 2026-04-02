@@ -89,7 +89,7 @@ export function HeroAnimation() {
   )
 
   return (
-    <div className="relative w-full h-[450px] md:h-[620px] mt-2 md:mt-12 select-none group overflow-hidden bg-[#F9F9F9]">
+    <div className="relative w-full h-[450px] md:h-[620px] mt-2 md:mt-12 select-none group overflow-hidden ">
       {/* Background Curved Lines (line.png) - Made white using brightness/invert filters */}
       <div className="absolute inset-0 pointer-events-none opacity-80 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <Image 
