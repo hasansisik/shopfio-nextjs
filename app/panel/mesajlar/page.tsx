@@ -38,14 +38,12 @@ export default function MesajlarPage() {
 
     setMessages([...messages, newMessage])
     setMessage("")
-    
-    // Auto scroll logic could be here
   }
 
   const filteredMessages = messages.filter(m => m.chatId === selectedChat.id)
 
   return (
-    <div className="flex-1 flex bg-[oklch(0.985_0.01_145)] h-[calc(100vh-var(--announcement-height)-var(--header-height))] overflow-hidden">
+    <div className="flex-1 flex bg-white min-h-0 overflow-hidden">
       {/* Left Sidebar: Chat List */}
       <div className="w-full md:w-[350px] lg:w-[400px] border-r border-gray-100 flex flex-col bg-white">
         <div className="p-4 border-b border-gray-50 flex items-center justify-between">
@@ -116,7 +114,7 @@ export default function MesajlarPage() {
                   <h2 className="text-sm font-bold text-gray-900 leading-none">{selectedChat.name}</h2>
                   <div className="flex items-center gap-1.5 mt-1">
                      <Circle className={cn("w-1.5 h-1.5 fill-current", selectedChat.online ? "text-green-500" : "text-gray-300")} />
-                     <p className="text-[10px] text-gray-400 font-bold tracking-tight">
+                     <p className="text-[10px] text-gray-400 font-medium tracking-tight">
                         {selectedChat.online ? "Şu an çevrimiçi" : "Çevrimdışı"}
                      </p>
                   </div>
@@ -145,7 +143,7 @@ export default function MesajlarPage() {
            }}
           >
             <div className="flex justify-center mb-6">
-               <span className="px-3 py-1 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-full text-[10px] font-bold text-gray-400 uppercase tracking-widest shadow-sm">
+               <span className="px-3 py-1 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-full text-[10px] font-medium text-gray-400 tracking-widest shadow-sm">
                   Bugün
                </span>
             </div>

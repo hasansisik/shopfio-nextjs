@@ -34,7 +34,7 @@ export function Hero() {
                     <span key={i} className="text-yellow-400 text-sm">★</span>
                 ))}
             </div>
-            <span className="text-[12px] font-bold text-gray-500 whitespace-nowrap pt-0.5">
+            <span className="text-[12px] font-medium text-gray-500 whitespace-nowrap pt-0.5">
                 500+ Mağaza Üzerinden <span className="text-gray-900">5 / 5 Puan</span>
             </span>
         </div>
@@ -50,7 +50,7 @@ export function Hero() {
       <div className="max-w-3xl flex flex-col items-center gap-4 mb-14 px-4 overflow-hidden">
         <p className="text-lg md:text-xl text-gray-400 font-medium leading-relaxed text-center">
             Abonelik modelleri, akıllı upsell sayfaları ve veri odaklı analizlerle Shopify <br className="hidden md:block" />
-            mağazanızı otomatik pilotta ölçeklendirin. <span className="text-gray-600 font-bold font-bold leading-tight">Yüzlerce Mağazanın Güvendiği Büyüme Altyapısı</span>
+            mağazanızı otomatik pilotta ölçeklendirin. <span className="text-gray-600 font-medium font-bold leading-tight">Yüzlerce Mağazanın Güvendiği Büyüme Altyapısı</span>
         </p>
       </div>
 

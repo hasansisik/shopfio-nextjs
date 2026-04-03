@@ -91,7 +91,7 @@ export function BilgiFlow() {
       {/* Brand logo at the bottom */}
       <div className="mt-8 flex items-center gap-3 opacity-60 hover:opacity-100 transition-all duration-500">
         <Image src="/logo.png" alt="Shoprio Logo" width={100} height={32} className="h-8 w-auto object-contain" />
-        <div className="px-2 py-0.5 rounded bg-gray-200 text-gray-500 text-[10px] font-bold uppercase tracking-wider">Onboarding</div>
+        <div className="px-2 py-0.5 rounded bg-gray-200 text-gray-500 text-[10px] font-bold tracking-wider">Onboarding</div>
       </div>
     </div>
   )

@@ -121,7 +121,7 @@ export default function BasvuruDetayPage() {
                           </div>
                           {step.current && (
                             <div className="mt-3 p-3 bg-[#95BF47]/5 border border-[#95BF47]/10 rounded-2xl">
-                               <p className="text-[10px] text-[#95BF47] font-bold mb-1 uppercase tracking-wider">Şu Anki Aşama</p>
+                               <p className="text-[10px] text-[#95BF47] font-bold mb-1 tracking-wider">Şu Anki Aşama</p>
                                <p className="text-[11px] text-gray-600 font-medium leading-relaxed">
                                   Tasarım ekibimiz mağazanızın görsel kimliğini Shopify altyapısına uyarlıyor. Marka renkleriniz ve logonuz kullanılmaktadır.
                                </p>
@@ -180,7 +180,7 @@ export default function BasvuruDetayPage() {
                 <div className="relative w-20 h-20 mx-auto mb-4">
                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#95BF47] to-lime-300 p-0.5 shadow-lg">
                       <div className="w-full h-full rounded-full bg-white p-0.5">
-                         <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-400 overflow-hidden">
+                         <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center text-lg font-medium text-gray-400 overflow-hidden">
                             DY
                          </div>
                       </div>
@@ -188,7 +188,7 @@ export default function BasvuruDetayPage() {
                    <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-4 border-white rounded-full" />
                 </div>
                 <h4 className="font-bold text-gray-900 text-sm">Deniz Yılmaz</h4>
-                <p className="text-gray-500 text-[10px] font-bold mb-5 tracking-widest uppercase mt-1">Geliştirme Uzmanı</p>
+                <p className="text-gray-500 text-[10px] font-bold mb-5 tracking-widest mt-1">Geliştirme Uzmanı</p>
                 <div className="flex gap-2">
                    <Link href="/panel/mesajlar" className="flex-1">
                      <Button className="w-full rounded-full bg-[#95BF47] text-white hover:bg-[#86ac3f] font-bold h-8 text-[11px]">Mesaj Gönder</Button>
@@ -214,7 +214,7 @@ export default function BasvuruDetayPage() {
                   <Calendar className="w-5 h-5 text-[#95BF47]" />
                </div>
                <div>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Tahmini Teslimat</p>
+                  <p className="text-[10px] text-gray-400 font-medium tracking-widest">Tahmini Teslimat</p>
                   <p className="text-sm font-bold text-gray-900">10 GÜN KALDI</p>
                </div>
             </div>

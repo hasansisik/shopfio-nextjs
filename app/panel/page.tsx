@@ -83,14 +83,14 @@ export default function PanelPage() {
                             <Clock className="w-5 h-5 text-[#95BF47]" />
                         </div>
                         <div>
-                            <p className="text-[10px] text-gray-400 font-bold tracking-wider">Aktif Başvuru</p>
+                            <p className="text-[10px] text-gray-400 font-medium tracking-wider">Aktif Başvuru</p>
                             <h2 className="text-base font-bold text-gray-900">{myApplication.package} - <span className="text-[#95BF47]">{myApplication.status}</span></h2>
                         </div>
                     </div>
                 </div>
                 <div className="flex-1 max-w-xl">
                     <div className="flex justify-between items-center mb-2">
-                        <span className="text-[10px] font-bold text-gray-400">Kurulum İlerlemesi</span>
+                        <span className="text-[10px] font-medium text-gray-400">Kurulum İlerlemesi</span>
                         <span className="text-[10px] font-bold text-[#95BF47]">{myApplication.progress}%</span>
                     </div>
                     <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -135,7 +135,7 @@ export default function PanelPage() {
                         <h4 className="text-base font-bold text-gray-900">{pkg.name}</h4>
                         <div className="mt-1 flex items-baseline gap-1">
                             <span className="text-xl font-bold text-gray-900">{pkg.price}</span>
-                            <span className="text-[10px] text-gray-400 font-bold">'den başlayan</span>
+                            <span className="text-[10px] text-gray-400 font-medium">'den başlayan</span>
                         </div>
                         <p className="text-[11px] text-gray-500 mt-3 leading-relaxed">{pkg.desc}</p>
                         

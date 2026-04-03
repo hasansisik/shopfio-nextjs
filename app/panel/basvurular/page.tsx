@@ -123,7 +123,7 @@ export default function BasvurularPage() {
               <div>
                 <div className="pt-3 border-t border-gray-50 flex items-center justify-between">
                   <div>
-                    <p className="text-[9px] text-gray-400 font-bold mb-0.5 tracking-tight">{app.date}</p>
+                    <p className="text-[9px] text-gray-400 font-medium mb-0.5 tracking-tight">{app.date}</p>
                     <p className="text-[11px] font-bold text-gray-900 tracking-tight">#{app.id}</p>
                   </div>
                   <div className={cn(
@@ -175,12 +175,12 @@ export default function BasvurularPage() {
                 </p>
                 <div className="flex gap-4 pt-1">
                     <div className="flex flex-col">
-                        <span className="text-[8px] text-gray-500 font-bold tracking-widest">Aktif Başvuru</span>
+                        <span className="text-[8px] text-gray-500 font-medium tracking-widest">Aktif Başvuru</span>
                         <span className="text-sm font-bold">12 Adet</span>
                     </div>
                     <div className="w-[1px] h-6 bg-gray-800" />
                     <div className="flex flex-col">
-                        <span className="text-[8px] text-gray-500 font-bold tracking-widest">Onay Oranı</span>
+                        <span className="text-[8px] text-gray-500 font-medium tracking-widest">Onay Oranı</span>
                         <span className="text-sm font-bold text-[#95BF47]">%98.4</span>
                     </div>
                 </div>

@@ -155,7 +155,7 @@ export function Header() {
                       Hemen Başla
                       <ChevronRight className="w-4 h-4" />
                    </Link>
-                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center">Resmi Shopify Partneri</p>
+                   <p className="text-[10px] text-gray-400 font-medium tracking-widest text-center">Resmi Shopify Partneri</p>
                 </div>
               </motion.div>
             </>

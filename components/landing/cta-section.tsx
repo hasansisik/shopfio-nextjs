@@ -58,7 +58,7 @@ export function CTASection() {
                             </div>
                             <div className="flex justify-between items-end">
                                 <div className="space-y-1">
-                                    <p className="text-white/50 text-[12px] font-bold uppercase tracking-wider">Toplam Gelir</p>
+                                    <p className="text-white/50 text-[12px] font-bold tracking-wider">Toplam Gelir</p>
                                     <p className="text-white text-3xl font-black">124.500₺</p>
                                 </div>
                                 <div className="w-16 h-12 bg-white/20 rounded-xl flex items-center justify-center">

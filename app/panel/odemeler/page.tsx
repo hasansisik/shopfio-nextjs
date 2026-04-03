@@ -88,11 +88,11 @@ export default function OdemelerPage() {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-gray-50">
-                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Hizmet / Paket</th>
-                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">İşlem Tarihi</th>
-                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Miktar</th>
-                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Durum</th>
-                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Fatura</th>
+                  <th className="pb-4 text-[10px] font-medium text-gray-400 tracking-wider">Hizmet / Paket</th>
+                  <th className="pb-4 text-[10px] font-medium text-gray-400 tracking-wider">İşlem Tarihi</th>
+                  <th className="pb-4 text-[10px] font-medium text-gray-400 tracking-wider">Miktar</th>
+                  <th className="pb-4 text-[10px] font-medium text-gray-400 tracking-wider">Durum</th>
+                  <th className="pb-4 text-[10px] font-medium text-gray-400 tracking-wider text-right">Fatura</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -118,7 +118,7 @@ export default function OdemelerPage() {
                       </span>
                     </td>
                     <td className="py-4 text-right">
-                      <Button variant="ghost" className="h-8 px-3 text-[10px] font-bold text-gray-400 hover:text-[#95BF47] group-hover:bg-white">
+                      <Button variant="ghost" className="h-8 px-3 text-[10px] font-medium text-gray-400 hover:text-[#95BF47] group-hover:bg-white">
                         <Receipt className="w-3.5 h-3.5 mr-1" />
                         PDF İndir
                       </Button>

@@ -141,7 +141,7 @@ export function StepRole({ data, updateData, onNext, onBack }: any) {
         ))}
       </div>
 
-      <div className="flex justify-center gap-6 text-sm font-bold text-gray-400">
+      <div className="flex justify-center gap-6 text-sm font-medium text-gray-400">
          <button onClick={onBack} className="hover:text-gray-900 transition-colors">Geri</button>
          <button onClick={onNext} className="hover:text-gray-900 transition-colors">Atla</button>
       </div>
@@ -182,7 +182,7 @@ export function StepSource({ data, updateData, onNext, onBack }: any) {
         ))}
       </div>
 
-      <div className="flex justify-center gap-6 text-sm font-bold text-gray-400">
+      <div className="flex justify-center gap-6 text-sm font-medium text-gray-400">
          <button onClick={onBack} className="hover:text-gray-900 transition-colors">Geri</button>
          <button onClick={onNext} className="hover:text-gray-900 transition-colors">Atla</button>
       </div>
@@ -236,7 +236,7 @@ export function StepGoal({ data, updateData, onNext, onBack }: any) {
           Tamamla
         </Button>
 
-        <div className="flex justify-center gap-6 text-sm font-bold text-gray-400 pb-10">
+        <div className="flex justify-center gap-6 text-sm font-medium text-gray-400 pb-10">
            <button onClick={onBack} className="hover:text-gray-900 transition-colors">Geri</button>
         </div>
       </div>

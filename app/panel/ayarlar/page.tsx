@@ -90,7 +90,7 @@ export default function AyarlarPage() {
                                     <p className="text-[11px] text-gray-400 font-medium">Kullanıcı Profilini Düzenle</p>
                                     <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white border border-gray-100 mt-1">
                                         <div className="w-1.5 h-1.5 rounded-full bg-[#95BF47]" />
-                                        <span className="text-[10px] text-gray-500 font-bold">hasan@shoprio.com</span>
+                                        <span className="text-[10px] text-gray-500 font-medium">hasan@shoprio.com</span>
                                     </div>
                                 </div>
                             </div>
@@ -98,19 +98,19 @@ export default function AyarlarPage() {
                             {/* Form Fields */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-400 pl-1">Adınız</label>
+                                    <label className="text-[11px] font-medium text-gray-400 pl-1">Adınız</label>
                                     <Input defaultValue="Hasan" className="rounded-xl h-11 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10 font-medium bg-white" />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-400 pl-1">E-posta Adresiniz</label>
+                                    <label className="text-[11px] font-medium text-gray-400 pl-1">E-posta Adresiniz</label>
                                     <Input defaultValue="hasan@shoprio.com" className="rounded-xl h-11 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10 font-medium bg-white" />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-400 pl-1">Telefon Numarası</label>
+                                    <label className="text-[11px] font-medium text-gray-400 pl-1">Telefon Numarası</label>
                                     <Input placeholder="+90 5XX XXX XX XX" className="rounded-xl h-11 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10 font-medium bg-white" />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-400 pl-1">Zaman Dilimi</label>
+                                    <label className="text-[11px] font-medium text-gray-400 pl-1">Zaman Dilimi</label>
                                     <div className="h-11 px-4 rounded-xl border border-gray-100 bg-white flex items-center justify-between text-xs text-gray-500 cursor-pointer font-medium hover:bg-gray-50 transition-colors">
                                         <span>(GMT+03:00) Istanbul</span>
                                         <ChevronRight className="w-4 h-4 opacity-30" />
@@ -136,15 +136,15 @@ export default function AyarlarPage() {
 
                             <div className="space-y-5 max-w-md">
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-400 pl-1">Mevcut Şifre</label>
+                                    <label className="text-[11px] font-medium text-gray-400 pl-1">Mevcut Şifre</label>
                                     <Input type="password" placeholder="••••••••" className="rounded-xl h-11 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10 font-medium bg-white" />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-400 pl-1">Yeni Şifre</label>
+                                    <label className="text-[11px] font-medium text-gray-400 pl-1">Yeni Şifre</label>
                                     <Input type="password" className="rounded-xl h-11 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10 font-medium bg-white" />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-400 pl-1">Yeni Şifre (Tekrar)</label>
+                                    <label className="text-[11px] font-medium text-gray-400 pl-1">Yeni Şifre (Tekrar)</label>
                                     <Input type="password" className="rounded-xl h-11 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10 font-medium bg-white" />
                                 </div>
                             </div>

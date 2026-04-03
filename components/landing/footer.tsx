@@ -46,7 +46,7 @@ export function Footer() {
                 <Link 
                     key={link.name} 
                     href={link.href} 
-                    className="text-[14px] font-bold text-gray-500 hover:text-black transition-colors"
+                    className="text-[14px] font-medium text-gray-500 hover:text-black transition-colors"
                 >
                     {link.name}
                 </Link>
@@ -63,12 +63,12 @@ export function Footer() {
                 <MessageCircle className="w-5 h-5 fill-white/10" />
                 WhatsApp Destek Hattı
             </a>
-            <p className="text-[12px] text-gray-400 tracking-widest mt-2 uppercase font-bold">7/24 Aktif</p>
+            <p className="text-[12px] text-gray-400 tracking-widest mt-2 font-bold">7/24 Aktif</p>
         </div>
 
         {/* Payment Methods / Infrastructure */}
         <div className="mb-12 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 duration-500">
-            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-400">Güvenli Ödeme Altyapısı</span>
+            <span className="text-[10px] font-bold tracking-[0.2em] text-gray-400">Güvenli Ödeme Altyapısı</span>
             <Image 
                 src="/logo_band_colored@2x.png" 
                 alt="Iyzico Payment Infrastructure" 
@@ -81,7 +81,7 @@ export function Footer() {
         {/* Bottom Bar - Positioned over background logo */}
         <div className="w-full pt-10 border-t border-gray-100/50 flex flex-col md:flex-row items-center justify-between gap-8">
             {/* Copyright */}
-            <p className="text-[13px] font-bold text-gray-500 md:w-1/3 md:text-left">
+            <p className="text-[13px] font-medium text-gray-500 md:w-1/3 md:text-left">
                 © {currentYear} Shopfio Inc.
             </p>
 
@@ -100,14 +100,14 @@ export function Footer() {
                         className="h-7 w-auto object-contain grayscale opacity-60 group-hover:opacity-100 transition-opacity"
                     />
                     <div className="h-3 w-[1px] bg-black/10 mx-0.5" />
-                    <span className="text-[11px] font-bold text-gray-400 group-hover:text-gray-600 transition-colors whitespace-nowrap pt-0.5">
+                    <span className="text-[11px] font-medium text-gray-400 group-hover:text-gray-600 transition-colors whitespace-nowrap pt-0.5">
                         Bir Gegify Sitesidir
                     </span>
                 </Link>
             </div>
             
             {/* Legal Links - Right aligned */}
-            <div className="flex items-center md:justify-end gap-6 text-[13px] font-bold text-gray-500 md:w-1/3">
+            <div className="flex items-center md:justify-end gap-6 text-[13px] font-medium text-gray-500 md:w-1/3">
                 <Link href="/terms" className="hover:text-black transition-colors">Kullanım Şartları</Link>
                 <Link href="/privacy" className="hover:text-black transition-colors">Gizlilik Politikası</Link>
                 <Link href="/refund" className="hover:text-black transition-colors">Çerez Politikası</Link>

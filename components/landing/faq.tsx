@@ -42,7 +42,7 @@ export function FAQ() {
             <div className="flex items-center justify-center bg-[#95bf47]/10 w-6 h-6 rounded-md p-1">
                 <Image src="/shopify.png" alt="Shopify" width={16} height={16} className="object-contain" />
             </div>
-            <span className="text-[12px] font-bold tracking-tight text-gray-600 uppercase">SSS</span>
+            <span className="text-[12px] font-bold tracking-tight text-gray-600">SSS</span>
           </div>
 
           <div className="flex items-center justify-center gap-3 md:gap-4 mb-4 flex-wrap">

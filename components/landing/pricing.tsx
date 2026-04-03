@@ -38,7 +38,7 @@ export function Pricing() {
                                 : "bg-white border-gray-100 shadow-sm"
                         )}>
                             {plan.highlight && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#95BF47] text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#95BF47] text-white text-[10px] font-bold px-4 py-1.5 rounded-full tracking-widest shadow-lg">
                                     En Popüler
                                 </div>
                             )}
@@ -118,7 +118,7 @@ export function Pricing() {
                                 <div className="p-2.5 rounded-xl bg-[#95BF47]/10 flex-shrink-0">
                                     <feature.icon className="w-4 h-4 text-[#95BF47]" />
                                 </div>
-                                <span className="text-[13px] font-bold text-gray-600 transition-colors group-hover:text-black whitespace-nowrap">{feature.name}</span>
+                                <span className="text-[13px] font-medium text-gray-600 transition-colors group-hover:text-black whitespace-nowrap">{feature.name}</span>
                             </div>
 
                             {/* Values Mapping */}

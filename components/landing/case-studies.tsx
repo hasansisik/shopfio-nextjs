@@ -46,7 +46,7 @@ export function CaseStudies() {
             <div className="flex items-center justify-center bg-[#95bf47]/10 w-6 h-6 rounded-md p-1">
                 <Image src="/shopify.png" alt="Shopify" width={16} height={16} className="object-contain" />
             </div>
-            <span className="text-[12px] font-bold tracking-tight text-gray-600 uppercase">Başarı Hikayeleri</span>
+            <span className="text-[12px] font-bold tracking-tight text-gray-600">Başarı Hikayeleri</span>
           </div>
 
           <div className="flex flex-col items-center">
@@ -82,7 +82,7 @@ export function CaseStudies() {
                 <div className="p-5 flex items-center justify-between border-b border-gray-50 bg-white">
                   <div className="flex flex-col">
                     <span className="text-[15px] font-extrabold text-gray-900 tracking-tight">{study.name}</span>
-                    <span className="text-[11px] font-bold text-gray-400 tracking-wider ">{study.role}</span>
+                    <span className="text-[11px] font-medium text-gray-400 tracking-wider ">{study.role}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Image src="/shopify-logo.avif" alt="Shopify" width={80} height={24} className="object-contain opacity-80" />
@@ -121,7 +121,7 @@ export function CaseStudies() {
 
               {/* Quote Area */}
               <div className="mt-5 px-1 text-center md:text-left">
-                <span className="text-[15px] font-bold text-gray-800 leading-snug">
+                <span className="text-[15px] font-medium text-gray-800 leading-snug">
                   {study.emoji} "{study.quote}"
                 </span>
               </div>

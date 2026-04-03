@@ -86,7 +86,7 @@ function OnboardingCard({ step, index, totalSteps }: { step: typeof steps[0], in
 
           <div className="relative z-10">
               <div className={cn(
-                  "inline-flex px-3 py-1 rounded-lg text-[9px] font-bold tracking-widest text-white shadow-md mb-5 uppercase",
+                  "inline-flex px-3 py-1 rounded-lg text-[9px] font-bold tracking-widest text-white shadow-md mb-5",
                   index === 0 ? "bg-blue-500" : index === 1 ? "bg-purple-500" : index === 2 ? "bg-emerald-500" : "bg-[#95BF47]"
               )}>
               {step.step}

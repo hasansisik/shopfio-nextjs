@@ -19,6 +19,8 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 
+import Link from "next/link"
+
 export default function DestekPage() {
   const faqs = [
     { q: "Shopify mağazam ne zaman aktif olur?", a: "Başvurunuz onaylandıktan sonra seçtiğiniz pakete göre 2-5 iş günü içerisinde kurulum tamamlanır." },
@@ -84,7 +86,8 @@ export default function DestekPage() {
                     <h3 className="text-sm font-bold text-gray-900 mb-3">Aktif Taleplerim</h3>
                     <div className="space-y-2">
                         {myTickets.map((t, i) => (
-                            <div key={i} className="flex items-center justify-between p-2.5 rounded-xl border border-gray-50 hover:bg-gray-50 transition-all cursor-pointer group">
+                          <Link key={i} href={`/panel/destek/${t.id}`} className="block">
+                            <div className="flex items-center justify-between p-2.5 rounded-xl border border-gray-50 hover:bg-gray-50 transition-all cursor-pointer group">
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
                                         <Clock className="w-3.5 h-3.5 text-gray-300" />
@@ -101,6 +104,7 @@ export default function DestekPage() {
                                     {t.status}
                                 </div>
                             </div>
+                          </Link>
                         ))}
                     </div>
                 </div>
@@ -140,7 +144,7 @@ export default function DestekPage() {
                 </div>
 
                 <div className="bg-white rounded-[24px] p-4 border border-gray-100 shadow-sm space-y-3">
-                    <h4 className="text-[10px] font-bold text-gray-400 tracking-widest">Diğer Kanallar</h4>
+                    <h4 className="text-[10px] font-medium text-gray-400 tracking-widest">Diğer Kanallar</h4>
                     <div className="space-y-2">
                         <div className="flex items-center gap-3 text-[11px] text-gray-600 hover:text-[#95BF47] transition-colors cursor-pointer font-medium">
                             <Mail className="w-3.5 h-3.5" /> destek@shoprio.com
