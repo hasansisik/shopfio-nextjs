@@ -20,9 +20,8 @@ export default function OdemelerPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Plans */}
+          {/* Plans/Services */}
           {plans.map((plan, i) => {
-            const isCurrent = plan.id === currentPlan
             return (
               <div 
                 key={i} 
@@ -30,22 +29,16 @@ export default function OdemelerPage() {
                   "relative flex flex-col p-6 rounded-[24px] border transition-all duration-300",
                   plan.highlight 
                     ? "bg-white border-[#95BF47] shadow-[0_20px_50px_rgba(149,191,71,0.08)] ring-1 ring-[#95BF47]/10" 
-                    : "bg-white border-gray-100 shadow-sm"
+                    : "bg-white border-gray-100 shadow-sm hover:border-[#95BF47]/30 transition-all cursor-pointer"
                 )}
               >
-                {isCurrent && (
-                  <div className="absolute -top-3 left-6 bg-gray-900 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                    Mevcut Planınız
-                  </div>
-                )}
-                
                 <div className="mb-6">
                   <h3 className={cn("text-sm font-bold mb-1", plan.highlight ? "text-[#95BF47]" : "text-gray-900")}>
                     {plan.name}
                   </h3>
                   <div className="flex items-baseline gap-1 mb-3">
                     <span className="text-2xl font-bold text-gray-900">₺{plan.price}</span>
-                    <span className="text-gray-400 text-[10px] font-bold">/AYLIK</span>
+                    <span className="text-gray-400 text-[10px] font-bold">/ TEK ALIM</span>
                   </div>
                   <p className="text-[11px] text-gray-500 leading-relaxed font-medium">
                     {plan.description}
@@ -70,72 +63,70 @@ export default function OdemelerPage() {
                 </div>
 
                 <Button 
-                  disabled={isCurrent}
                   className={cn(
                     "w-full rounded-xl font-bold h-10 text-xs transition-all",
-                    isCurrent 
-                      ? "bg-gray-100 text-gray-400 hover:bg-gray-100 cursor-default" 
-                      : plan.highlight
-                        ? "bg-[#95BF47] text-white hover:bg-[#86ac3f]"
-                        : "bg-gray-900 text-white hover:bg-black"
+                    plan.highlight
+                      ? "bg-[#95BF47] text-white hover:bg-[#86ac3f]"
+                      : "bg-gray-900 text-white hover:bg-black font-bold"
                   )}
                 >
-                  {isCurrent ? "Aktif Kullanılıyor" : `${plan.name} Pakete Geç`}
+                   {plan.name} Hizmeti Al
                 </Button>
               </div>
             )
           })}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Payment Method */}
-          <div className="bg-white rounded-[24px] p-6 border border-gray-100 shadow-sm">
-            <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-[#95BF47]" />
-              Ödeme Yöntemi
-            </h3>
-            <div className="p-4 rounded-2xl border border-gray-50 bg-gray-50/50 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-7 bg-white border border-gray-100 rounded flex items-center justify-center">
-                  <span className="text-[8px] font-bold text-blue-600">VISA</span>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-gray-900">•••• •••• •••• 4242</p>
-                  <p className="text-[10px] text-gray-400 font-medium">Son kullanma: 12/26</p>
-                </div>
-              </div>
-              <Button variant="ghost" className="text-[10px] font-bold text-[#95BF47] h-8 px-3 rounded-lg hover:bg-[#95BF47]/5">Düzenle</Button>
-            </div>
-          </div>
-
-          {/* Billing History */}
-          <div className="bg-white rounded-[24px] p-6 border border-gray-100 shadow-sm">
-            <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Receipt className="w-4 h-4 text-[#95BF47]" />
-              Fatura Geçmişi
-            </h3>
-            <div className="space-y-2">
-              {[
-                { date: "01 Nisan 2024", amount: "₺9.999", status: "Ödendi" },
-                { date: "01 Mart 2024", amount: "₺9.999", status: "Ödendi" },
-              ].map((invoice, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-gray-50 hover:bg-gray-50/50 transition-all cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center">
-                      <Receipt className="w-3.5 h-3.5 text-gray-400" />
-                    </div>
-                    <div>
-                      <p className="text-[11px] font-bold text-gray-900">{invoice.date}</p>
-                      <p className="text-[10px] text-gray-400 font-medium">{invoice.amount}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="px-2 py-0.5 rounded-full bg-[#95BF47]/10 text-[#95BF47] text-[9px] font-bold">{invoice.status}</span>
-                    <ArrowRight className="w-3 h-3 text-gray-300" />
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Payment History Full Width */}
+        <div className="bg-white rounded-[24px] p-6 border border-gray-100 shadow-sm">
+          <h3 className="text-sm font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Receipt className="w-4 h-4 text-[#95BF47]" />
+            Ödeme Geçmişi
+          </h3>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-gray-50">
+                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Hizmet / Paket</th>
+                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">İşlem Tarihi</th>
+                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Miktar</th>
+                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Durum</th>
+                  <th className="pb-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Fatura</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {[
+                  { name: "Profesyonel Paket Kurulumu", date: "15 Nisan 2024", amount: "₺9.999", status: "Tamamlandı" },
+                  { name: "Ek Güvenlik Modülü", date: "02 Nisan 2024", amount: "₺1.250", status: "Tamamlandı" },
+                  { name: "MID Entegrasyon Desteği", date: "24 Mart 2024", amount: "₺3.500", status: "Tamamlandı" },
+                ].map((invoice, i) => (
+                  <tr key={i} className="group hover:bg-gray-50/50 transition-all cursor-pointer">
+                    <td className="py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-[#95BF47]/10 flex items-center justify-center">
+                          <Check className="w-3.5 h-3.5 text-[#95BF47]" />
+                        </div>
+                        <span className="text-[11px] font-bold text-gray-900">{invoice.name}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 text-[11px] text-gray-500 font-medium">{invoice.date}</td>
+                    <td className="py-4 text-[11px] font-bold text-gray-900">{invoice.amount}</td>
+                    <td className="py-4">
+                      <span className="px-2 py-0.5 rounded-full bg-[#95BF47]/10 text-[#95BF47] text-[9px] font-bold">
+                        {invoice.status}
+                      </span>
+                    </td>
+                    <td className="py-4 text-right">
+                      <Button variant="ghost" className="h-8 px-3 text-[10px] font-bold text-gray-400 hover:text-[#95BF47] group-hover:bg-white">
+                        <Receipt className="w-3.5 h-3.5 mr-1" />
+                        PDF İndir
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

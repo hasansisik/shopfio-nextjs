@@ -28,7 +28,7 @@ function AnnouncementBar() {
     <div className="bg-[#95BF47] text-white overflow-hidden relative h-(--announcement-height) flex items-center justify-center px-4 shrink-0 sticky top-0 z-50">
       <div className="absolute left-4 hidden md:flex items-center gap-2">
         <Zap className="w-3.5 h-3.5 fill-white" />
-        <span className="text-[10px] font-bold tracking-widest">Kampanyalar</span>
+        <span className="text-[10px] font-medium tracking-widest">Kampanyalar</span>
       </div>
       
       <div className="relative h-full flex items-center justify-center text-center">
@@ -39,14 +39,14 @@ function AnnouncementBar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="text-[11px] font-bold tracking-tight whitespace-nowrap"
+            className="text-[11px] font-medium tracking-tight whitespace-nowrap"
           >
             {CAMPAIGNS[index]}
           </motion.p>
         </AnimatePresence>
       </div>
 
-      <button className="absolute right-4 text-[10px] font-bold underline underline-offset-2 decoration-white/30 hover:decoration-white transition-all hidden md:block">
+      <button className="absolute right-4 text-[10px] font-medium underline underline-offset-2 decoration-white/30 hover:decoration-white transition-all hidden md:block">
         Detayları Gör
       </button>
     </div>

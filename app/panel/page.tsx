@@ -159,32 +159,6 @@ export default function PanelPage() {
               </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
-              <div className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm flex items-center justify-between group cursor-pointer hover:bg-gray-50 transition-all">
-                  <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
-                          <Zap className="w-5 h-5 text-orange-500" />
-                      </div>
-                      <div>
-                          <h4 className="text-sm font-bold text-gray-900 leading-none">Hızlı Kurulum Klavuzu</h4>
-                          <p className="text-[10px] text-gray-400 mt-1.5 font-bold">PDF İndir (2.4 MB)</p>
-                      </div>
-                  </div>
-                  <ArrowUpRight className="w-5 h-5 text-gray-200 group-hover:text-[#95BF47] transition-all" />
-              </div>
-              <div className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm flex items-center justify-between group cursor-pointer hover:bg-gray-50 transition-all">
-                  <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                          <Globe className="w-5 h-5 text-blue-500" />
-                      </div>
-                      <div>
-                          <h4 className="text-sm font-bold text-gray-900 leading-none">Topluluk & Blog</h4>
-                          <p className="text-[10px] text-gray-400 mt-1.5 font-bold">14 Bin Üye</p>
-                      </div>
-                  </div>
-                  <ArrowUpRight className="w-5 h-5 text-gray-200 group-hover:text-blue-500 transition-all" />
-              </div>
-          </div>
         </div>
       </div>
     </SidebarInset>
