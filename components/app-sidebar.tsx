@@ -46,6 +46,11 @@ const data = {
       icon: ClipboardList,
     },
     {
+      title: "Mesajlar",
+      url: "/panel/mesajlar",
+      icon: MessageSquare,
+    },
+    {
       title: "Hesap Ayarları",
       url: "/panel/ayarlar",
       icon: Settings,
@@ -77,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-bold text-[#95BF47]">Shoprio</span>
-                  <span className="truncate text-[10px] uppercase font-bold text-gray-400">Kullanıcı Paneli</span>
+                  <span className="truncate text-[10px]  text-gray-400">Kullanıcı Paneli</span>
                 </div>
               </a>
             </SidebarMenuButton>

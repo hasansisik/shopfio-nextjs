@@ -18,6 +18,7 @@ import {
   Globe,
   Package
 } from "lucide-react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -142,9 +143,11 @@ export default function BasvurularPage() {
                 </div>
 
                 <div className="mt-3">
+                  <Link href={`/panel/basvurular/${app.id}`} className="block">
                     <Button variant="outline" className="w-full rounded-lg border-gray-100 h-8 text-[11px] font-bold group-hover:border-[#95BF47] group-hover:text-[#95BF47] transition-colors flex gap-2">
                         Detayları Gör <ArrowUpRight className="w-3 h-3 ml-0.5" />
                     </Button>
+                  </Link>
                 </div>
               </div>
             </div>
