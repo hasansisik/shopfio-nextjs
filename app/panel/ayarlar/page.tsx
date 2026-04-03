@@ -76,19 +76,19 @@ export default function AyarlarPage() {
                     {/* Form Fields */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-1">Adınız</label>
+                            <label className="text-[10px] font-bold text-gray-400 tracking-widest pl-1">Adınız</label>
                             <Input defaultValue="Hasan" className="rounded-xl h-10 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10" />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-1">E-posta Adresiniz</label>
+                            <label className="text-[10px] font-bold text-gray-400 tracking-widest pl-1">E-posta Adresiniz</label>
                             <Input defaultValue="hasan@shoprio.com" className="rounded-xl h-10 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10" />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-1">Telefon Numarası</label>
+                            <label className="text-[10px] font-bold text-gray-400 tracking-widest pl-1">Telefon Numarası</label>
                             <Input placeholder="+90 5XX XXX XX XX" className="rounded-xl h-10 text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10" />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-1">Zaman Dilimi</label>
+                            <label className="text-[10px] font-bold text-gray-400 tracking-widest pl-1">Zaman Dilimi</label>
                             <div className="h-10 px-3 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-between text-xs text-gray-500 cursor-pointer">
                                 <span>(GMT+03:00) Istanbul</span>
                                 <ChevronRight className="w-3.5 h-3.5 opacity-30" />
@@ -110,7 +110,7 @@ export default function AyarlarPage() {
                     <div>
                         <h3 className="text-sm font-bold text-gray-900">İki Faktörlü Doğrulama</h3>
                         <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">Hesabınızı daha güvenli hale getirmek için girişte ek bir kod istenmesini sağlayabilirsiniz.</p>
-                        <button className="text-[10px] font-bold text-[#95BF47] mt-3 hover:underline">ETKİNLEŞTİR</button>
+                        <button className="text-[10px] font-bold text-[#95BF47] mt-3 hover:underline">Etkinleştir</button>
                     </div>
                 </div>
             </div>

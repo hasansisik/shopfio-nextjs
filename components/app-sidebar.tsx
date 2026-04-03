@@ -57,11 +57,6 @@ const data = {
       url: "/panel/destek",
       icon: HelpCircle,
     },
-    {
-      title: "Geri Bildirim",
-      url: "/panel/destek?tab=feedback",
-      icon: MessageSquare,
-    },
   ],
 }
 

@@ -111,7 +111,7 @@ export default function PanelPage() {
                         )}>
                             {i < 2 ? <CheckCircle2 className="w-3.5 h-3.5" /> : i + 1}
                         </div>
-                        <span className="text-[8px] font-bold text-center", i <= 2 ? "text-gray-900" : "text-gray-300")}>{s}</span>
+                        <span className={cn("text-[8px] font-bold text-center", i <= 2 ? "text-gray-900" : "text-gray-300")}>{s}</span>
                     </div>
                 ))}
              </div>
