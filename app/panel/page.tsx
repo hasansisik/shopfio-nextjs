@@ -59,7 +59,7 @@ export default function PanelPage() {
   }
 
   return (
-    <SidebarInset className="bg-[oklch(0.985_0.01_145)]">
+    <SidebarInset className="bg-white">
       <div className="flex-1 p-4 md:p-6 min-h-screen">
         <div className="w-full space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

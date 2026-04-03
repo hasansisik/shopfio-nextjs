@@ -16,8 +16,8 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { Textarea } from "@/components/ui/textarea"
 
 export default function DestekPage() {
   const faqs = [
