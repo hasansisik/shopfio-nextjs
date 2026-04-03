@@ -38,7 +38,7 @@ export function NavProjects({
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>Hizmetler</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
@@ -52,7 +52,7 @@ export function NavProjects({
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction showOnHover>
                   <MoreHorizontal />
-                  <span className="sr-only">More</span>
+                  <span className="sr-only">Daha Fazla</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -62,16 +62,16 @@ export function NavProjects({
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
+                  <span>Hizmeti Görüntüle</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Share className="text-muted-foreground" />
-                  <span>Share Project</span>
+                  <span>Hizmeti Paylaş</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
+                  <span>Hizmeti Sil</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -80,7 +80,7 @@ export function NavProjects({
         <SidebarMenuItem>
           <SidebarMenuButton>
             <MoreHorizontal />
-            <span>More</span>
+            <span>Daha Fazla</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

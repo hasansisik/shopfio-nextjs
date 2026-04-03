@@ -65,7 +65,7 @@ export function BilgiFlow() {
                   updateData={updateData} 
                   onNext={() => {
                     // Reached the end
-                    setTimeout(() => window.location.href = "/dashboard", 1500)
+                    setTimeout(() => window.location.href = "/panel", 1500)
                   }} 
                   onBack={prevStep} 
                 />

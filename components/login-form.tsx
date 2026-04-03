@@ -34,7 +34,7 @@ export function LoginForm({
     const result = await dispatch(login({ email, password }))
     
     if (login.fulfilled.match(result)) {
-      router.push("/dashboard")
+      router.push("/panel")
     } else if (result.payload && typeof result.payload === 'object' && 'requiresVerification' in result.payload) {
       router.push(`/dogrulama?email=${encodeURIComponent(email)}`)
     }

@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "gegify.com",
       },
+      {
+        protocol: "https",
+        hostname: "adsaify.com",
+      },
     ],
   },
 };
