@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { GalleryVerticalEnd, MailCheck } from "lucide-react"
+import { MailCheck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -62,17 +62,14 @@ function DogrulamaForm() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex justify-center gap-2 md:justify-start">
-          <a href="#" className="flex items-center gap-2 font-medium">
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
-            Shopfio Inc.
+        <div className="flex justify-start">
+          <a href="/" className="flex items-center gap-2 font-medium">
+            <img src="/logo.png" alt="Shoprio Logo" className="h-8" />
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-xs">
-            <FieldGroup>
+          <div className="w-full max-w-xs transition-all duration-300">
+            <FieldGroup className="gap-4">
               <div className="flex flex-col items-center gap-4 text-center">
                 <div className="bg-primary/10 text-primary flex size-16 items-center justify-center rounded-full">
                   <MailCheck className="size-8" />
@@ -105,6 +102,7 @@ function DogrulamaForm() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={loading}
+                        className="rounded-full"
                       />
                     </Field>
                   )}
@@ -119,13 +117,14 @@ function DogrulamaForm() {
                       value={verificationCode}
                       onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
                       disabled={loading}
+                      className="rounded-full"
                     />
                     <FieldDescription>
                       E-postanıza gönderilen 4 haneli kodu girin
                     </FieldDescription>
                   </Field>
                   <Field>
-                    <Button type="submit" className="w-full" disabled={loading || !verificationCode || verificationCode.length !== 4}>
+                    <Button type="submit" className="w-full rounded-full" disabled={loading || !verificationCode || verificationCode.length !== 4}>
                       {loading ? "Doğrulanıyor..." : "Doğrula"}
                     </Button>
                   </Field>
@@ -141,7 +140,7 @@ function DogrulamaForm() {
                   <Field>
                     <Button 
                       type="button" 
-                      className="w-full" 
+                      className="w-full rounded-full" 
                       onClick={handleResend}
                       disabled={loading || !email}
                     >
@@ -159,6 +158,9 @@ function DogrulamaForm() {
               </Field>
             </FieldGroup>
           </div>
+        </div>
+        <div className="flex justify-center">
+          <img src="https://gegify.com/assets/images/logo-black.png" alt="Gegify Logo" className="h-16" />
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">

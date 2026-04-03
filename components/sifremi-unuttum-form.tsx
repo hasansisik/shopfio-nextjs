@@ -31,7 +31,7 @@ export function SifremiUnuttumForm({
 
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
-      <FieldGroup>
+      <FieldGroup className="gap-4">
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Şifremi Unuttum</h1>
           <p className="text-muted-foreground text-sm text-balance">
@@ -56,13 +56,14 @@ export function SifremiUnuttumForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
+            className="rounded-full"
           />
           <FieldDescription>
             Kayıtlı e-posta adresinizi girin, size şifre sıfırlama bağlantısı gönderelim.
           </FieldDescription>
         </Field>
         <Field>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className="rounded-full">
             {loading ? "Gönderiliyor..." : "Şifre Sıfırlama Bağlantısı Gönder"}
           </Button>
         </Field>

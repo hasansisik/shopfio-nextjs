@@ -1,17 +1,14 @@
 import { Suspense } from "react"
-import { GalleryVerticalEnd } from "lucide-react"
+
 import { SifreSifirlamaForm } from "@/components/sifre-sifirlama-form"
 
 export default function SifreSifirlamaPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex justify-center gap-2 md:justify-start">
-          <a href="#" className="flex items-center gap-2 font-medium">
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
-            Shopfio Inc.
+        <div className="flex justify-start">
+          <a href="/" className="flex items-center gap-2 font-medium">
+            <img src="/logo.png" alt="Shoprio Logo" className="h-8" />
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
@@ -24,6 +21,9 @@ export default function SifreSifirlamaPage() {
               <SifreSifirlamaForm />
             </Suspense>
           </div>
+        </div>
+        <div className="flex justify-center">
+          <img src="https://gegify.com/assets/images/logo-black.png" alt="Gegify Logo" className="h-16" />
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">

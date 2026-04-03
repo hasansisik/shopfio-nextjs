@@ -42,7 +42,7 @@ export function LoginForm({
 
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
-      <FieldGroup>
+      <FieldGroup className="gap-4">
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Giriş Yap</h1>
           <p className="text-muted-foreground text-sm text-balance">
@@ -62,6 +62,7 @@ export function LoginForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
+            className="rounded-full"
           />
         </Field>
         <Field>
@@ -71,7 +72,7 @@ export function LoginForm({
               href="/sifremiunuttum"
               className="ml-auto text-sm underline-offset-4 hover:underline"
             >
-              Şifremi unuttum
+              Şifremi unuttum?
             </Link>
           </div>
           <Input 
@@ -81,10 +82,11 @@ export function LoginForm({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
+            className="rounded-full"
           />
         </Field>
         <Field>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className="rounded-full">
             {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
           </Button>
         </Field>
@@ -94,6 +96,11 @@ export function LoginForm({
             <Link href="/kayitol" className="underline underline-offset-4">
               Kayıt ol
             </Link>
+          </FieldDescription>
+        </Field>
+        <Field className="mt-4">
+          <FieldDescription className="text-center text-xs text-muted-foreground">
+            Kaydolarak Hizmet Koşullarımızı ve Gizlilik Politikamızı kabul etmiş olursunuz. Ayrıca Gurmehub'dan ipuçları ve ürün güncellemeleri dahil hesapla ilgili e-postalar almayı da kabul edersiniz.
           </FieldDescription>
         </Field>
       </FieldGroup>

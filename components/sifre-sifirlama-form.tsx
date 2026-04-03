@@ -63,7 +63,7 @@ export function SifreSifirlamaForm({
 
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
-      <FieldGroup>
+      <FieldGroup className="gap-4">
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Yeni Şifre Belirle</h1>
           <p className="text-muted-foreground text-sm text-balance">
@@ -89,6 +89,7 @@ export function SifreSifirlamaForm({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
+              className="rounded-full"
             />
           </Field>
         )}
@@ -103,6 +104,7 @@ export function SifreSifirlamaForm({
               value={passwordToken}
               onChange={(e) => setPasswordToken(e.target.value)}
               disabled={loading}
+              className="rounded-full"
             />
           </Field>
         )}
@@ -116,6 +118,7 @@ export function SifreSifirlamaForm({
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             disabled={loading}
+            className="rounded-full"
           />
         </Field>
         <Field>
@@ -128,6 +131,7 @@ export function SifreSifirlamaForm({
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             disabled={loading}
+            className="rounded-full"
           />
           {newPassword && confirmPassword && newPassword !== confirmPassword && (
             <FieldError>Şifreler eşleşmiyor</FieldError>
@@ -137,7 +141,7 @@ export function SifreSifirlamaForm({
           </FieldDescription>
         </Field>
         <Field>
-          <Button type="submit" disabled={loading || (newPassword !== confirmPassword && confirmPassword !== "") || !email || !passwordToken}>
+          <Button type="submit" disabled={loading || (newPassword !== confirmPassword && confirmPassword !== "") || !email || !passwordToken} className="rounded-full">
             {loading ? "Güncelleniyor..." : "Şifreyi Güncelle"}
           </Button>
         </Field>
