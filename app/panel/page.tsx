@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { SidebarInset } from "@/components/ui/sidebar"
-
 export default function PanelPage() {
   const packages = [
     { 
