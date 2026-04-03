@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "Shopify mağaza kurulumundan abonelik sistemlerine, ödeme altyapılarından büyümeye kadar tüm e-ticaret çözümleri tek bir adreste.",
 };
 
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +30,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster position="bottom-center" />
+        </Providers>
       </body>
     </html>
   );
