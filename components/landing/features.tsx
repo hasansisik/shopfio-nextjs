@@ -36,18 +36,20 @@ export function Features() {
 
           <div className="flex flex-col items-center">
             <h2 className="max-w-[850px] text-[28px] sm:text-[32px] md:text-[52px] font-bold tracking-tight text-black leading-[1.2] md:leading-[1.1] mb-2 text-center">
-              E-Ticaret Mağazanızı Bir
-            </h2>
+             Türkiye'den E-Ticaret Engellerini            </h2>
             <div className="flex items-center justify-center gap-2 md:gap-4 flex-wrap px-2">
-              <span className="text-[28px] sm:text-[32px] md:text-[52px] font-bold tracking-tight text-black">Abonelik</span>
+              <span className="text-[28px] sm:text-[32px] md:text-[52px] font-bold tracking-tight text-black">Aşmak</span>
               <div className="relative w-9 h-9 sm:w-10 sm:h-10 md:w-14 md:h-14 bg-gradient-to-br from-[#95BF47] to-[#5BB13C] rounded-xl md:rounded-2xl shadow-[0_12px_24px_rgba(149,191,71,0.25)] flex items-center justify-center rotate-[-12deg] shrink-0">
                 <Rocket className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 text-white fill-white/20" />
               </div>
-              <span className="text-[28px] sm:text-[32px] md:text-[52px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C] text-center">Devine Dönüştürün</span>
+              <span className="text-[28px] sm:text-[32px] md:text-[52px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C] text-center">Şirket Kurmadan</span>
+              <span className="text-[28px] sm:text-[32px] md:text-[52px] font-bold tracking-tight text-black">artık mümkün</span>
+
             </div>
+
           </div>
-          <p className="max-w-[540px] text-base md:text-lg text-gray-500 font-medium leading-[1.6] mt-10 text-center">
-            Uygulamaları tek tek yamalamayı bırakın, Shopfio abonelik, ödeme ve büyümeyi tek bir yerden yönetmenizi sağlar.
+          <p className="max-w-[720px] text-base md:text-lg text-gray-500 font-medium leading-[1.6] mt-10 text-center">
+           Şirket kurulumlarını ve belgelerini unutun, Artık Türkiye'den bireysel shopify payments ile Global ödeme altyapınızı dakikalar içinde aktif hale getirip satışa başlayın.
           </p>
         </div>
 
