@@ -18,17 +18,17 @@ export function CTASection() {
                 {/* Left: Content */}
                 <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
                     <h2 className="text-[32px] md:text-[52px] font-extrabold tracking-tight text-white leading-[1.1] mb-6">
-                        Shopify Mağazanızı <br />
-                        <span className="text-[#D9F99D]">Büyütmeye Hazır Mısınız?</span>
+                        Global Satış <br />
+                        <span className="text-[#D9F99D]">Kapılarını Bugün Açın !</span>
                     </h2>
                     
                     <p className="max-w-[480px] text-base md:text-lg text-white/95 font-medium leading-relaxed mb-10">
-                        Uygulamaları tek tek yamalamayı bırakın. Shopfio kullanarak müşteri tutma oranlarını %40 artıran 500'den fazla başarılı Shopify iş ortağına katılın.
+                       Karmaşık kurulum süreçleriyle vakit kaybetmeyi bırakın. Shopfio ile Shopify Payments altyapınızı profesyonelce kurun, dünyanın her yerinden ödeme almaya hemen başlayın.
                     </p>
                     
                     <div className="flex flex-col sm:flex-row items-center gap-6">
                         <button className="group relative flex items-center gap-3 bg-white text-[#3D7A2F] px-10 py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-[0_20px_40px_rgba(0,0,0,0.15)]">
-                            Hemen Teklif Alın
+                            Kurulumu Başlatın
                             <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
                         </button>
                         
