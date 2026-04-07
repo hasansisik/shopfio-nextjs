@@ -7,15 +7,16 @@ export const plans = [
 ]
 
 export const comparisonFeatures = [
-    { name: "Özelleştirilebilir Ödeme Sayfası", icon: ShoppingBag, small: true, medium: true, full: true },
-    { name: "Otomatik VIP Portalları", icon: CreditCard, small: true, medium: true, full: true },
-    { name: "Chargeback (İtiraz) Yönetimi", icon: RefreshCw, small: false, medium: true, full: true },
-    { name: "MID Yönetimi ve Yönlendirme", icon: Share2, small: false, medium: true, full: true },
-    { name: "Çoklu Para Birimi Desteği", icon: Globe, small: true, medium: true, full: true },
-    { name: "Akıllı Kayıp Kurtarma AI", icon: Sparkles, small: false, medium: true, full: true },
-    { name: "Dolandırıcılık Önleme", icon: ShieldCheck, small: false, medium: true, full: true },
-    { name: "7/24 Özel Teknik Destek", icon: Headphones, small: false, medium: false, full: true },
-    { name: "24 Saatte Satışa Başlayın", icon: Zap, small: false, medium: false, full: true },
-    { name: "Yüksek Ödeme Onay Oranları", icon: TrendingUp, small: false, medium: true, full: true },
-    { name: "Ölçeklenebilir Mimari", icon: Maximize, small: false, medium: true, full: true },
+    { name: "Shopify Payments Kurulumu", icon: CreditCard, small: true, medium: true, full: true },
+
+
+    { name: "Shopify Mağaza Kurulumu", icon: ShoppingBag, small: false, medium: true, full: true },
+    { name: "Payoneer/Paysera Entegrasyonu", icon: ShoppingBag, small: false, medium: true, full: true },
+    { name: "Chargeback (İtiraz) Danışmanlığı", icon: ShoppingBag, small: false, medium: true, full: true },
+    { name: "Global Dil Seçeneği", icon: ShoppingBag, small: false, medium: false, full: true },
+    { name: "Global Mağaza Tasarımı", icon: ShoppingBag, small: false, medium: false, full: true },
+    { name: "Mağaza İçi Kargo Ayarları", icon: ShoppingBag, small: false, medium: false, full: true },
+    
+    { name: "7/24 Destek", icon: ShoppingBag, small: true, medium: true, full: true },
+
 ]
