@@ -8,25 +8,46 @@ import { cn } from "@/lib/utils"
 
 const faqData = [
   {
-    question: "Shopfio işletmemle nasıl çalışır?",
-    answer: "Shopfio, e-ticaret siteniz için gelirleri artıran yenilikçi Abonelik Modellerini; kurulum maliyeti, ek iş yükü ve işlem riski olmadan hayata geçirir. Kurulum, ödeme işleme, faturalandırma ve destek süreçlerini biz yönetiyoruz—üstelik tüm bunlar PCI DSS Seviye 1 uyumluluğuyla gerçekleşiyor. Bizi ekibinizin bir parçası gibi düşünün; Ortalama Sipariş Değeri (AOV) ve Müşteri Yaşam Boyu Değerini (CLTV) artırmaya odaklanıyoruz."
+    question: "Shopfio nasıl çalışır?",
+    answer: "Sistemimize kayıt olup hizmet paketinizi seçtikten sonra Shopify mağazanızı güvenli bir şekilde panelimize bağlarsınız. Uzman ekibimiz, tüm teknik yapılandırmayı ve Shopify Payments başvurularını sizin adınıza yönetir. Kurulum tamamlanıp test edildikten sonra mağazanızı global satışa hazır şekilde teslim ederiz."
   },
   {
-    question: "Ödeme altyapım kapanırsa aboneliklerime ne olur?",
-    answer: "İş sürekliliğiniz bizim önceliğimizdir. Shopfio, çoklu işlemci (multi-processor) yönlendirme sistemi kullanır. Eğer bir işlemci devre dışı kalırsa, işlemlerinizi otomatik olarak yedek işlemcileriniz üzerinden yönlendiririz, böylece abonelik gelirleriniz asla kesintiye uğramaz."
+    question: "Başvuru süreci ne kadar sürer?",
+    answer: "Gerekli bilgiler tarafımıza ulaştıktan sonra teknik yapılandırma genellikle 24 saat içerisinde tamamlanır. Resmi onay süreçleri Shopify’ın değerlendirme süresine bağlı olarak değişiklik gösterebilir, ancak biz en hızlı sonuç alacağınız şekilde optimizasyon sağlıyoruz."
   },
   {
-    question: "Shopfio ile ödeme altyapısı başvurusu yapabilir miyim?",
-    answer: "Kesinlikle. Önde gelen yüksek riskli ve düşük riskli ticari hesap sağlayıcılarıyla doğrudan ortaklıklarımız var. Shopify mağazanız için en iyi oranları ve en kararlı işlem ortamını elde etmenizi sağlamak için tüm başvuru süreci boyunca size destek oluyoruz."
+    question: "Hangi belgeler gereklidir?",
+    answer: "Genel olarak shopify'ın talep ettiği kimlik doğrulama (TC Kimlik Kartı, Pasaport vb.) belgeleri gereklidir. Kayıt olduktan sonra, seçtiğiniz pakete göre gereken evrak listesi panelinizde sizinle paylaşılır. İşlemeniz tamamlandıktan sonra sistemden otamatik olarak silinir."
   },
   {
-    question: "Hangi ödeme altyapıları destekleniyor?",
-    answer: "Stripe, Authorize.net, NMI, PayPal ve özel yüksek riskli ticari hesaplar dahil olmak üzere çok çeşitli küresel işlemcileri destekliyoruz. Sistemimiz her işlemciyle çalışacak şekilde tasarlanmıştır, bu da size iş ihtiyaçlarınıza en uygun sağlayıcıları seçme esnekliği sunar."
+    question: "Shopify Payments açılmazsa ne olur?",
+    answer: "Süreç boyunca uzman ekibimiz tüm kriterlerin karşılandığından emin olur. Olası bir ret durumunda, eksikleri giderip süreci sizin için takip etmeye devam ediyoruz. Amacımız, her kullanıcımızın sorunsuz bir ödeme yöntemiyle satışa başlamasıdır."
   },
   {
-    question: "Hangi dikey pazar/niş alanlar destekleniyor?",
-    answer: "Shopify e-ticaretinde uzmanlaşmış olsak da; Sağlık & Güzellik, Takviye Edici Gıdalar, SaaS, Dijital Ürünler ve Abonelik Kutuları dahil olmak üzere birçok alanı destekliyoruz. Shopify üzerinde tekrarlayan gelir modeliniz varsa, Shopfio tam size göre inşa edilmiştir."
+    question: "Teknik bilgiye ihtiyacım var mı?",
+    answer: "Hayır. Shopfio'nun amacı tüm teknik karmaşayı sizin üzerinizden almaktır. Sizin yapmanız gereken tek şey kayıt olmak ve mağazanızı bağlamaktır; geri kalan tüm kurulum ve entegrasyon işlemlerini biz hallediyoruz."
+  },
+  {
+    question: "Hangi ülkelerden ödeme kabul edebilirim?",
+    answer: "Başta Türkiye olmak üzere Visa ve MasterCard destekleyen tüm ülkelerden ödeme kabul edebilirsiniz."
+  },
+  {
+    question: "Ödeme alabilmek için mutlaka şirketim olmalı mı?",
+    answer: "Hayır. Shopfio'nun amacı tüm teknik karmaşayı sizin üzerinizden almaktır. Sizin yapmanız gereken tek şey kayıt olmak ve mağazanızı bağlamaktır; geri kalan tüm kurulum ve entegrasyon işlemlerini biz hallediyoruz."
+  },
+  {
+    question: "Zaten açık olan bir mağazam var, Shopfio'yu kullanabilir miyim?",
+    answer: "Tabii ki. Yeni bir mağaza açıyor olmanız veya mevcut bir mağazanızın olması fark etmez. Mevcut mağazanızdaki ödeme yöntemlerini Shopify Payments ile profesyonelce modernize etmek için sistemimize entegre olabilirsiniz.",
+  },
+  {
+    question: "Shopify Payments ödemelerim nereye gönderilecek?",
+    answer: "Ödemeleriniz, Shopify Payments üzerinden Payoneer,Paysera,Zen veya Wise hesabınıza 3-5 iş günü içerisinde aktarılır."
+  },
+  {
+    question: "Vergi ödemem gerekiyor mu?",
+    answer: "Shopify Payments kazançlarınız global ödeme sistemleri (Payoneer, Wise, Zen vb.) üzerinden güvenle yerel hesaplarınıza aktarılmaktadır. Shopfio, ödeme altyapısının teknik kurulumundan sorumludur; bu süreçten doğan vergi mükellefiyetleri ve beyan işlemleri kişisel veya kurumsal tercihleriniz doğrultusunda sizin yönetiminizdedir. Transfer sonrası süreçteki vergilendirme ve beyan yükümlülükleri tamamen kullanıcılarımızın sorumluluğunda olup, mali müşavirinizden destek almanız tavsiye edilir."
   }
+
 ]
 
 export function FAQ() {

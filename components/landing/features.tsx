@@ -58,8 +58,8 @@ export function Features() {
 
           {/* Card 1: Subscriptions */}
           <FeatureCard
-            title="Abonelikleri Oluşturun ve Yönetin"
-            description="Tek seferlik alıcıları zahmetsizce aboneye dönüştürün. Biz sadece 'abonelik yönetmiyoruz', size bir büyüme motoru kuruyoruz."
+            title="Global Ödemeler Kabul Edin"
+            description="Sadece dakikalar içerisinde şirket kurulumlarına gerek kalmadan bireysel shopify payments hesabınız ile tüm dünyadan ödemeler kabul edin."
           >
             <div className="relative mt-8 flex flex-col items-center w-full gap-3">
               {subscribers.map((item, i) => (

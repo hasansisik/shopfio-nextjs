@@ -3,8 +3,6 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Play, FileText, X } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { cn } from "@/lib/utils"
 
 const caseStudies = [
   {
@@ -52,19 +50,19 @@ export function CaseStudies() {
           <div className="flex flex-col items-center">
             <div className="flex items-center justify-center gap-3 md:gap-4 flex-wrap">
               <h2 className="text-[32px] md:text-[52px] font-bold tracking-tight text-black leading-[1.1]">
-                Gerçek
+                Onlar
               </h2>
               <div className="relative w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-[#95BF47] to-[#5BB13C] rounded-2xl shadow-[0_12px_24px_rgba(149,191,71,0.2)] flex items-center justify-center rotate-[6deg]">
                  <FileText className="w-5 h-5 md:w-7 md:h-7 text-white fill-white/20" />
               </div>
               <h2 className="text-[32px] md:text-[52px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#95BF47] to-[#5BB13C]">
-                Sonuçlar
+                Başardı
               </h2>
             </div>
           </div>
           
           <p className="max-w-[600px] text-base md:text-lg text-gray-500 font-medium leading-[1.6] mt-8 text-center">
-            8 haneli cirolara ulaşan markaların, Shopfio kullanarak büyümelerini nasıl hızlandırdıklarını ve müşteri sadakatini nasıl artırdıklarını keşfedin.
+            Onlar, günlerce süren belgelerle uğraşmadan dakikalar içerisinde bireysel shopify mağazasına sahip olarak, kısa sürede 6 haneli ödemelere ulaştılar.
           </p>
         </div>
 

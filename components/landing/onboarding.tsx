@@ -9,36 +9,36 @@ import { cn } from "@/lib/utils"
 const steps = [
   {
     id: "01",
-    step: "STEP 1",
-    title: "İşletmenizi Bağlayın",
-    description: "Ödemelerinizi kolayca bağlayın ve mağazanızı senkronize edin. Shopfio sizi hızlıca onaylatır ve satışa başlamanızı sağlar.",
+    step: "Adım 1",
+    title: "Shopfio Hesabını Oluştur",
+    description: "Hizmet sürecini başlatmak için platformumuza hızlıca kayıt olun. Profilinizi oluşturduktan sonra size özel yönetim paneline erişim sağlayarak kurulum adımlarını takip etmeye hazır hale gelirsiniz.",
     image: "/o1.avif",
     bgIcon: Globe,
     color: "#3B82F6"
   },
   {
     id: "02",
-    step: "STEP 2",
-    title: "Stratejinizi Belirleyin",
-    description: "Size özel büyüme planınızı oluşturun ve abonelik modellerini hayata geçirin. Her işletme için özelleştirilmiş ölçeklendirme yolları.",
+    step: "Adım 2",
+    title: "Shopify Payments Hizmetine Başvur",
+    description: "İhtiyaçlarınıza en uygun kurulum paketini seçerek ödemenizi gerçekleştirin. Ardından, işlemlerimize başlayabilmemiz için Shopify mağazanızı güvenli bir şekilde panelimize bağlayın.",
     image: "/o2.avif",
     bgIcon: Box,
     color: "#8B5CF6"
   },
   {
     id: "03",
-    step: "STEP 3",
-    title: "Gelire Dönüştürün",
-    description: "Tıklamaları nakit akışına dönüştüren optimize edilmiş ödeme sayfalarıyla cirolarınızı artırın. Akıllı upsell ve sepet kontrolü.",
+    step: "Adım 3",
+    title: "Başvuru ve Kurulum",
+    description: "Gerekli bireysel belgeleri tarafımıza ilettikten sonra shopify payments başvurunuzu uzman ekibimiz sizin adınıza resmi başvurunuzu titizlikle gerçekleştirir. Bu aşamada sürecin tüm teknik yükünü biz üstleniyoruz.",
     image: "/o3.avif",
     bgIcon: Rocket,
     color: "#10B981"
   },
   {
     id: "04",
-    step: "STEP 4",
-    title: "Otomatik Pilotta Büyütün",
-    description: "Gerçek zamanlı analizlerle veriye dayalı kararlar alın ve mağazanızı otomatik olarak ölçeklendirin. Eksiksiz uzman desteği yanınızda.",
+    step: "Adım 4",
+    title: "Mağaza Teslimi",
+    description: "Hepsi bu kadar! Başvurunuz onaylandıktan sonra mağazanız aktif hale getirilir. Artık shopify payments üzerinden global ödeme alabilirsiniz.",
     image: "/o4.avif",
     bgIcon: LineChart,
     color: "#95BF47"
