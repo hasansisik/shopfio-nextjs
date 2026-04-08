@@ -41,12 +41,12 @@ const data = {
       isActive: true,
     },
     {
-      title: "Hizmet Başvurularım",
+      title: "Başvurularım",
       url: "/panel/basvurular",
       icon: ClipboardList,
     },
     {
-      title: "Mesajlar",
+      title: "Destek Talebim",
       url: "/panel/mesajlar",
       icon: MessageSquare,
     },
@@ -58,7 +58,7 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Destek Merkezi",
+      title: "Destek Talebi Aç",
       url: "/panel/destek",
       icon: HelpCircle,
     },

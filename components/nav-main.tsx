@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { ChevronRight, Plus, PlusCircle, type LucideIcon } from "lucide-react"
 
 import {
   Collapsible,
@@ -18,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { Button } from "./ui/button"
 
 export function NavMain({
   items,
@@ -35,8 +36,13 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
+        <Button size={"lg"} style={{margin: "1rem 0", backgroundColor:"#95BF47", color:"white" , padding:13 , borderRadius:"80px"}}>
+        <Plus />
+        Başvuru Yap
+      </Button>
       <SidebarGroupLabel>Yönetim</SidebarGroupLabel>
       <SidebarMenu>
+    
         {items.map((item) => (
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
