@@ -1,28 +1,30 @@
 "use client"
 
 import { useState } from "react"
-import { StepPersonal, StepRole, StepSource, StepGoal } from "./steps"
+import { StepPersonal, StepBirthDate, StepIBAN, StepKYC, StepSuccess } from "./steps"
 import { AnimatePresence, motion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 import Image from "next/image"
 
 export function BilgiFlow() {
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     name: "",
-    role: "",
-    source: "",
-    goal: ""
+    birthDate: "",
+    iban: "",
+    idFront: null,
+    idBack: null,
   })
 
   const updateData = (newData: any) => {
     setFormData(prev => ({ ...prev, ...newData }))
   }
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 4))
+  const nextStep = () => setStep(prev => Math.min(prev + 1, 5))
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1))
 
-  const totalSteps = 4
+  const totalSteps = 5
 
   return (
     <div className="min-h-screen bg-[oklch(0.985_0.01_145)] flex flex-col items-center justify-center p-6 sm:p-12 relative overflow-hidden">
@@ -44,7 +46,7 @@ export function BilgiFlow() {
                 />
               )}
               {step === 2 && (
-                <StepRole 
+                <StepBirthDate 
                   data={formData} 
                   updateData={updateData} 
                   onNext={nextStep} 
@@ -52,7 +54,7 @@ export function BilgiFlow() {
                 />
               )}
               {step === 3 && (
-                <StepSource 
+                <StepIBAN 
                   data={formData} 
                   updateData={updateData} 
                   onNext={nextStep} 
@@ -60,14 +62,19 @@ export function BilgiFlow() {
                 />
               )}
               {step === 4 && (
-                <StepGoal 
+                <StepKYC 
                   data={formData} 
                   updateData={updateData} 
-                  onNext={() => {
-                    // Reached the end
-                    setTimeout(() => window.location.href = "/panel", 1500)
-                  }} 
+                  onNext={nextStep} 
                   onBack={prevStep} 
+                />
+              )}
+              {step === 5 && (
+                <StepSuccess 
+                  onNext={() => {
+                    toast.success("Panele yönlendiriliyorsunuz...")
+                    setTimeout(() => window.location.href = "/panel", 1000)
+                  }} 
                 />
               )}
             </motion.div>
@@ -75,17 +82,19 @@ export function BilgiFlow() {
         </div>
 
         {/* Progress Indicator */}
-        <div className="pb-12 flex justify-center gap-3">
-          {[1, 2, 3, 4].map((i) => (
-            <div 
-              key={i}
-              className={cn(
-                "h-2 transition-all duration-500 rounded-full",
-                step === i ? "w-8 bg-[#95BF47]" : "w-2 bg-gray-200"
-              )}
-            />
-          ))}
-        </div>
+        {step < 5 && (
+          <div className="pb-12 flex justify-center gap-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div 
+                key={i}
+                className={cn(
+                  "h-2 transition-all duration-500 rounded-full",
+                  step === i ? "w-8 bg-[#95BF47]" : "w-2 bg-gray-200"
+                )}
+              />
+            ))}
+          </div>
+        )}
       </div>
       
       {/* Brand logo at the bottom */}
