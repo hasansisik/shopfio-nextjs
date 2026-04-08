@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -72,7 +73,75 @@ function SelectionCard({
   )
 }
 
-// STEP 0: Pre-Check (Shopify Account)
+// STEP 0: Terms of Service (Sözleşme)
+export function StepTerms({ onNext }: { onNext: () => void }) {
+  const [hasReadToBottom, setHasReadToBottom] = useState(false);
+  
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    // If user is within 20px of the bottom
+    if (scrollTop + clientHeight >= scrollHeight - 30) {
+      setHasReadToBottom(true);
+    }
+  };
+
+  const agreementPoints = [
+    { title: "1. Hizmet Kapsamı", content: "Shopfio, kullanıcıya ait Shopify mağazası üzerinde Shopify Payments ödeme geçidinin teknik yapılandırılması, banka/cüzdan entegrasyonu ve başvuru sürecinin yönetilmesi hususunda danışmanlık sağlar. Bu hizmet, yazılımsal kurulum ve süreç rehberliğini kapsar." },
+    { title: "2. Bilgi ve Belge Doğruluğu", content: "Kullanıcı; başvuru sırasında paylaştığı kimlik, adres, şirket bilgileri ve banka detaylarının güncel ve doğru olduğunu taahhüt eder. Yanlış veya eksik beyanlardan doğacak gecikme veya ret kararlarından Shopfio sorumlu tutulamaz." },
+    { title: "3. Teknik Erişim Yetkisi", content: "Hizmetin ifası için kullanıcı, Shopfio teknik ekibine Shopify mağaza paneli üzerinde gerekli yetkilendirmeleri (Staff Account/Collaborator) sağlamayı kabul eder. Kurulum tamamlandığında bu yetkilerin kaldırılması kullanıcının sorumluluğundadır." },
+    { title: "4. Onay ve Ret Kararları", content: "Shopify Payments bir üçüncü taraf hizmet sağlayıcısıdır. Shopfio, teknik altyapıyı en uygun şekilde hazırlar ancak başvurunun nihai onay kararı Shopify ve iş ortağı bankalara aittir. Kurumsal standartlara uygun yapılmış başvuruların reddedilmesi durumunda hizmet bedeli iadesi yapılmaz." },
+    { title: "5. Veri Güvenliği ve Gizlilik", content: "Shopfio, kullanıcıdan alınan verileri yalnızca kurulum ve doğrulama amacıyla kullanır. Kullanıcı verileri KVKK ve uluslararası veri güvenliği standartlarına uygun olarak korunur ve üçüncü şahıslarla asla paylaşılmaz." },
+    { title: "6. Ödeme ve İade Politikası", content: "Seçilen hizmet paketine ait ücret, işlem başlatılmadan önce tahsil edilir. Teknik inceleme ve başvuru süreci başlatıldıktan sonra, verilen operasyonel emek ve danışmanlık süreci nedeniyle ücret iadesi yapılmamaktadır." },
+    { title: "7. Hesap Sağlığı ve Kullanım", content: "Kurulum sonrası mağaza içerisindeki ürünlerin Shopify politikalarına (yasaklı ürünler, telif hakları vb.) aykırılığı nedeniyle oluşabilecek hesap askıya alınma (suspend) durumlarında sorumluluk tamamen kullanıcıya aittir." },
+    { title: "8. Mali ve Hukuki Sorumluluk", content: "Shopfio, yalnızca ödeme altyapısının teknik kurulumunu yapar. Elde edilen gelirlerin vergilendirilmesi, beyan edilmesi ve yerel/uluslararası mevzuatlara uygunluğu kullanıcının yükümlülüğündedir." },
+    { title: "9. Üçüncü Taraf Entegrasyonları", content: "Payoneer, Wise, Zen veya benzeri aracı kurumlarla olan hesap ilişkileri kullanıcı ile ilgili kurum arasındadır. Shopfio, bu platformların kendi iç politikalarından veya hesap kısıtlamalarından sorumlu değildir." },
+    { title: "10. Mücbir Sebepler ve Güncellemeler", content: "Shopify altyapısında veya uluslararası ödeme regülasyonlarında meydana gelebilecek ani değişiklikler mücbir sebep olarak kabul edilir. Shopfio, değişen şartlara göre hizmet modelini güncelleme hakkını saklı tutar." }
+  ];
+
+  return (
+    <div className="space-y-8 animate-in fade-in zoom-in duration-700 max-w-2xl mx-auto pb-10">
+      <div className="text-center space-y-3">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#95BF47]/10 mb-2">
+          <FileText className="w-6 h-6 text-[#95BF47]" />
+        </div>
+        <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">Hizmet Sözleşmesi</h2>
+        <p className="text-gray-500 text-sm italic">Lütfen devam etmeden önce sözleşmeyi sonuna kadar okuyun.</p>
+      </div>
+
+      <div 
+        onScroll={handleScroll}
+        className="bg-white rounded-[2.5rem] border-2 border-gray-100 h-[450px] overflow-y-auto p-8 shadow-inner custom-scrollbar space-y-8"
+      >
+        <div className="space-y-6">
+          <h1 className="text-lg font-bold text-gray-900 border-b pb-4">Shopfio Hizmet ve Kullanım Sözleşmesi</h1>
+          {agreementPoints.map((point, i) => (
+            <div key={i} className="space-y-2">
+              <h4 className="font-bold text-sm text-gray-900">{point.title}</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">{point.content}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 px-4 pt-4">
+        {!hasReadToBottom && (
+          <p className="text-[10px] text-center text-orange-500 font-bold animate-pulse">
+            SÖZLEŞMEYİ ETKİNLEŞTİRMEK İÇİN LÜTFEN SONUNA KADAR KAYDIRIN
+          </p>
+        )}
+        <Button
+          onClick={onNext}
+          disabled={!hasReadToBottom}
+          className="w-full h-14 rounded-full bg-black text-white hover:bg-gray-800 font-bold text-base transition-all transform active:scale-[0.98] disabled:opacity-30 shadow-2xl"
+        >
+          Okudum, Kabul Ediyorum
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// STEP 1: Pre-Check (Shopify Account)
 export function StepPreCheck({ onSelect }: { onSelect: (hasShopify: boolean) => void }) {
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -104,7 +173,7 @@ export function StepPreCheck({ onSelect }: { onSelect: (hasShopify: boolean) => 
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#95BF47]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="relative z-10 w-20 h-20 bg-gray-50 rounded-3xl flex items-center justify-center mb-6 group-hover:bg-[#95BF47]/10 transition-colors">
-            <Zap className="w-10 h-10 text-gray-400 group-hover:text-[#95BF47]" />
+            <Image src="/icon.png" alt="Yeni Kurulum" width={40} height={40} />
           </div>
           <div className="relative z-10 text-center">
             <h3 className="text-lg font-bold text-gray-900 mb-2">Hayır, Mağaza İstiyorum</h3>
@@ -191,6 +260,12 @@ export function StepShopifyLogin({ data, updateData, onNext, onBack }: any) {
             onChange={(e) => updateData({ shopifyPassword: e.target.value })}
             className="rounded-full h-12 px-6 border-gray-200 bg-white"
           />
+        </div>
+
+        <div className="mx-4 p-4 bg-orange-50/50 rounded-2xl border border-orange-100">
+          <p className="text-[12px] text-orange-600 leading-relaxed font-medium">
+            Not: Kurulum aşamasında 2FA aktif olmamalıdır.
+          </p>
         </div>
 
         <div className="mx-4 p-4 bg-orange-50/50 rounded-2xl border border-orange-100">
@@ -431,8 +506,6 @@ export function StepIBAN({ data, updateData, onNext, onBack }: any) {
 }
 
 // STEP 4: KYC Identity Verification
-import Image from "next/image"
-
 export function StepKYC({ data, updateData, onNext, onBack }: any) {
   const [kycStep, setKycStep] = useState(1); // 1: Front, 2: Back
   const [isScanning, setIsScanning] = useState(false);
