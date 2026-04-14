@@ -92,14 +92,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="bg-[oklch(0.985_0.01_145)] space-y-4 px-4 py-6">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
-              <a href="/panel" className="flex items-center justify-start h-12">
+            <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent h-auto p-0">
+              <a href="/panel" className="flex items-center justify-center py-2">
                 <Image
                   src="/logo.png"
                   alt="Shopfio Logo"
-                  width={130}
+                  width={120}
                   height={40}
-                  className="object-contain"
+                  className="w-full max-w-[60px] h-auto object-contain"
                   priority
                 />
               </a>

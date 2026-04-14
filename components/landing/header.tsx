@@ -43,11 +43,11 @@ export function Header() {
             <Image 
               src="/logo.png" 
               alt="shopfio logo" 
-              width={200} 
-              height={80}
+              width={250} 
+              height={100}
               className={cn(
                   "w-auto transition-all duration-500",
-                  isScrolled ? "h-10" : "h-12"
+                  isScrolled ? "h-14" : "h-16"
               )}
               priority
             />

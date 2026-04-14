@@ -15,7 +15,9 @@ import {
   ShieldCheck,
   Star,
   Copy,
-  Plus
+  Plus,
+  Clock,
+  CheckCircle2
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { plans, comparisonFeatures } from "@/lib/pricing-data"
@@ -31,9 +33,9 @@ interface PaymentDialogProps {
 
 export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   const router = useRouter()
-  const [step, setStep] = React.useState<"plans" | "payment">("plans")
+  const [step, setStep] = React.useState<"plans" | "payment" | "status">("plans")
   const [selectedPlan, setSelectedPlan] = React.useState<string | null>("pro")
-  const [selectedMethod, setSelectedMethod] = React.useState<"card" | "transfer" | "payoneer" | "crypto">("card")
+  const [selectedMethod, setSelectedMethod] = React.useState<"transfer" | "card" | "payoneer" | "crypto">("transfer")
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -54,8 +56,8 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   }
 
   const paymentMethods = [
-    { id: "card", label: "Kredi Kartı", icon: CreditCard, color: "bg-blue-500" },
     { id: "transfer", label: "Havale / EFT", icon: Building2, color: "bg-orange-500" },
+    { id: "card", label: "Kredi Kartı (PayTR)", icon: CreditCard, color: "bg-blue-500" },
     { id: "payoneer", label: "Payoneer", icon: Globe, color: "bg-[#95BF47]" },
     { id: "crypto", label: "Bitcoin / BTC", icon: BtcIcon, color: "bg-yellow-500" },
   ]
@@ -110,8 +112,9 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                           <div className="flex items-center gap-2 mt-1">
                              <div className={cn("w-1.5 h-1.5 rounded-full transition-colors", step === "plans" ? "bg-[#95BF47]" : "bg-gray-200")} />
                              <div className={cn("w-1.5 h-1.5 rounded-full transition-colors", step === "payment" ? "bg-[#95BF47]" : "bg-gray-200")} />
+                             <div className={cn("w-1.5 h-1.5 rounded-full transition-colors", step === "status" ? "bg-[#95BF47]" : "bg-gray-200")} />
                              <span className="text-[10px] font-semibold text-gray-400 ml-1">
-                                {step === "plans" ? "Plan seçimi" : "Ödeme yapılandırması"}
+                                {step === "plans" ? "Plan seçimi" : step === "payment" ? "Ödeme yapılandırması" : "İşlem durumu"}
                              </span>
                           </div>
                        </div>
@@ -226,30 +229,30 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                })}
                             </div>
                          </motion.div>
-                       ) : (
+                       ) : step === "payment" ? (
                          <motion.div 
                            key="payment"
                            {...stepsVariants}
                            className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start"
                          >
                             <div className="lg:col-span-8 space-y-10">
-                               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                                   {paymentMethods.map((method) => (
                                      <button
                                         key={method.id}
                                         onClick={() => setSelectedMethod(method.id as any)}
                                         className={cn(
-                                           "p-8 md:p-12 rounded-[48px] border-2 transition-all flex flex-col items-center gap-6 group",
+                                           "p-4 md:p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 group aspect-square justify-center",
                                            selectedMethod === method.id 
-                                              ? "border-[#95BF47] bg-white shadow-2xl shadow-[#95BF47]/10" 
-                                              : "border-gray-100 bg-white hover:border-[#95BF47]/20"
+                                              ? "border-[#95BF47] bg-white shadow-lg shadow-[#95BF47]/5" 
+                                              : "border-gray-50 bg-white hover:border-[#95BF47]/20"
                                         )}
                                      >
-                                        <div className={cn("w-16 h-16 md:w-20 md:h-20 rounded-[2rem] flex items-center justify-center text-white shadow-lg transition-transform group-hover:scale-110", method.color)}>
-                                           <method.icon className="w-8 h-8 md:w-10 md:h-10" />
+                                        <div className={cn("w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105", method.color)}>
+                                           <method.icon className="w-6 h-6 md:w-7 md:h-7" />
                                         </div>
                                         <span className={cn(
-                                           "text-[10px] font-bold text-center",
+                                           "text-[10px] font-bold text-center leading-tight",
                                            selectedMethod === method.id ? "text-gray-900" : "text-gray-400"
                                         )}>{method.label}</span>
                                      </button>
@@ -257,43 +260,88 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                </div>
 
                                {/* Method Selection Feedback UI */}
-                               <div className="bg-white rounded-[48px] p-10 md:p-20 border border-gray-100 shadow-sm min-h-[400px] flex flex-col items-center justify-center text-center">
+                               <div className="bg-white rounded-[32px] p-8 md:p-12 border border-gray-100 shadow-sm min-h-[350px] flex flex-col items-center justify-center text-center">
                                   {selectedMethod === "card" && (
-                                     <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-500">
-                                        <div className="space-y-2">
-                                           <h4 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">Kayıtlı kartlarım</h4>
-                                           <p className="text-xs font-medium text-gray-400">Ödemeyi tek tıkla güvenli şekilde tamamlayın.</p>
+                                     <div className="w-full space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500">
+                                        <div className="w-20 h-20 bg-blue-50 rounded-[2rem] flex items-center justify-center mx-auto mb-4 border border-blue-100">
+                                           <CreditCard className="w-10 h-10 text-blue-500" />
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-3xl mx-auto">
-                                           <div className="p-6 md:p-8 rounded-3xl border-2 border-[#95BF47] bg-[#95BF47]/[0.02] flex items-center justify-between group shadow-lg shadow-[#95BF47]/5">
-                                              <div className="flex items-center gap-5">
-                                                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center font-bold text-[10px]">VISA</div>
-                                                 <div className="text-left">
-                                                    <p className="text-sm font-bold text-gray-900 tracking-widest">**** 4242</p>
-                                                    <p className="text-[9px] text-gray-400 font-bold mt-1">HASAN • 12/26</p>
-                                                 </div>
-                                              </div>
-                                              <div className="w-6 h-6 rounded-full bg-[#95BF47] flex items-center justify-center shadow-lg shadow-[#95BF47]/20">
-                                                 <Check className="w-4 h-4 text-white" />
-                                              </div>
-                                           </div>
-                                           <button className="p-6 md:p-8 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-white hover:border-[#95BF47]/30 transition-all flex flex-col items-center justify-center gap-2 group">
-                                              <Plus className="w-6 h-6 text-gray-200 group-hover:text-[#95BF47] transition-colors" />
-                                              <span className="text-[10px] font-bold text-gray-300 group-hover:text-[#95BF47]">Yeni kart ekle</span>
-                                           </button>
+                                        <div className="space-y-2">
+                                           <h4 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">Güvenli PayTR ödeme hattı</h4>
+                                           <p className="text-xs font-medium text-gray-400 max-w-sm mx-auto">Kart bilgileriniz PayTR altyapısı ile 256-bit SSL sertifikasıyla korunmaktadır.</p>
+                                        </div>
+                                        <div className="flex items-center justify-center gap-3">
+                                          <div className="px-4 py-2 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-400">Mastercard</div>
+                                          <div className="px-4 py-2 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-400">VISA</div>
+                                          <div className="px-4 py-2 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-400">AMEX</div>
                                         </div>
                                      </div>
                                   )}
-                                  {selectedMethod !== "card" && (
-                                     <div className="space-y-8 animate-in fade-in zoom-in duration-500">
-                                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-[3rem] bg-gray-50 flex items-center justify-center mx-auto ring-1 ring-gray-100 shadow-sm">
-                                           {React.createElement(paymentMethods.find(m => m.id === selectedMethod)?.icon || Zap, { className: "w-12 h-12 md:w-16 md:h-16 text-gray-300" })}
+
+                                  {selectedMethod === "transfer" && (
+                                     <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-500 text-left">
+                                        <div className="text-center space-y-2 mb-8">
+                                          <h4 className="text-xl font-bold text-gray-900">Banka transferi bilgileri</h4>
+                                          <p className="text-xs text-gray-400">Ödemeyi aşağıdaki IBAN adresine gönderin.</p>
                                         </div>
-                                        <div className="space-y-3">
-                                           <h4 className="text-xl font-bold text-gray-900 tracking-tight">Güvenli ödeme hattı</h4>
-                                           <p className="text-sm text-gray-400 font-medium max-w-sm mx-auto leading-relaxed">
-                                             Ödeme bilgileri seçilen yöntem üzerinden uçtan uca şifrelenerek iletilecektir.
-                                           </p>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                          {[
+                                            { bank: "Ziraat Bankası", name: "Shopfio Teknoloji A.Ş.", iban: "TR00 0000 0000 0000 0000 0000 00" },
+                                            { bank: "Garanti BBVA", name: "Shopfio Teknoloji A.Ş.", iban: "TR11 1111 1111 1111 1111 1111 11" }
+                                          ].map((item, idx) => (
+                                            <div key={idx} className="p-5 rounded-2xl border border-gray-100 bg-gray-50/50 space-y-3 relative group">
+                                              <div className="flex justify-between items-start">
+                                                <div>
+                                                  <p className="text-[10px] font-bold text-[#95BF47]">{item.bank}</p>
+                                                  <p className="text-[11px] font-bold text-gray-900 mt-1">{item.name}</p>
+                                                </div>
+                                                <button className="text-gray-300 hover:text-[#95BF47] transition-colors">
+                                                  <Copy className="w-4 h-4" />
+                                                </button>
+                                              </div>
+                                              <p className="text-[10px] font-mono font-medium text-gray-500 break-all bg-white p-2 rounded-lg border border-gray-100">{item.iban}</p>
+                                            </div>
+                                          ))}
+                                        </div>
+                                     </div>
+                                  )}
+
+                                  {selectedMethod === "payoneer" && (
+                                     <div className="w-full space-y-6 animate-in fade-in zoom-in duration-500 max-w-md mx-auto">
+                                        <div className="w-16 h-16 bg-[#95BF47]/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#95BF47]/20">
+                                           <Globe className="w-8 h-8 text-[#95BF47]" />
+                                        </div>
+                                        <div className="space-y-4">
+                                           <div className="space-y-1">
+                                              <h4 className="text-lg font-bold text-gray-900">Payoneer transferi</h4>
+                                              <p className="text-xs text-gray-400">Lütfen aşağıdaki e-posta adresine gönderim yapın.</p>
+                                           </div>
+                                           <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between">
+                                              <span className="text-xs font-bold text-gray-700">pay@shopfio.com</span>
+                                              <Copy className="w-4 h-4 text-gray-300" />
+                                           </div>
+                                           <p className="text-[10px] text-gray-400 leading-relaxed italic">Gönderim sonrası dekontu destek panelinden iletmeyi unutmayın.</p>
+                                        </div>
+                                     </div>
+                                  )}
+
+                                  {selectedMethod === "crypto" && (
+                                     <div className="w-full space-y-6 animate-in fade-in zoom-in duration-500 max-w-md mx-auto">
+                                        <div className="w-16 h-16 bg-yellow-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-yellow-100">
+                                           <BtcIcon className="w-8 h-8 text-yellow-500" />
+                                        </div>
+                                        <div className="space-y-4 text-center">
+                                           <div className="space-y-1">
+                                              <h4 className="text-lg font-bold text-gray-900">Bitcoin / USDT ödemesi</h4>
+                                              <p className="text-xs text-gray-400">ERC20 veya TRC20 ağını kullandığınızdan emin olun.</p>
+                                           </div>
+                                           <div className="bg-gray-900 p-4 rounded-xl border border-white/10 flex flex-col gap-2">
+                                              <div className="flex items-center justify-between">
+                                                <span className="text-[9px] font-bold text-gray-500 uppercase">Wallet Address (TRC20)</span>
+                                                <Copy className="w-4 h-4 text-gray-500" />
+                                              </div>
+                                              <span className="text-[10px] font-mono font-bold text-white break-all">TJp4Ue9H8mE2W7D8xS2Q1v9Z3Y5R7C6N1A</span>
+                                           </div>
                                         </div>
                                      </div>
                                   )}
@@ -345,6 +393,55 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                </div>
                             </div>
                          </motion.div>
+                       ) : (
+                         <motion.div 
+                           key="status"
+                           {...stepsVariants}
+                           className="flex flex-col items-center justify-center min-h-[500px] text-center space-y-8"
+                         >
+                            <div className={cn(
+                              "w-32 h-32 rounded-[3rem] flex items-center justify-center shadow-2xl animate-bounce",
+                              selectedMethod === "card" ? "bg-[#95BF47]/10 text-[#95BF47]" : "bg-blue-50 text-blue-500"
+                            )}>
+                               {selectedMethod === "card" ? (
+                                 <CheckCircle2 className="w-16 h-16" />
+                               ) : (
+                                 <Clock className="w-16 h-16" />
+                               )}
+                            </div>
+                            
+                            <div className="space-y-4 max-w-md">
+                               <h3 className="text-3xl font-bold text-gray-900 tracking-tight">
+                                  {selectedMethod === "card" ? "Ödeme Başarıyla Tamamlandı!" : "Ödemeniz Kontrol Ediliyor"}
+                               </h3>
+                               <p className="text-sm font-medium text-gray-400 leading-relaxed">
+                                  {selectedMethod === "card" 
+                                    ? "Başvurunuz başarıyla alındı. Artık yönetim panelinden sürecinizi takip edebilirsiniz." 
+                                    : "Banka transferi bildiriminiz başarıyla alındı. Ekiplerimiz ödemeyi onayladıktan sonra başvurunuz aktif edilecektir."}
+                               </p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 w-full max-w-sm mt-8">
+                               <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Başvuru No</p>
+                                  <p className="text-sm font-bold text-gray-900 mt-1">#SF-{(Math.random() * 10000).toFixed(0)}</p>
+                               </div>
+                               <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Durum</p>
+                                  <p className={cn("text-sm font-bold mt-1", selectedMethod === "card" ? "text-[#95BF47]" : "text-blue-500")}>
+                                     {selectedMethod === "card" ? "Tamamlandı" : "İnceleniyor"}
+                                  </p>
+                               </div>
+                            </div>
+
+                            <Button 
+                              onClick={() => window.location.href = '/basvuru'}
+                              className="w-full max-w-sm h-14 md:h-16 rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold text-sm shadow-xl shadow-[#95BF47]/20 transition-all transform hover:-translate-y-1 active:scale-95 group"
+                            >
+                               Kuruluma başla
+                               <ChevronRight className="w-5 h-5 ml-3 transition-transform group-hover:translate-x-1" />
+                            </Button>
+                         </motion.div>
                        )}
                     </AnimatePresence>
                  </div>
@@ -369,11 +466,21 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                          </Button>
                        )}
                        <Button 
-                         onClick={step === "plans" ? () => setStep("payment") : handleComplete}
+                         onClick={
+                           step === "plans" 
+                             ? () => setStep("payment") 
+                             : step === "payment"
+                               ? () => setStep("status")
+                               : () => window.location.href = '/basvuru'
+                         }
                          disabled={step === "plans" && !selectedPlan}
                          className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-12 md:h-15 px-8 md:px-14 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"
                        >
-                          {step === "plans" ? "Ödeme adımına geç" : "Ödemeyi tamamla & başvur"}
+                          {step === "plans" 
+                            ? "Ödeme adımına geç" 
+                            : step === "payment" 
+                              ? "Ödemeyi tamamla & başvur" 
+                              : "Kuruluma başla"}
                           <ChevronRight className="w-4 h-4 ml-3" />
                        </Button>
                     </div>
