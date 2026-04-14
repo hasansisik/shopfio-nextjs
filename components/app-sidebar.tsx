@@ -66,7 +66,7 @@ const data = {
   navFooter: [
     {
       title: "Destek Talebim",
-      url: "/panel/mesajlar",
+      url: "/panel/destek",
       icon: MessageSquare,
     },
     {

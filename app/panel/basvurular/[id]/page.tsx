@@ -4,220 +4,306 @@ import * as React from "react"
 import { useParams } from "next/navigation"
 import { 
   ArrowLeft, 
-  Clock, 
   CheckCircle2, 
   MessageSquare, 
   FileText, 
   Info,
   Calendar,
-  Package,
-  ShieldCheck,
-  Globe,
   Zap,
   ChevronRight,
   MoreVertical,
-  Download
+  Download,
+  Lock,
+  Copy,
+  ExternalLink,
+  Eye,
+  EyeOff
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
+import { applicationsData } from "@/lib/data/applications"
+import { toast } from "sonner"
 
 export default function BasvuruDetayPage() {
   const { id } = useParams()
+  const [showPassword, setShowPassword] = React.useState(false)
 
-  // This would typically come from an API
-  const app = {
-    id: id as string,
-    service: "Shopfit Mağaza Kurulumu",
-    type: "Kurulum",
-    date: "25 Mart 2024",
-    status: "İşlemde",
-    progress: 65,
-    description: "Shopify altyapısı üzerine kurulu, modern ve hızlı bir mağaza kurulum süreci.",
-    steps: [
-      { name: "Siparişi Alındı", date: "25 Mart 2024, 10:30", completed: true },
-      { name: "Veri Toplama Formu", date: "26 Mart 2024, 14:15", completed: true },
-      { name: "Tema Tasarım Aşaması", date: "28 Mart 2024, 09:00", current: true },
-      { name: "Ürün ve İçerik Yükleme", date: "Bekleniyor", upcoming: true },
-      { name: "Final Onay ve Teslimat", date: "Bekleniyor", upcoming: true },
-    ],
-    details: [
-      { label: "Paket Tipi", value: "Profesyonel Paket" },
-      { label: "Tahmini Tamamlanma", value: "05 Nisan 2024" },
-      { label: "Atanan Uzman", value: "Deniz Yılmaz" },
-      { label: "Destek Seviyesi", value: "7/24 Öncelikli" },
-    ],
-    documents: [
-      { name: "Marka Varlıkları (Logo/Renk)", size: "4.2 MB", date: "26 Mart" },
-      { name: "Ürün Listesi (.xlsx)", size: "1.1 MB", date: "26 Mart" },
-      { name: "Mağaza Politikaları Taslağı", size: "850 KB", date: "27 Mart" },
-    ]
+  // Find application from our data source
+  const app = applicationsData.find(a => a.id === id) || applicationsData[0]
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text)
+    toast.success(`${label} kopyalandı`)
   }
 
   return (
-    <div className="flex-1 p-4 md:p-6 bg-[oklch(0.985_0.01_145)] min-h-screen">
-      <div className="w-full space-y-6">
+    <div className="flex-1 p-4 md:p-10">
+      <div className="max-w-[1200px] mx-auto space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
             <Link href="/panel/basvurular">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-100 transition-all">
-                <ArrowLeft className="w-4 h-4" />
+              <Button variant="outline" size="icon" className="rounded-2xl w-12 h-12 border-gray-100 bg-white shadow-sm hover:border-[#95BF47] hover:text-[#95BF47] transition-all">
+                <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
             <div>
-              <div className="flex items-center gap-2 mb-0.5">
-                <h1 className="text-lg font-bold text-gray-900">{app.service}</h1>
+              <div className="flex items-center gap-3 mb-1">
+                <h1 className="text-2xl font-black text-gray-900 tracking-tight">{app.service}</h1>
                 <span className={cn(
-                  "px-2 py-0.5 rounded-full text-[9px] font-bold",
-                  app.status === "Tamamlandı" ? "bg-green-100 text-green-700" : "bg-[#95BF47]/10 text-[#95BF47]"
+                  "px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider",
+                  app.status === "Tamamlandı" || app.status === "Tamamlanmak Üzere" ? "bg-green-50 text-green-600 border border-green-100" : "bg-orange-50 text-orange-600 border border-orange-100"
                 )}>{app.status}</span>
               </div>
-              <p className="text-gray-500 text-[11px] font-medium tracking-tight">Başvuru ID: <span className="text-gray-900 font-bold">#{app.id}</span> • {app.date}</p>
+              <p className="text-gray-400 text-xs font-medium">Başvuru Kodu: <span className="text-gray-900 font-black">#{app.id}</span> • {app.date} tarihinde oluşturuldu</p>
             </div>
-          </div>
-          <div className="flex gap-2">
-             <Link href="/panel/mesajlar">
-               <Button variant="outline" className="rounded-full border-gray-100 h-9 px-5 text-xs font-bold bg-white flex gap-2">
-                  <MessageSquare className="w-3.5 h-3.5" /> Uzmana Soru Sor
-               </Button>
-             </Link>
-             <Link href="/panel/mesajlar">
-               <Button className="rounded-full bg-gray-900 text-white hover:bg-black font-bold h-9 px-5 text-xs">Aksiyon Al</Button>
-             </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content Area */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-8">
             
-            {/* Progress Stepper Card */}
-            <div className="bg-white rounded-[28px] p-6 border border-gray-100 shadow-sm relative overflow-hidden">
-               <h3 className="text-sm font-bold text-gray-900 mb-8 flex items-center gap-2">
-                 <Zap className="w-4 h-4 text-[#95BF47]" /> Kurulum Yol Haritası
-               </h3>
-               
-               <div className="relative space-y-6 pl-4">
-                  {/* Vertical Line */}
-                  <div className="absolute left-[20px] top-2 bottom-2 w-0.5 bg-gray-50" />
-                  
-                  {app.steps.map((step, idx) => (
-                    <div key={idx} className="relative flex items-start gap-5">
-                       <div className={cn(
-                         "w-4 h-4 rounded-full mt-1 flex items-center justify-center z-10",
-                         step.completed ? "bg-[#95BF47] text-white" : 
-                         step.current ? "bg-white border-2 border-[#95BF47]" : "bg-gray-100 border border-gray-200"
-                       )}>
-                          {step.completed ? <CheckCircle2 className="w-2.5 h-2.5" /> : 
-                           step.current ? <div className="w-1.5 h-1.5 bg-[#95BF47] rounded-full animate-pulse" /> : null}
-                       </div>
-                       <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-4">
-                             <p className={cn("text-[12px] font-bold", step.upcoming ? "text-gray-400" : "text-gray-900")}>
-                               {step.name}
-                             </p>
-                             <span className="text-[10px] text-gray-400 font-medium whitespace-nowrap">{step.date}</span>
+            {/* STORE CREDENTIALS CARD - NEW */}
+            {app.credentials && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-black rounded-[40px] p-8 md:p-10 border border-white/10 shadow-2xl relative overflow-hidden group"
+              >
+                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#95BF47]/10 blur-[100px] rounded-full pointer-events-none" />
+                 
+                 <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-8">
+                       <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-2xl bg-[#95BF47] flex items-center justify-center text-white">
+                             <Lock className="w-6 h-6" />
                           </div>
-                          {step.current && (
-                            <div className="mt-3 p-3 bg-[#95BF47]/5 border border-[#95BF47]/10 rounded-2xl">
-                               <p className="text-[10px] text-[#95BF47] font-bold mb-1 tracking-wider">Şu Anki Aşama</p>
-                               <p className="text-[11px] text-gray-600 font-medium leading-relaxed">
-                                  Tasarım ekibimiz mağazanızın görsel kimliğini Shopify altyapısına uyarlıyor. Marka renkleriniz ve logonuz kullanılmaktadır.
-                               </p>
-                            </div>
-                          )}
+                          <div>
+                             <h3 className="text-lg font-black text-white">Mağaza Erişim Bilgileri</h3>
+                             <p className="text-gray-500 text-xs font-medium">Kurulum tamamlandığında bu bilgilerle giriş yapabilirsiniz.</p>
+                          </div>
+                       </div>
+                       <Link href={app.credentials.url} target="_blank">
+                          <Button className="rounded-2xl bg-white/10 text-white hover:bg-white/20 border border-white/10 h-12 px-6 text-xs font-black flex gap-2">
+                             Panel <ExternalLink className="w-4 h-4" />
+                          </Button>
+                       </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       <div className="p-5 rounded-3xl bg-white/5 border border-white/5 space-y-1 group/item transition-all hover:bg-white/10 cursor-pointer" onClick={() => copyToClipboard(app.credentials.email, "E-posta")}>
+                          <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">E-Posta</p>
+                          <div className="flex items-center justify-between">
+                             <p className="text-sm font-bold text-white tracking-tight">{app.credentials.email}</p>
+                             <Copy className="w-4 h-4 text-gray-600 group-hover/item:text-[#95BF47] transition-colors" />
+                          </div>
+                       </div>
+                       
+                       <div className="p-5 rounded-3xl bg-white/5 border border-white/5 space-y-1 group/item transition-all hover:bg-white/10 relative">
+                          <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Şifre</p>
+                          <div className="flex items-center justify-between">
+                             <p className="text-sm font-bold text-white tracking-[0.2em]">
+                                {showPassword ? app.credentials.password : "••••••••••••"}
+                             </p>
+                             <div className="flex items-center gap-2">
+                                <button onClick={() => setShowPassword(!showPassword)} className="p-2 hover:bg-white/10 rounded-xl transition-colors">
+                                   {showPassword ? <EyeOff className="w-4 h-4 text-gray-500" /> : <Eye className="w-4 h-4 text-gray-500" />}
+                                </button>
+                                <button onClick={() => copyToClipboard(app.credentials.password, "Şifre")} className="p-2 hover:bg-white/10 rounded-xl transition-colors">
+                                   <Copy className="w-4 h-4 text-gray-500 hover:text-[#95BF47]" />
+                                </button>
+                             </div>
+                          </div>
                        </div>
                     </div>
-                  ))}
+
+                    <div className="mt-8 flex items-center gap-3 p-4 bg-orange-500/10 border border-orange-500/20 rounded-2xl">
+                       <Info className="w-5 h-5 text-orange-400 shrink-0" />
+                       <p className="text-[11px] text-orange-200/80 font-medium">Lütfen güvenliğiniz için ilk girişinizden sonra şifrenizi Shopify paneli üzerinden değiştirmeyi unutmayın.</p>
+                    </div>
+                 </div>
+              </motion.div>
+            )}
+
+            {/* Progress Stepper Card */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-[40px] p-8 md:p-10 border border-gray-100 shadow-sm relative overflow-hidden"
+            >
+               <div className="flex items-center justify-between mb-10">
+                  <h3 className="text-lg font-black text-gray-900 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-[#95BF47]/10 flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-[#95BF47]" />
+                    </div>
+                    Kurulum Yol Haritası
+                  </h3>
+                  <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-2xl border border-gray-100">
+                    <span className="text-xs font-black text-[#95BF47]">{app.progress}%</span>
+                    <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${app.progress}%` }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="h-full bg-[#95BF47]"
+                      />
+                    </div>
+                  </div>
                </div>
-            </div>
+               
+               <div className="relative space-y-12 pl-4">
+                  {/* Vertical Track Line */}
+                  <div className="absolute left-[20px] top-4 bottom-4 w-1 bg-gray-50 rounded-full" />
+                  
+                  {app.steps.map((step, idx) => {
+                    const isCompleted = step.completed
+                    const isCurrent = step.current
+                    const isUpcoming = step.upcoming
+
+                    return (
+                      <motion.div 
+                        key={idx} 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="relative flex items-start gap-8 group"
+                      >
+                         {/* Step Icon / Circle */}
+                         <div className={cn(
+                           "relative w-10 h-10 rounded-2xl flex items-center justify-center z-10 transition-all duration-500",
+                           isCompleted ? "bg-[#95BF47] text-white shadow-lg shadow-[#95BF47]/20" : 
+                           isCurrent ? "bg-white border-4 border-[#95BF47] text-[#95BF47] shadow-xl shadow-[#95BF47]/10 ring-8 ring-[#95BF47]/5" : 
+                           "bg-white border-4 border-gray-100 text-gray-200"
+                         )}>
+                            {isCompleted ? <CheckCircle2 className="w-5 h-5" /> : 
+                             <span className="text-xs font-black">{idx + 1}</span>}
+                            
+                            {isCurrent && (
+                              <div className="absolute inset-0 rounded-2xl border-4 border-[#95BF47] animate-ping opacity-20" />
+                            )}
+                         </div>
+
+                         {/* Step Content */}
+                         <div className="flex-1 min-w-0 pt-0.5">
+                            <div className="flex items-center justify-between gap-4 mb-1">
+                               <p className={cn(
+                                 "text-base font-black tracking-tight uppercase",
+                                 isCurrent ? "text-[#95BF47]" : 
+                                 isUpcoming ? "text-gray-300" : "text-gray-900"
+                               )}>
+                                 {step.name}
+                               </p>
+                               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest bg-gray-50 px-2 py-1 rounded-lg">
+                                 {step.date}
+                               </span>
+                            </div>
+                            
+                            <div className={cn(
+                              "transition-all duration-500",
+                              isCurrent ? "mt-4 p-5 bg-[#95BF47]/5 border border-[#95BF47]/10 rounded-3xl" : "opacity-60"
+                            )}>
+                               {isCurrent && (
+                                 <div className="flex items-center gap-2 mb-2">
+                                   <div className="w-1.5 h-1.5 rounded-full bg-[#95BF47] animate-pulse" />
+                                   <span className="text-[10px] text-[#95BF47] font-black tracking-widest uppercase">SÜRÜYOR</span>
+                                 </div>
+                               )}
+                               <p className={cn(
+                                 "text-[13px] font-medium leading-relaxed",
+                                 isCurrent ? "text-gray-600" : isUpcoming ? "text-gray-300" : "text-gray-500"
+                               )}>
+                                 {step.desc}
+                               </p>
+                            </div>
+                         </div>
+                      </motion.div>
+                    )
+                  })}
+               </div>
+            </motion.div>
 
             {/* Application Info Footer Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-[24px] p-6 border border-gray-100 shadow-sm">
-                   <h3 className="text-[12px] font-bold text-gray-900 mb-4 flex items-center gap-2">
-                     <Info className="w-4 h-4 text-gray-400" /> Detaylar
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm"
+                >
+                   <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                     <div className="w-1 h-4 bg-[#95BF47] rounded-full" /> 
+                     BAŞVURU DETAYLARI
                    </h3>
                    <div className="space-y-4">
                       {app.details.map((detail, i) => (
-                        <div key={i} className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
-                           <span className="text-[11px] text-gray-500 font-medium">{detail.label}</span>
-                           <span className="text-[11px] text-gray-900 font-bold">{detail.value}</span>
+                        <div key={i} className="flex justify-between items-center py-3 border-b border-gray-50 last:border-0 hover:bg-gray-50/50 px-2 rounded-xl transition-colors">
+                           <span className="text-xs text-gray-400 font-bold">{detail.label}</span>
+                           <span className="text-xs text-gray-900 font-black">{detail.value}</span>
                         </div>
                       ))}
                    </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white rounded-[24px] p-6 border border-gray-100 shadow-sm">
-                   <h3 className="text-[12px] font-bold text-gray-900 mb-4 flex items-center gap-2">
-                     <FileText className="w-4 h-4 text-gray-400" /> Dosyalarım
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm"
+                >
+                   <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                     <div className="w-1 h-4 bg-[#95BF47] rounded-full" /> 
+                     EKLİ DOSYALAR
                    </h3>
-                   <div className="space-y-3">
+                   <div className="space-y-4">
                       {app.documents.map((doc, i) => (
-                        <div key={i} className="p-3 rounded-xl border border-gray-50 hover:bg-gray-50/50 transition-all flex items-center justify-between group cursor-pointer">
-                           <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center">
-                                 <FileText className="w-3.5 h-3.5 text-gray-400" />
+                        <div key={i} className="p-4 rounded-2xl border border-gray-50 hover:border-[#95BF47]/30 hover:bg-[#95BF47]/5 transition-all flex items-center justify-between group cursor-pointer">
+                           <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-white transition-colors">
+                                 <FileText className="w-5 h-5 text-gray-400 group-hover:text-[#95BF47]" />
                               </div>
                               <div>
-                                 <p className="text-[11px] font-bold text-gray-900 truncate max-w-[120px]">{doc.name}</p>
-                                 <p className="text-[9px] text-gray-400 font-medium">{doc.size} • {doc.date}</p>
+                                 <p className="text-xs font-black text-gray-900 truncate max-w-[150px]">{doc.name}</p>
+                                 <p className="text-[10px] text-gray-400 font-bold">{doc.size} • {doc.date}</p>
                               </div>
                            </div>
-                           <Download className="w-3.5 h-3.5 text-gray-300 group-hover:text-gray-900 transition-colors" />
+                           <div className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center group-hover:bg-[#95BF47] group-hover:text-white transition-all">
+                             <Download className="w-4 h-4" />
+                           </div>
                         </div>
                       ))}
+                      {app.documents.length === 0 && (
+                        <p className="text-xs text-gray-400 font-medium text-center py-10 italic">Henüz dosya eklenmemiş.</p>
+                      )}
                    </div>
-                </div>
+                </motion.div>
             </div>
           </div>
 
           {/* Sidebar Area */}
-          <div className="space-y-6">
-            {/* Assigned Expert Card */}
-            <div className="bg-white rounded-[28px] p-6 border border-gray-100 shadow-sm text-center">
-                <div className="relative w-20 h-20 mx-auto mb-4">
-                   <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#95BF47] to-lime-300 p-0.5 shadow-lg">
-                      <div className="w-full h-full rounded-full bg-white p-0.5">
-                         <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center text-lg font-medium text-gray-400 overflow-hidden">
-                            DY
-                         </div>
-                      </div>
-                   </div>
-                   <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-4 border-white rounded-full" />
-                </div>
-                <h4 className="font-bold text-gray-900 text-sm">Deniz Yılmaz</h4>
-                <p className="text-gray-500 text-[10px] font-bold mb-5 tracking-widest mt-1">Geliştirme Uzmanı</p>
-                <div className="flex gap-2">
-                   <Link href="/panel/mesajlar" className="flex-1">
-                     <Button className="w-full rounded-full bg-[#95BF47] text-white hover:bg-[#86ac3f] font-bold h-8 text-[11px]">Mesaj Gönder</Button>
-                   </Link>
-                </div>
-            </div>
+          <div className="space-y-8">
 
-            {/* Quick Action Card */}
-            <div className="bg-gray-900 rounded-[28px] p-6 text-white overflow-hidden relative group">
-               <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-12 translate-x-12 blur-2xl group-hover:scale-150 transition-all duration-700" />
+
+            {/* Quick Action Card Support */}
+            <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               className="bg-[#0f172a] rounded-[40px] p-8 text-white overflow-hidden relative group"
+            >
+               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16 blur-2xl group-hover:scale-150 transition-all duration-700" />
                <div className="relative z-10">
-                  <h4 className="text-base font-bold mb-2">Desteğe İhtiyacınız mı Var?</h4>
-                  <p className="text-gray-400 text-[11px] leading-relaxed mb-6 font-medium">Kurulum süreci hakkında her türlü sorunuz için teknik destek ekibimizle anında iletişime geçebilirsiniz.</p>
-                  <Button variant="outline" className="w-full rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white font-bold h-10 text-[11px]">
-                     Destek Merkezine Git <ChevronRight className="w-3.5 h-3.5 ml-2" />
+                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-6">
+                    <Info className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <h4 className="text-xl font-black mb-3 leading-tight">Desteğe mi İhtiyacınız Var?</h4>
+                  <p className="text-gray-400 text-xs leading-relaxed mb-8 font-medium">Kurulum süreci hakkında teknik ekibimizle anında iletişime geçin.</p>
+                  <Button variant="outline" className="rounded-2xl border-white/10 bg-white/5 hover:bg-white/10 text-white font-black h-12 text-xs transition-all">
+                     Destek Merkezi <ChevronRight className="w-4 h-4 ml-2" />
                   </Button>
                </div>
-            </div>
-
-            {/* Stats Card Mini */}
-            <div className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm flex items-center gap-4">
-               <div className="w-10 h-10 rounded-full bg-[#95BF47]/10 flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-[#95BF47]" />
-               </div>
-               <div>
-                  <p className="text-[10px] text-gray-400 font-medium tracking-widest">Tahmini Teslimat</p>
-                  <p className="text-sm font-bold text-gray-900">10 GÜN KALDI</p>
-               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

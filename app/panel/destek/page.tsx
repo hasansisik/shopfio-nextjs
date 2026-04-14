@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { 
   MessageSquare, 
   LifeBuoy, 
@@ -12,149 +13,293 @@ import {
   ThumbsUp,
   ThumbsDown,
   Mail,
-  Smartphone
+  Smartphone,
+  ChevronRight,
+  Zap,
+  Phone,
+  MessageCircle,
+  FileQuestion,
+  ChevronDown
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
-
+import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+import { supportData as myTickets } from "@/lib/data/support"
 
 export default function DestekPage() {
+  const [selectedCategory, setSelectedCategory] = React.useState("Mağaza Ayarları")
+  const [isCategoryOpen, setIsCategoryOpen] = React.useState(false)
+
+  const categories = [
+    "Mağaza Ayarları",
+    "Teknik Destek",
+    "Ödeme İşlemleri",
+    "Hesap İşlemleri",
+    "Geri Bildirim"
+  ]
+
   const faqs = [
     { q: "Shopify mağazam ne zaman aktif olur?", a: "Başvurunuz onaylandıktan sonra seçtiğiniz pakete göre 2-5 iş günü içerisinde kurulum tamamlanır." },
     { q: "Ödemeyi nasıl yapabilirim?", a: "Panel üzerinden kredi kartı veya havale/EFT ile güvenle ödeme yapabilirsiniz." },
     { q: "Paketimi daha sonra yükseltebilir miyim?", a: "Evet, istediğiniz zaman aradaki farkı ödeyerek bir üst pakete geçiş yapabilirsiniz." },
   ]
 
-  const myTickets = [
-    { id: "T-1092", subject: "Tema Özelleştirme Hakkında", date: "2 gün önce", status: "Cevaplandı" },
-    { id: "T-1085", subject: "Alan Adı Yönlendirme", date: "1 hafta önce", status: "Tamamlandı" },
-  ]
-
   return (
-    <div className="flex-1 p-4 md:p-6 bg-[oklch(0.985_0.01_145)] min-h-screen">
-      <div className="w-full space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">Destek & Geri Bildirim</h1>
-              <p className="text-gray-500 text-[11px] mt-0.5 font-medium">Sorularınızı iletin, ekibimiz size en kısa sürede yardımcı olsun.</p>
-            </div>
-            <div className="flex gap-2">
-               <Button className="rounded-full bg-[#95BF47] text-white hover:bg-[#86ac3f] font-bold h-9 px-5 text-xs flex gap-2">
-                  <Plus className="w-3.5 h-3.5" /> Yeni Destek Talebi
-               </Button>
-            </div>
+    <div className="flex-1 p-6 md:p-10 space-y-10  max-w-[1400px] mx-auto pb-24">
+      
+      {/* Header Section */}
+      <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-3">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2"
+          >
+            <span className="w-8 h-[2px] bg-[#95BF47] rounded-full" />
+            <span className="text-[10px] font-black text-[#95BF47] uppercase tracking-[0.2em]">Destek Merkezi</span>
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-none"
+          >
+            Size Nasıl <span className="text-[#95BF47]">Yardımcı</span> Olabiliriz?
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-400 font-medium text-sm md:text-base max-w-xl"
+          >
+            Mağaza kurulumunuz veya Shopify hakkındaki tüm sorularınızı uzman ekibimize iletin. 
+          </motion.p>
+        </div>
+      </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Contact Form & Main Content */}
+        <div className="lg:col-span-2 space-y-8">
+           <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.4 }}
+             className="bg-white rounded-[40px] p-8 md:p-10 border border-gray-100 shadow-sm relative overflow-hidden group"
+           >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#95BF47]/5 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+              <h3 className="text-xl font-black text-gray-900 mb-8 flex items-center gap-3">
+                 <div className="w-10 h-10 rounded-2xl bg-[#95BF47]/10 flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 text-[#95BF47]" />
+                 </div>
+                 Hızlı Destek Formu
+              </h3>
+              
+              <div className="space-y-6">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">KONU BAŞLIĞI</label>
+                       <Input placeholder="Yardım almak istediğiniz konuyu özetleyin" className="rounded-2xl h-14 border-gray-100 focus:ring-[#95BF47] text-xs font-bold" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">KATEGORİ</label>
+                       <div className="relative">
+                          <button 
+                             onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                             className="w-full h-14 px-5 rounded-2xl border border-gray-100 bg-gray-50/50 flex items-center justify-between text-xs text-gray-900 font-black cursor-pointer group-hover:bg-white transition-all focus:ring-2 focus:ring-[#95BF47]/10"
+                          >
+                             <span>{selectedCategory}</span>
+                             <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform", isCategoryOpen && "rotate-180")} />
+                          </button>
+                          
+                          <AnimatePresence>
+                             {isCategoryOpen && (
+                                <motion.div 
+                                   initial={{ opacity: 0, y: 5 }}
+                                   animate={{ opacity: 1, y: 0 }}
+                                   exit={{ opacity: 0, y: 5 }}
+                                   className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-100 rounded-[24px] shadow-2xl p-2 z-[60] overflow-hidden"
+                                >
+                                   {categories.map((cat) => (
+                                      <button 
+                                         key={cat}
+                                         onClick={() => {
+                                            setSelectedCategory(cat)
+                                            setIsCategoryOpen(false)
+                                         }}
+                                         className={cn(
+                                            "w-full text-left px-4 py-3 rounded-xl text-[11px] font-black transition-colors",
+                                            selectedCategory === cat ? "bg-[#95BF47] text-white" : "text-gray-600 hover:bg-gray-50"
+                                         )}
+                                      >
+                                         {cat}
+                                      </button>
+                                   ))}
+                                </motion.div>
+                             )}
+                          </AnimatePresence>
+                       </div>
+                    </div>
+                 </div>
+                 
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">MESAJINIZ</label>
+                    <Textarea placeholder="Sorunuzu buraya detaylıca yazabilirsiniz..." className="rounded-[32px] min-h-[160px] border-gray-100 focus:ring-[#95BF47] text-xs font-bold p-6" />
+                 </div>
+
+                 <div className="flex items-center justify-between pt-4">
+                    <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold">
+                       <Zap className="w-4 h-4 text-orange-400" />
+                       Ortalama yanıt süresi: <span className="text-gray-900 font-black">15 Dakika</span>
+                    </div>
+                    <Button className="rounded-2xl bg-gray-900 text-white hover:bg-black font-black h-14 px-10 text-xs shadow-xl transition-all">
+                       Talep Gönder <Send className="w-4 h-4 ml-3" />
+                    </Button>
+                 </div>
+              </div>
+           </motion.div>
+
+           <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.5 }}
+             className="bg-white rounded-[40px] p-8 md:p-10 border border-gray-100 shadow-sm"
+           >
+              <h3 className="text-xl font-black text-gray-900 mb-8 flex items-center justify-between">
+                 <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-[#95BF47]/10 flex items-center justify-center">
+                       <Clock className="w-5 h-5 text-[#95BF47]" />
+                    </div>
+                    Aktif Taleplerim
+                 </div>
+                 <span className="text-[10px] font-black text-gray-400 px-3 py-1 bg-gray-50 rounded-lg">{myTickets.length} TALEP</span>
+              </h3>
+              
+              <div className="space-y-4">
+                 {myTickets.map((ticket, i) => (
+                    <Link key={i} href={`/panel/destek/${ticket.id}`} className="block">
+                      <motion.div 
+                        whileHover={{ x: 5 }}
+                        className="p-5 rounded-[28px] border border-gray-50 hover:border-[#95BF47]/20 hover:bg-[#95BF47]/5 transition-all flex items-center justify-between group cursor-pointer"
+                      >
+                         <div className="flex items-center gap-5">
+                            <div className="w-12 h-12 rounded-2xl bg-gray-50 group-hover:bg-white flex items-center justify-center transition-colors">
+                            <FileQuestion className="w-6 h-6 text-gray-300 group-hover:text-[#95BF47]" />
+                            </div>
+                            <div>
+                               <h4 className="text-sm font-black text-gray-900 group-hover:text-[#95BF47] transition-colors">{ticket.subject}</h4>
+                               <p className="text-[10px] text-gray-400 font-bold mt-0.5 uppercase tracking-widest">
+                                 {ticket.id} <span className="mx-1 text-gray-200">•</span> {ticket.category} <span className="mx-1 text-gray-200">•</span> {ticket.createdDate} açıldı
+                               </p>
+                            </div>
+                         </div>
+                         
+                         <div className="flex items-center gap-4">
+                            <div className={cn(
+                               "px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest",
+                               ticket.status === "Cevaplandı" ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-400"
+                            )}>
+                               {ticket.status}
+                            </div>
+                            <div className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-[#95BF47] group-hover:text-white transition-all">
+                               <ChevronRight className="w-4 h-4" />
+                            </div>
+                         </div>
+                      </motion.div>
+                    </Link>
+                 ))}
+              </div>
+           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            {/* Contact Form */}
-            <div className="lg:col-span-3 space-y-4">
-                <div className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm">
-                    <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <MessageSquare className="w-4 h-4 text-[#95BF47]" />
-                        Bize Mesaj Gönderin
-                    </h3>
-                    <div className="space-y-3">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-medium text-gray-400 tracking-widest pl-1">Konu Başlığı</label>
-                                <Input placeholder="Örn: Tema Ayarları" className="rounded-xl h-10 text-xs border-gray-100 placeholder:font-medium" />
-                            </div>
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-medium text-gray-400 tracking-widest pl-1">Kategori</label>
-                                <div className="h-10 px-3 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-between text-xs text-gray-400 cursor-pointer font-medium">
-                                    <span>Seçiniz</span>
-                                    <HelpCircle className="w-3.5 h-3.5 opacity-30" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-medium text-gray-400 tracking-widest pl-1">Mesajınız</label>
-                            <Textarea placeholder="Sorunuzu veya geri bildiriminizi buraya yazın..." className="rounded-xl min-h-[100px] text-xs border-gray-100 focus:border-[#95BF47] focus:ring-[#95BF47]/10 font-medium" />
-                        </div>
-                        <div className="pt-2">
-                            <Button className="rounded-full bg-gray-900 text-white hover:bg-gray-800 font-bold h-10 px-10 text-xs flex gap-2">
-                                <Send className="w-3.5 h-3.5" /> Mesajı Gönder
-                            </Button>
-                        </div>
+        {/* Sidebar Info Cards */}
+        <div className="space-y-8">
+           {/* FAQ Section */}
+           <motion.div 
+             initial={{ opacity: 0, x: 20 }}
+             animate={{ opacity: 1, x: 0 }}
+             transition={{ delay: 0.6 }}
+             className="bg-white rounded-[40px] p-8 border border-gray-100 shadow-sm"
+           >
+              <h3 className="text-lg font-black text-gray-900 mb-6 flex items-center gap-3">
+                 <div className="w-1 h-5 bg-[#95BF47] rounded-full" />
+                 Sıkça Sorulanlar
+              </h3>
+              <div className="space-y-6">
+                 {faqs.map((faq, i) => (
+                    <div key={i} className="group cursor-pointer">
+                       <h4 className="text-xs font-black text-gray-900 group-hover:text-[#95BF47] flex items-start gap-2 leading-tight transition-colors">
+                          <Plus className="w-3.5 h-3.5 mt-0.5 text-[#95BF47]" />
+                          {faq.q}
+                       </h4>
+                       <p className="text-[11px] text-gray-400 font-medium mt-2 pl-5 leading-relaxed overflow-hidden max-h-0 group-hover:max-h-20 transition-all duration-500">
+                          {faq.a}
+                       </p>
                     </div>
-                </div>
+                 ))}
+              </div>
+              <Button variant="outline" className="w-full mt-8 rounded-2xl border-gray-100 h-12 text-[10px] font-black uppercase tracking-widest hover:text-[#95BF47] hover:border-[#95BF47]">Tüm Rehberi Gör</Button>
+           </motion.div>
 
-                <div className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm overflow-hidden">
-                    <h3 className="text-sm font-bold text-gray-900 mb-3">Aktif Taleplerim</h3>
-                    <div className="space-y-2">
-                        {myTickets.map((t, i) => (
-                          <Link key={i} href={`/panel/destek/${t.id}`} className="block">
-                            <div className="flex items-center justify-between p-2.5 rounded-xl border border-gray-50 hover:bg-gray-50 transition-all cursor-pointer group">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                        <Clock className="w-3.5 h-3.5 text-gray-300" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-xs font-bold text-gray-900 group-hover:text-[#95BF47] transition-colors">{t.subject}</h4>
-                                        <p className="text-[10px] text-gray-400 font-medium">{t.id} • {t.date}</p>
-                                    </div>
-                                </div>
-                                <div className={cn(
-                                    "px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider",
-                                    t.status === "Cevaplandı" ? "bg-[#95BF47]/10 text-[#95BF47]" : "bg-gray-100 text-gray-400"
-                                )}>
-                                    {t.status}
-                                </div>
-                            </div>
-                          </Link>
-                        ))}
-                    </div>
-                </div>
-            </div>
+           {/* Quick Action Support Card */}
+           <motion.div 
+             initial={{ opacity: 0, x: 20 }}
+             animate={{ opacity: 1, x: 0 }}
+             transition={{ delay: 0.7 }}
+             className="bg-black rounded-[40px] p-8 text-white relative overflow-hidden group shadow-2xl"
+           >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#95BF47]/20 blur-3xl rounded-full" />
+              <div className="relative z-10 space-y-6">
+                 <div className="w-12 h-12 rounded-2xl bg-[#95BF47] flex items-center justify-center shadow-lg shadow-[#95BF47]/40 ring-4 ring-[#95BF47]/10">
+                    <Smartphone className="w-6 h-6" />
+                 </div>
+                 <div className="space-y-2">
+                    <h4 className="text-xl font-black tracking-tight">Anında Destek Alın</h4>
+                    <p className="text-gray-500 text-[11px] font-medium leading-relaxed">Daha hızlı iletişim için WhatsApp ve telefon hatlarımız 09:00 - 18:00 arası aktiftir.</p>
+                 </div>
+                 <div className="space-y-3 pt-2">
+                    <Button className="w-full rounded-2xl bg-white/10 hover:bg-[#95BF47] text-white font-black h-12 text-xs transition-all border border-white/5 flex gap-3 group/btn">
+                       <MessageCircle className="w-4 h-4 text-[#95BF47] group-hover/btn:text-white" /> WhatsApp Destek
+                    </Button>
+                    <Button className="w-full rounded-2xl bg-white/10 hover:bg-gray-800 text-white font-black h-12 text-xs transition-all border border-white/5 flex gap-3">
+                       <Phone className="w-4 h-4 text-gray-400" /> Bizi Arayın
+                    </Button>
+                 </div>
+              </div>
+           </motion.div>
 
-            {/* Side Column */}
-            <div className="lg:col-span-1 space-y-4">
-                <div className="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm">
-                    <h3 className="text-sm font-bold text-gray-900 mb-3">Sıkça Sorulanlar</h3>
-                    <div className="space-y-3">
-                        {faqs.map((f, i) => (
-                            <div key={i} className="space-y-1 pb-3 border-b border-gray-50 last:border-0 last:pb-0">
-                                <h4 className="text-[11px] font-bold text-gray-900 flex items-center gap-2">
-                                    <HelpCircle className="w-3 h-3 text-[#95BF47]" /> {f.q}
-                                </h4>
-                                <p className="text-[10px] text-gray-500 leading-relaxed pr-2 font-medium">{f.a}</p>
-                            </div>
-                        ))}
+           {/* Contact Channels Card */}
+           <motion.div 
+             initial={{ opacity: 0, x: 20 }}
+             animate={{ opacity: 1, x: 0 }}
+             transition={{ delay: 0.8 }}
+             className="bg-white rounded-[40px] p-8 border border-gray-100 shadow-sm space-y-4"
+           >
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">RESMİ KANALLAR</p>
+              <div className="space-y-4">
+                 <div className="flex items-center gap-4 group cursor-pointer">
+                    <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-[#95BF47]/10 transition-colors">
+                       <Mail className="w-4 h-4 text-gray-400 group-hover:text-[#95BF47]" />
                     </div>
-                    <Button variant="ghost" className="w-full mt-3 text-[10px] font-bold text-[#95BF47] hover:bg-[#95BF47]/5">Tümünü Gör</Button>
-                </div>
-
-                <div className="bg-[#95BF47] text-white rounded-[24px] p-5 relative overflow-hidden group cursor-pointer shadow-lg shadow-[#95BF47]/20">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 transform scale-150 group-hover:scale-110 transition-transform">
-                        <MessageSquare className="w-20 h-20" />
+                    <div>
+                       <p className="text-xs font-black text-gray-900">destek@shopfio.com</p>
+                       <p className="text-[10px] text-gray-400 font-bold uppercase">e-posta ile ulaşın</p>
                     </div>
-                    <h3 className="text-sm font-bold relative z-10">Bize Puan Verin</h3>
-                    <p className="text-white/80 text-[10px] mt-1 relative z-10 leading-relaxed font-medium">Shoprio deneyiminizi nasıl değerlendirirsiniz?</p>
-                    <div className="mt-4 flex items-center gap-3 relative z-10">
-                        <button className="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#95BF47] flex items-center justify-center transition-all">
-                            <ThumbsUp className="w-3.5 h-3.5" />
-                        </button>
-                        <button className="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#95BF47] flex items-center justify-center transition-all">
-                            <ThumbsDown className="w-3.5 h-3.5" />
-                        </button>
+                 </div>
+                 <div className="flex items-center gap-4 group cursor-pointer">
+                    <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                       <Smartphone className="w-4 h-4 text-gray-400 group-hover:text-blue-500" />
                     </div>
-                </div>
-
-                <div className="bg-white rounded-[24px] p-4 border border-gray-100 shadow-sm space-y-3">
-                    <h4 className="text-[10px] font-medium text-gray-400 tracking-widest">Diğer Kanallar</h4>
-                    <div className="space-y-2">
-                        <div className="flex items-center gap-3 text-[11px] text-gray-600 hover:text-[#95BF47] transition-colors cursor-pointer font-medium">
-                            <Mail className="w-3.5 h-3.5" /> destek@shoprio.com
-                        </div>
-                        <div className="flex items-center gap-3 text-[11px] text-gray-600 hover:text-[#95BF47] transition-colors cursor-pointer font-medium">
-                            <Smartphone className="w-3.5 h-3.5" /> WhatsApp Destek
-                        </div>
+                    <div>
+                       <p className="text-xs font-black text-gray-900">@ShopfioGlobal</p>
+                       <p className="text-[10px] text-gray-400 font-bold uppercase">sosyal medya</p>
                     </div>
-                </div>
-            </div>
+                 </div>
+              </div>
+           </motion.div>
         </div>
       </div>
     </div>
