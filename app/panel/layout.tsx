@@ -10,7 +10,7 @@ import { Zap } from "lucide-react"
 const CAMPAIGNS = [
   "Bahar Kampanyası: Profesyonel Pakete Geçişte %25 İndirim Kodunuz: BAHAR25",
   "Mağaza Kurulum Süreçlerini Hızlandırdık: Artık 48 Saatte Mağazanız Yayında!",
-  "Özel Teklif: Arkadaşını Davet Et, ₺1,000 Shoprio Kredisi Kazan!",
+  "Özel Teklif: Arkadaşını Davet Et, ₺1,000 shopfio Kredisi Kazan!",
   "Ücretsiz SEO Analizi: Kurumsal Paket Kullanıcıları İçin Başladı!"
 ]
 
@@ -30,7 +30,7 @@ function AnnouncementBar() {
         <Zap className="w-3.5 h-3.5 fill-white" />
         <span className="text-[10px] font-medium tracking-widest">Kampanyalar</span>
       </div>
-      
+
       <div className="relative h-full flex items-center justify-center text-center">
         <AnimatePresence mode="wait">
           <motion.p
@@ -66,7 +66,7 @@ export default function DashboardLayout({
         <div className="flex flex-1 overflow-hidden min-h-0">
           <AppSidebar />
           <main className="flex-1 flex flex-col min-h-0 overflow-y-auto w-full">
-             {children}
+            {children}
           </main>
         </div>
       </SidebarProvider>

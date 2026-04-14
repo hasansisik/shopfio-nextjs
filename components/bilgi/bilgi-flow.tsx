@@ -57,10 +57,10 @@ export function BilgiFlow() {
             >
               {/* STEP 1: Terms */}
               {step === 1 && <StepTerms onNext={() => setStep(2)} />}
-              
+
               {/* STEP 2: Pre-Check */}
               {step === 2 && <StepPreCheck onSelect={handlePreCheck} />}
-              
+
               {/* Step 3: Personal Info */}
               {step === 3 && <StepPersonal data={formData} updateData={updateData} onNext={nextStep} />}
 
@@ -91,16 +91,16 @@ export function BilgiFlow() {
         {hasShopify !== null && step > 2 && step < (hasShopify ? 8 : 7) && (
           <div className="pb-12 flex justify-center gap-3">
             {Array.from({ length: hasShopify ? 5 : 4 }).map((_, idx) => {
-                const i = idx + 3; // Offset for Step 1/2 being Terms and PreCheck
-                return (
-                  <div 
-                    key={i}
-                    className={cn(
-                      "h-1.5 transition-all duration-500 rounded-full",
-                      step === i ? "w-10 bg-[#95BF47]" : "w-3 bg-gray-200"
-                    )}
-                  />
-                );
+              const i = idx + 3; // Offset for Step 1/2 being Terms and PreCheck
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    "h-1.5 transition-all duration-500 rounded-full",
+                    step === i ? "w-10 bg-[#95BF47]" : "w-3 bg-gray-200"
+                  )}
+                />
+              );
             })}
           </div>
         )}
@@ -108,7 +108,7 @@ export function BilgiFlow() {
 
       {/* Brand logo at the bottom */}
       <div className="mt-8 flex items-center gap-3 opacity-60 hover:opacity-100 transition-all duration-500">
-        <Image src="/logo.png" alt="Shoprio Logo" width={100} height={32} className="h-8 w-auto object-contain" />
+        <Image src="/logo.png" alt="shopfio Logo" width={100} height={32} className="h-8 w-auto object-contain" />
         <div className="px-2 py-0.5 rounded bg-gray-200 text-gray-500 text-[10px] font-bold tracking-wider">Onboarding</div>
       </div>
     </div>

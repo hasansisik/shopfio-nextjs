@@ -1,0 +1,382 @@
+"use client"
+
+import * as React from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { 
+  X, 
+  Check, 
+  ChevronRight, 
+  CreditCard, 
+  Building2, 
+  Globe, 
+  Bitcoin as BtcIcon, 
+  ArrowLeft,
+  Zap,
+  ShieldCheck,
+  Star,
+  Copy,
+  Plus
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { plans, comparisonFeatures } from "@/lib/pricing-data"
+import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { createPortal } from "react-dom"
+
+interface PaymentDialogProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
+  const router = useRouter()
+  const [step, setStep] = React.useState<"plans" | "payment">("plans")
+  const [selectedPlan, setSelectedPlan] = React.useState<string | null>("pro")
+  const [selectedMethod, setSelectedMethod] = React.useState<"card" | "transfer" | "payoneer" | "crypto">("card")
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+    return () => {
+      document.body.style.overflow = "unset"
+    }
+  }, [isOpen])
+
+  const handleComplete = () => {
+    onClose()
+    router.push("/basvuru")
+  }
+
+  const paymentMethods = [
+    { id: "card", label: "Kredi Kartı", icon: CreditCard, color: "bg-blue-500" },
+    { id: "transfer", label: "Havale / EFT", icon: Building2, color: "bg-orange-500" },
+    { id: "payoneer", label: "Payoneer", icon: Globe, color: "bg-[#95BF47]" },
+    { id: "crypto", label: "Bitcoin / BTC", icon: BtcIcon, color: "bg-yellow-500" },
+  ]
+
+  // Steps animations
+  const stepsVariants = {
+    initial: { opacity: 0, x: 20 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -20 }
+  }
+
+  if (!mounted) return null
+
+  const dialogContent = (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[1000000] overflow-y-auto isolate">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-2xl cursor-pointer"
+          />
+
+          {/* Dialog Container */}
+          <div className="fixed inset-0 w-full h-full bg-[#fbfbfb] flex flex-col isolate">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="flex-1 flex flex-col h-full w-full"
+            >
+              {/* Header */}
+              <div className="p-4 md:p-6 bg-white border-b border-gray-100 flex items-center justify-between shrink-0 sticky top-0 z-20">
+                 <div className="flex items-center gap-6 max-w-[1200px] mx-auto w-full">
+                    <div className="flex items-center gap-4">
+                       <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-[#95BF47] flex items-center justify-center shadow-lg shadow-[#95BF47]/20">
+                          <Zap className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                       </div>
+                       <div>
+                          <h2 className="text-base md:text-lg font-bold text-gray-900 tracking-tight leading-none">Yeni başvuru süreci</h2>
+                          <div className="flex items-center gap-2 mt-1">
+                             <div className={cn("w-1.5 h-1.5 rounded-full transition-colors", step === "plans" ? "bg-[#95BF47]" : "bg-gray-200")} />
+                             <div className={cn("w-1.5 h-1.5 rounded-full transition-colors", step === "payment" ? "bg-[#95BF47]" : "bg-gray-200")} />
+                             <span className="text-[10px] font-semibold text-gray-400 ml-1">
+                                {step === "plans" ? "Plan seçimi" : "Ödeme yapılandırması"}
+                             </span>
+                          </div>
+                       </div>
+                    </div>
+                    <div className="flex-1" />
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={onClose}
+                      className="w-10 h-10 rounded-xl hover:bg-gray-50 text-gray-400"
+                    >
+                       <X className="w-6 h-6 font-light" />
+                    </Button>
+                 </div>
+              </div>
+
+              {/* Content Area */}
+              <div className="flex-1 overflow-y-auto bg-[#fdfdfd]">
+                 <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-10 md:py-14">
+                    <AnimatePresence mode="wait">
+                       {step === "plans" ? (
+                         <motion.div 
+                           key="plans"
+                           {...stepsVariants}
+                           className="space-y-10"
+                         >
+                            <div className="text-center space-y-2 max-w-2xl mx-auto">
+                               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight leading-tight">İşinizi global'e taşıyın</h3>
+                               <p className="text-[13px] text-gray-400 font-medium leading-relaxed">
+                                 Bütçenize ve ihtiyacınıza uygun Shopify paketlerinden birini seçin.
+                               </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6">
+                               {plans.map((plan, i) => {
+                                  const isPro = plan.id === "pro";
+                                  return (
+                                     <button
+                                       key={plan.id}
+                                       onClick={() => setSelectedPlan(plan.id)}
+                                       className={cn(
+                                         "relative flex flex-col p-6 md:p-8 rounded-[32px] border-2 transition-all duration-500 text-left group",
+                                         selectedPlan === plan.id 
+                                            ? isPro ? "border-[#95BF47] bg-[#95BF47] shadow-2xl shadow-[#95BF47]/30 scale-[1.02] z-10" : "border-[#95BF47] bg-white shadow-2xl shadow-[#95BF47]/10" 
+                                            : "border-gray-100 bg-white shadow-sm hover:border-[#95BF47]/30"
+                                       )}
+                                     >
+                                        {isPro && (
+                                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-bold px-4 py-1.5 rounded-full tracking-tight whitespace-nowrap shadow-lg">
+                                             En popüler
+                                          </div>
+                                        )}
+
+                                        <div className="space-y-4 mb-8">
+                                           <div className="space-y-0.5">
+                                              <span className={cn(
+                                                 "text-[10px] font-bold leading-none",
+                                                 isPro && selectedPlan === plan.id ? "text-white/70" : "text-[#95BF47]"
+                                              )}>{plan.name}</span>
+                                              <div className="flex items-baseline gap-1">
+                                                 <span className={cn(
+                                                    "text-3xl font-bold tracking-tight",
+                                                    isPro && selectedPlan === plan.id ? "text-white" : "text-gray-900"
+                                                 )}>₺{plan.price}</span>
+                                                 <span className={cn(
+                                                    "text-[10px] font-medium opacity-60",
+                                                    isPro && selectedPlan === plan.id ? "text-white" : "text-gray-400"
+                                                 )}>'den başlayan</span>
+                                              </div>
+                                           </div>
+                                           <p className={cn(
+                                              "text-[11px] font-medium leading-relaxed opacity-80",
+                                              isPro && selectedPlan === plan.id ? "text-white" : "text-gray-500"
+                                           )}>{plan.description}</p>
+                                        </div>
+
+                                        <div className="space-y-4 mb-auto">
+                                           {comparisonFeatures.map((feature, featureIdx) => {
+                                              const isAvailable = i === 0 ? feature.small : i === 1 ? feature.medium : feature.full;
+                                              return (
+                                                 <div key={featureIdx} className={cn(
+                                                   "flex items-center gap-3 transition-opacity",
+                                                   !isAvailable && "opacity-20"
+                                                 )}>
+                                                    <div className={cn(
+                                                       "w-5 h-5 rounded-full flex items-center justify-center shrink-0 border",
+                                                       isPro && selectedPlan === plan.id 
+                                                          ? isAvailable ? "bg-white text-[#95BF47] border-white" : "bg-transparent text-white/30 border-white/20"
+                                                          : isAvailable ? "bg-[#95BF47]/10 text-[#95BF47] border-transparent" : "bg-gray-100/50 text-gray-300 border-transparent"
+                                                    )}>
+                                                       <Check className={cn("w-3 h-3 stroke-[4]", !isAvailable && "opacity-0")} />
+                                                    </div>
+                                                    <span className={cn(
+                                                       "text-[11px] font-bold",
+                                                       isPro && selectedPlan === plan.id ? "text-white" : "text-gray-700"
+                                                    )}>{feature.name}</span>
+                                                 </div>
+                                              )
+                                           })}
+                                        </div>
+
+                                        <div className={cn(
+                                           "w-full h-11 mt-8 rounded-xl flex items-center justify-center font-bold text-[11px] transition-all",
+                                           selectedPlan === plan.id 
+                                              ? isPro ? "bg-white text-[#95BF47] shadow-lg" : "bg-[#95BF47] text-white shadow-lg" 
+                                              : "bg-gray-100 text-gray-400 group-hover:bg-[#95BF47] group-hover:text-white"
+                                        )}>
+                                           {selectedPlan === plan.id ? "Seçildi" : "Paketi seç"}
+                                        </div>
+                                     </button>
+                                  )
+                               })}
+                            </div>
+                         </motion.div>
+                       ) : (
+                         <motion.div 
+                           key="payment"
+                           {...stepsVariants}
+                           className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start"
+                         >
+                            <div className="lg:col-span-8 space-y-10">
+                               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                                  {paymentMethods.map((method) => (
+                                     <button
+                                        key={method.id}
+                                        onClick={() => setSelectedMethod(method.id as any)}
+                                        className={cn(
+                                           "p-8 md:p-12 rounded-[48px] border-2 transition-all flex flex-col items-center gap-6 group",
+                                           selectedMethod === method.id 
+                                              ? "border-[#95BF47] bg-white shadow-2xl shadow-[#95BF47]/10" 
+                                              : "border-gray-100 bg-white hover:border-[#95BF47]/20"
+                                        )}
+                                     >
+                                        <div className={cn("w-16 h-16 md:w-20 md:h-20 rounded-[2rem] flex items-center justify-center text-white shadow-lg transition-transform group-hover:scale-110", method.color)}>
+                                           <method.icon className="w-8 h-8 md:w-10 md:h-10" />
+                                        </div>
+                                        <span className={cn(
+                                           "text-[10px] font-bold text-center",
+                                           selectedMethod === method.id ? "text-gray-900" : "text-gray-400"
+                                        )}>{method.label}</span>
+                                     </button>
+                                  ))}
+                               </div>
+
+                               {/* Method Selection Feedback UI */}
+                               <div className="bg-white rounded-[48px] p-10 md:p-20 border border-gray-100 shadow-sm min-h-[400px] flex flex-col items-center justify-center text-center">
+                                  {selectedMethod === "card" && (
+                                     <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-500">
+                                        <div className="space-y-2">
+                                           <h4 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">Kayıtlı kartlarım</h4>
+                                           <p className="text-xs font-medium text-gray-400">Ödemeyi tek tıkla güvenli şekilde tamamlayın.</p>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-3xl mx-auto">
+                                           <div className="p-6 md:p-8 rounded-3xl border-2 border-[#95BF47] bg-[#95BF47]/[0.02] flex items-center justify-between group shadow-lg shadow-[#95BF47]/5">
+                                              <div className="flex items-center gap-5">
+                                                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center font-bold text-[10px]">VISA</div>
+                                                 <div className="text-left">
+                                                    <p className="text-sm font-bold text-gray-900 tracking-widest">**** 4242</p>
+                                                    <p className="text-[9px] text-gray-400 font-bold mt-1">HASAN • 12/26</p>
+                                                 </div>
+                                              </div>
+                                              <div className="w-6 h-6 rounded-full bg-[#95BF47] flex items-center justify-center shadow-lg shadow-[#95BF47]/20">
+                                                 <Check className="w-4 h-4 text-white" />
+                                              </div>
+                                           </div>
+                                           <button className="p-6 md:p-8 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-white hover:border-[#95BF47]/30 transition-all flex flex-col items-center justify-center gap-2 group">
+                                              <Plus className="w-6 h-6 text-gray-200 group-hover:text-[#95BF47] transition-colors" />
+                                              <span className="text-[10px] font-bold text-gray-300 group-hover:text-[#95BF47]">Yeni kart ekle</span>
+                                           </button>
+                                        </div>
+                                     </div>
+                                  )}
+                                  {selectedMethod !== "card" && (
+                                     <div className="space-y-8 animate-in fade-in zoom-in duration-500">
+                                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-[3rem] bg-gray-50 flex items-center justify-center mx-auto ring-1 ring-gray-100 shadow-sm">
+                                           {React.createElement(paymentMethods.find(m => m.id === selectedMethod)?.icon || Zap, { className: "w-12 h-12 md:w-16 md:h-16 text-gray-300" })}
+                                        </div>
+                                        <div className="space-y-3">
+                                           <h4 className="text-xl font-bold text-gray-900 tracking-tight">Güvenli ödeme hattı</h4>
+                                           <p className="text-sm text-gray-400 font-medium max-w-sm mx-auto leading-relaxed">
+                                             Ödeme bilgileri seçilen yöntem üzerinden uçtan uca şifrelenerek iletilecektir.
+                                           </p>
+                                        </div>
+                                     </div>
+                                  )}
+                               </div>
+                            </div>
+
+                            {/* Right Sidebar: Summary */}
+                            <div className="lg:col-span-4 space-y-8">
+                               <div className="bg-gray-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-xl min-h-[350px] flex flex-col justify-between">
+                                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#95BF47]/20 blur-[100px] rounded-full" />
+                                  <div className="relative z-10 space-y-10">
+                                     <div className="space-y-2">
+                                        <span className="text-[10px] font-bold text-[#95BF47]">Sipariş özeti</span>
+                                        <h4 className="text-2xl font-bold text-white tracking-tight leading-none">Ödeme bilgisi</h4>
+                                     </div>
+                                     
+                                     <div className="space-y-6">
+                                        <div className="flex justify-between items-center text-[11px] font-semibold text-gray-400">
+                                           <span>Seçilen paket</span>
+                                           <span className="text-white">{plans.find(p => p.id === selectedPlan)?.name}</span>
+                                        </div>
+                                        <div className="w-full h-[1px] bg-white/10" />
+                                        <div className="flex justify-between items-end">
+                                           <span className="text-[10px] font-bold text-[#95BF47] mb-2">Toplam tutar</span>
+                                           <div className="text-right">
+                                              <p className="text-4xl font-bold tracking-tighter">₺{plans.find(p => p.id === selectedPlan)?.price}</p>
+                                              <p className="text-[10px] font-medium text-gray-500 mt-1">Vergiler dahil</p>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  
+                                  <div className="relative z-10 pt-8">
+                                     <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                                        <ShieldCheck className="w-5 h-5 text-[#95BF47]" />
+                                        <p className="text-[10px] font-bold text-[#95BF47]">Güvenli ödeme</p>
+                                     </div>
+                                  </div>
+                               </div>
+                               
+                               <div className="bg-white rounded-[32px] p-8 border border-gray-100 flex items-center gap-5 shadow-sm">
+                                  <div className="w-12 h-12 bg-[#95BF47]/10 rounded-2xl flex items-center justify-center shrink-0">
+                                     <Building2 className="w-6 h-6 text-[#95BF47]" />
+                                  </div>
+                                  <div className="space-y-0.5">
+                                     <p className="text-[11px] font-bold text-gray-900">PCI-DSS Uyumlu</p>
+                                     <p className="text-[10px] font-medium text-gray-400 tracking-tight">Küresel güvenlik standardı</p>
+                                  </div>
+                               </div>
+                            </div>
+                         </motion.div>
+                       )}
+                    </AnimatePresence>
+                 </div>
+              </div>
+
+              {/* Footer */}
+              <div className="p-5 md:p-8 bg-white border-t border-gray-100 sticky bottom-0 z-20">
+                 <div className="max-w-[1200px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="hidden md:flex items-center gap-3 bg-gray-50 px-6 py-3 rounded-2xl border border-gray-100">
+                       <Check className="w-4 h-4 text-[#95BF47] stroke-[4]" />
+                       <span className="text-[10px] font-semibold text-gray-500">Kesintisiz teknik destek paneli</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 w-full md:w-auto">
+                       {step === "payment" && (
+                         <Button 
+                           variant="ghost" 
+                           onClick={() => setStep("plans")}
+                           className="flex-1 md:flex-none rounded-2xl h-12 md:h-14 px-8 text-[11px] font-bold text-gray-400 hover:text-gray-900 bg-gray-50 hover:bg-gray-100"
+                         >
+                            <ArrowLeft className="w-4 h-4 mr-2" /> Vazgeç
+                         </Button>
+                       )}
+                       <Button 
+                         onClick={step === "plans" ? () => setStep("payment") : handleComplete}
+                         disabled={step === "plans" && !selectedPlan}
+                         className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-12 md:h-15 px-8 md:px-14 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"
+                       >
+                          {step === "plans" ? "Ödeme adımına geç" : "Ödemeyi tamamla & başvur"}
+                          <ChevronRight className="w-4 h-4 ml-3" />
+                       </Button>
+                    </div>
+                 </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+    </AnimatePresence>
+  )
+
+  return createPortal(dialogContent, document.body)
+}

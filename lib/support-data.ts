@@ -24,7 +24,7 @@ export const INITIAL_TICKETS = [
         id: 2,
         sender: "expert",
         expertName: "Elif Uzun",
-        text: "Merhaba Hasan Bey, ana sayfa banner genişliği kullandığınız 'Shoprio Prime' temasında Tema Ayarları > Ana Sayfa > Banner Bölümü altından ayarlanabilmektedir. Eğer tam genişlik istiyorsanız 'Wide Mode' seçeneğini aktif edebilirsiniz.",
+        text: "Merhaba Hasan Bey, ana sayfa banner genişliği kullandığınız 'shopfio Prime' temasında Tema Ayarları > Ana Sayfa > Banner Bölümü altından ayarlanabilmektedir. Eğer tam genişlik istiyorsanız 'Wide Mode' seçeneğini aktif edebilirsiniz.",
         time: "22 Mart, 16:45"
       },
       {

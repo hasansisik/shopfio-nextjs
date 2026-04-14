@@ -8,7 +8,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-start">
           <a href="/" className="flex items-center gap-2 font-medium">
-            <img src="/logo.png" alt="Shoprio Logo" className="h-8" />
+            <img src="/logo.png" alt="shopfio Logo" className="h-8" />
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">

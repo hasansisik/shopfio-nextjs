@@ -22,7 +22,7 @@ function DogrulamaForm() {
   const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
   const { loading, error, message } = useAppSelector((state) => state.user)
-  
+
   const [email, setEmail] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
   const [showCodeInput, setShowCodeInput] = useState(false)
@@ -37,16 +37,16 @@ function DogrulamaForm() {
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!email || !verificationCode) {
       return
     }
 
-    const result = await dispatch(verifyEmail({ 
-      email, 
-      verificationCode: Number(verificationCode) 
+    const result = await dispatch(verifyEmail({
+      email,
+      verificationCode: Number(verificationCode)
     }))
-    
+
     if (verifyEmail.fulfilled.match(result)) {
       setTimeout(() => {
         router.push("/giris")
@@ -64,7 +64,7 @@ function DogrulamaForm() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-start">
           <a href="/" className="flex items-center gap-2 font-medium">
-            <img src="/logo.png" alt="Shoprio Logo" className="h-8" />
+            <img src="/logo.png" alt="shopfio Logo" className="h-8" />
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
@@ -94,11 +94,11 @@ function DogrulamaForm() {
                   {!email && (
                     <Field>
                       <FieldLabel htmlFor="email">E-posta</FieldLabel>
-                      <Input 
-                        id="email" 
-                        type="email" 
-                        placeholder="ornek@email.com" 
-                        required 
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="ornek@email.com"
+                        required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={loading}
@@ -108,11 +108,11 @@ function DogrulamaForm() {
                   )}
                   <Field>
                     <FieldLabel htmlFor="code">Doğrulama Kodu</FieldLabel>
-                    <Input 
-                      id="code" 
-                      type="text" 
-                      placeholder="4 haneli kod" 
-                      required 
+                    <Input
+                      id="code"
+                      type="text"
+                      placeholder="4 haneli kod"
+                      required
                       maxLength={4}
                       value={verificationCode}
                       onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
@@ -133,14 +133,14 @@ function DogrulamaForm() {
                 <>
                   <Field>
                     <FieldDescription className="text-center">
-                      E-postanızı kontrol edin ve doğrulama kodunu girin. 
+                      E-postanızı kontrol edin ve doğrulama kodunu girin.
                       Eğer e-postayı görmediyseniz spam klasörünü kontrol edin.
                     </FieldDescription>
                   </Field>
                   <Field>
-                    <Button 
-                      type="button" 
-                      className="w-full rounded-full" 
+                    <Button
+                      type="button"
+                      className="w-full rounded-full"
                       onClick={handleResend}
                       disabled={loading || !email}
                     >

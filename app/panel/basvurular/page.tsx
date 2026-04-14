@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { applicationsData as applications } from "@/lib/data/applications"
+import PaymentDialog from "@/components/payment-dialog"
+import * as React from "react"
 
 function ApplicationTracker({ app, index }: { app: any, index: number }) {
   return (
@@ -156,6 +158,8 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
 }
 
 export default function BasvurularPage() {
+  const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
+
   return (
     <div className="flex-1 p-6 md:p-10  min-h-screen">
       <div className="max-w-[1400px] mx-auto space-y-12 pb-20">
@@ -174,11 +178,12 @@ export default function BasvurularPage() {
             <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight leading-none">Başvurularım</h1>
             <p className="text-gray-400 text-sm font-medium">Aktif Shopify mağaza kurulum süreçlerinizi bu panel üzerinden canlı takip edin.</p>
           </div>
-          <Link href="/basvuru">
-            <Button className="rounded-[22px] bg-[#95BF47] text-white hover:bg-[#86ac3f] font-black px-10 h-16 text-sm flex gap-3 shadow-2xl shadow-[#95BF47]/30 transition-all transform hover:-translate-y-1 active:scale-95">
-              <Plus className="w-5 h-5 stroke-[3]" /> Yeni Hizmet Al
-            </Button>
-          </Link>
+          <Button 
+            onClick={() => setIsPaymentOpen(true)}
+            className="rounded-[22px] bg-[#95BF47] text-white hover:bg-[#86ac3f] font-black px-10 h-16 text-sm flex gap-3 shadow-2xl shadow-[#95BF47]/30 transition-all transform hover:-translate-y-1 active:scale-95"
+          >
+            <Plus className="w-5 h-5 stroke-[3]" /> Yeni Hizmet Al
+          </Button>
         </div>
 
         {/* Glassmorphic Controls Bar */}
@@ -224,11 +229,13 @@ export default function BasvurularPage() {
                 <h3 className="text-xl font-black text-gray-900">Yeni bir mağaza mı kurmak istiyorsunuz?</h3>
                 <p className="text-sm text-gray-400 max-w-sm mx-auto font-medium">Global pazarda yerinizi almak için profesyonel kurulum hizmetimizden yararlanın.</p>
              </div>
-             <Link href="/basvuru">
-                <Button variant="outline" className="rounded-2xl border-gray-200 h-14 px-12 text-xs font-black hover:bg-white hover:border-[#95BF47] hover:text-[#95BF47] transition-all bg-white/50 backdrop-blur-sm shadow-sm">
-                   Hizmetleri İncele
-                </Button>
-             </Link>
+             <Button 
+                onClick={() => setIsPaymentOpen(true)}
+                variant="outline" 
+                className="rounded-2xl border-gray-200 h-14 px-12 text-xs font-black hover:bg-white hover:border-[#95BF47] hover:text-[#95BF47] transition-all bg-white/50 backdrop-blur-sm shadow-sm"
+              >
+                Hizmetleri İncele
+             </Button>
           </motion.div>
         </div>
 
@@ -280,6 +287,8 @@ export default function BasvurularPage() {
             </div>
         </motion.div>
 
+        {/* Payment Dialog */}
+        <PaymentDialog isOpen={isPaymentOpen} onClose={() => setIsPaymentOpen(false)} />
       </div>
     </div>
   )

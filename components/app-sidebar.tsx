@@ -20,6 +20,7 @@ import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import Link from "next/link"
+import PaymentDialog from "@/components/payment-dialog"
 import {
   Sidebar,
   SidebarContent,
@@ -33,7 +34,7 @@ import {
 const data = {
   user: {
     name: "Hasan",
-    email: "hasan@shoprio.com",
+    email: "hasan@shopfio.com",
     avatar: "/avatars/hasan.jpg",
   },
   navMain: [
@@ -78,6 +79,8 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
+
   return (
     <Sidebar
       className="top-[calc(var(--announcement-height)+var(--header-height))] h-[calc(100svh-var(--announcement-height)-var(--header-height))]! border-r-gray-200"
@@ -93,7 +96,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <ShoppingBag className="size-5" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight ml-1">
-                  <span className="truncate font-bold text-[#95BF47] text-lg">Shoprio</span>
+                  <span className="truncate font-bold text-[#95BF47] text-lg">shopfio</span>
                   <span className="truncate text-[10px] text-gray-400">Kullanıcı Paneli</span>
                 </div>
               </a>
@@ -101,12 +104,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
 
-        <Link href="/basvuru" className="block w-full">
-          <button className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md">
-            <PlusCircle className="size-4" />
-            Başvuru Yap
-          </button>
-        </Link>
+        <button
+          onClick={() => setIsPaymentOpen(true)}
+          className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md"
+        >
+          <PlusCircle className="size-4" />
+          Başvuru Yap
+        </button>
       </SidebarHeader>
       <SidebarContent className="bg-[oklch(0.985_0.01_145)]">
         <NavMain items={data.navMain} label="Yönetim" />
@@ -117,6 +121,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter className="bg-[oklch(0.985_0.01_145)] border-t border-gray-100/50">
         <NavUser user={data.user} />
       </SidebarFooter>
+
+      <PaymentDialog
+        isOpen={isPaymentOpen}
+        onClose={() => setIsPaymentOpen(false)}
+      />
     </Sidebar>
   )
 }

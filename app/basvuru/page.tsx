@@ -2,7 +2,7 @@ import { BilgiFlow } from "@/components/bilgi/bilgi-flow"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Bilgi Alın | Shoprio",
+  title: "Bilgi Alın | shopfio",
   description: "Deneyiminizi kişiselleştirin ve dilediğiniz hedeflere ulaşın.",
 }
 
