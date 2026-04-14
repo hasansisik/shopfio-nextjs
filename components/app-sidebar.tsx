@@ -78,6 +78,8 @@ const data = {
   ]
 }
 
+import Image from "next/image"
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
 
@@ -90,15 +92,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="bg-[oklch(0.985_0.01_145)] space-y-4 px-4 py-6">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="/panel">
-                <div className="bg-[#95BF47] text-white flex aspect-square size-10 items-center justify-center rounded-2xl shadow-sm">
-                  <ShoppingBag className="size-5" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight ml-1">
-                  <span className="truncate font-bold text-[#95BF47] text-lg">shopfio</span>
-                  <span className="truncate text-[10px] text-gray-400">Kullanıcı Paneli</span>
-                </div>
+            <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
+              <a href="/panel" className="flex items-center justify-start h-12">
+                <Image
+                  src="/logo.png"
+                  alt="Shopfio Logo"
+                  width={130}
+                  height={40}
+                  className="object-contain"
+                  priority
+                />
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

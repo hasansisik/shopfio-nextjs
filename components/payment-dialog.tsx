@@ -22,6 +22,7 @@ import { plans, comparisonFeatures } from "@/lib/pricing-data"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { createPortal } from "react-dom"
+import Image from "next/image"
 
 interface PaymentDialogProps {
   isOpen: boolean
@@ -91,11 +92,18 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
               className="flex-1 flex flex-col h-full w-full"
             >
               {/* Header */}
-              <div className="p-4 md:p-6 bg-white border-b border-gray-100 flex items-center justify-between shrink-0 sticky top-0 z-20">
+              <div className="p-3 md:p-5 bg-white border-b border-gray-100 flex items-center justify-between shrink-0 sticky top-0 z-20">
                  <div className="flex items-center gap-6 max-w-[1200px] mx-auto w-full">
                     <div className="flex items-center gap-4">
-                       <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-[#95BF47] flex items-center justify-center shadow-lg shadow-[#95BF47]/20">
-                          <Zap className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                       <div className="relative w-10 h-10 md:w-11 md:h-11 flex items-center justify-center">
+                          <Image
+                            src="/logo.png"
+                            alt="Shopfio Logo"
+                            width={120}
+                            height={120}
+                            className="object-contain"
+                            priority
+                          />
                        </div>
                        <div>
                           <h2 className="text-base md:text-lg font-bold text-gray-900 tracking-tight leading-none">Yeni başvuru süreci</h2>
