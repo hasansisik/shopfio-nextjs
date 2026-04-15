@@ -75,6 +75,17 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
     setPaytrToken(null);
   }, [selectedMethod, selectedPlan]);
 
+  // Listen for success message from iframe (PayTR ok_url redirect)
+  React.useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data === 'paytr_success') {
+        setStep("status");
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
   React.useEffect(() => {
     if (step === "payment" && selectedMethod === "card" && !paytrToken && !isLoadingPaytr && user) {
       setIsLoadingPaytr(true);
@@ -475,9 +486,12 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                             </div>
 
                             <Button 
-                              onClick={() => window.location.href = '/basvuru'}
-                              className="w-full max-w-sm h-14 md:h-16 rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold text-sm shadow-xl shadow-[#95BF47]/20 transition-all transform hover:-translate-y-1 active:scale-95 group"
-                            >
+                               onClick={() => {
+                                 const statusParam = selectedMethod === "card" ? "&paymentStatus=success" : "";
+                                 window.location.href = `/basvuru?plan=${selectedPlan}&method=${selectedMethod}${statusParam}`;
+                               }}
+                               className="w-full max-w-sm h-14 md:h-16 rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold text-sm shadow-xl shadow-[#95BF47]/20 transition-all transform hover:-translate-y-1 active:scale-95 group"
+                             >
                                Kuruluma başla
                                <ChevronRight className="w-5 h-5 ml-3 transition-transform group-hover:translate-x-1" />
                             </Button>
@@ -509,10 +523,10 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                          <Button 
                            onClick={
                              step === "plans" 
-                               ? () => {
-                                   setStep("payment");
-                                 }
-                               : () => router.push(`/basvuru?plan=${selectedPlan}&method=${selectedMethod}`)
+                               ? () => setStep("payment")
+                               : selectedMethod === "transfer"
+                                 ? () => setStep("status")
+                                 : () => router.push(`/basvuru?plan=${selectedPlan}&method=${selectedMethod}`)
                            }
                            disabled={step === "plans" && !selectedPlan}
                            className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-12 md:h-15 px-8 md:px-14 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"

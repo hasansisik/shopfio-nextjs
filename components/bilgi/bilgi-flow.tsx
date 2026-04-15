@@ -44,6 +44,14 @@ export function BilgiFlow() {
     }
   }, [searchParams, user, retryCount, dispatch]);
 
+  // Notify parent window (PaymentDialog) if we are in an iframe and payment was successful
+  React.useEffect(() => {
+    const isSuccess = searchParams.get("paymentStatus") === "success";
+    if (isSuccess && window.parent !== window) {
+      window.parent.postMessage('paytr_success', '*');
+    }
+  }, [searchParams]);
+
   const planId = searchParams.get("plan") || "pro"
   const method = searchParams.get("method") || "transfer"
   
