@@ -30,13 +30,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useAppSelector } from "@/redux/hook"
 
 const data = {
-  user: {
-    name: "Hasan",
-    email: "hasan@shopfio.com",
-    avatar: "/avatars/hasan.jpg",
-  },
   navMain: [
     {
       title: "Genel Bakış",
@@ -82,6 +78,13 @@ import Image from "next/image"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
+  const { user } = useAppSelector((state) => state.user)
+
+  const userData = {
+    name: user?.name || "Kullanıcı",
+    email: user?.email || "",
+    avatar: user?.picture || "",
+  }
 
   return (
     <Sidebar
@@ -122,7 +125,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </div>
       </SidebarContent>
       <SidebarFooter className="bg-[oklch(0.985_0.01_145)] border-t border-gray-100/50">
-        <NavUser user={data.user} />
+        <NavUser user={userData} />
       </SidebarFooter>
 
       <PaymentDialog

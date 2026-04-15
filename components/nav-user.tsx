@@ -11,6 +11,9 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { AlertDialog } from "@/components/ui/alert-dialog"
+import { useAppDispatch } from "@/redux/hook"
+import { logout } from "@/redux/actions/userActions"
+import { useRouter } from "next/navigation"
 
 import {
   Avatar,
@@ -43,6 +46,8 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const [showLogoutDialog, setShowLogoutDialog] = React.useState(false)
   const [mounted, setMounted] = React.useState(false)
 
@@ -147,9 +152,9 @@ export function NavUser({
         description="Oturumunuz kapatılacak ve tekrar giriş yapmanız gerekecektir."
         cancelLabel="İptal"
         actionLabel="Evet, Çıkış Yap"
-        onAction={() => {
-          // Handle logout here
-          console.log("Logging out...")
+        onAction={async () => {
+          await dispatch(logout())
+          router.push("/giris")
         }}
       />
     </>
