@@ -93,3 +93,18 @@ export const adminUpdateSettings = createAsyncThunk(
     }
   }
 );
+
+export const adminGetStats = createAsyncThunk(
+  "admin/getStats",
+  async (_, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const { data } = await axios.get(`${server}/admin/stats`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data.stats;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);

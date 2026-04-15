@@ -6,12 +6,14 @@ import {
   adminReplyTicket,
   adminGetSettings,
   adminUpdateSettings,
+  adminGetStats
 } from "../actions/adminActions";
 
 interface AdminState {
   applications: any[];
   tickets: any[];
   settings: any | null;
+  stats: any | null;
   loading: boolean;
   error: string | null;
 }
@@ -20,6 +22,7 @@ const initialState: AdminState = {
   applications: [],
   tickets: [],
   settings: null,
+  stats: null,
   loading: false,
   error: null,
 };
@@ -76,5 +79,18 @@ export const adminReducer = createReducer(initialState, (builder) => {
     // Update Settings
     .addCase(adminUpdateSettings.fulfilled, (state, action) => {
       state.settings = action.payload;
+    })
+    
+    // Get Stats
+    .addCase(adminGetStats.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(adminGetStats.fulfilled, (state, action) => {
+      state.loading = false;
+      state.stats = action.payload;
+    })
+    .addCase(adminGetStats.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
     });
 });
