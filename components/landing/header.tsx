@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useAppSelector } from "@/redux/hook"
 
 export function Header() {
-  const { user } = useAppSelector((state) => state.user)
+  const { user, isAuthenticated } = useAppSelector((state) => state.user)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -72,7 +72,7 @@ export function Header() {
         {/* Global CTA & Mobile Toggle */}
         <div className="flex items-center gap-4 pointer-events-auto">
           <Link
-            href={user ? "/panel" : "/giris"}
+            href={isAuthenticated ? "/panel" : "/giris"}
             className={cn(
               "hidden sm:flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
               isScrolled 
@@ -80,7 +80,7 @@ export function Header() {
                 : "bg-[#95BF47] text-white hover:bg-[#5BB13C]"
             )}
           >
-            {user ? "Panel" : "Hemen Başla"}
+            {isAuthenticated ? "Panel" : "Giriş"}
             <ChevronRight className="w-4 h-4" />
           </Link>
 
@@ -154,7 +154,7 @@ export function Header() {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="w-full flex items-center justify-center gap-2 bg-[#1C1C1C] text-white py-4 rounded-2xl font-bold text-sm"
                    >
-                      {user ? "Panel" : "Hemen Başla"}
+                      {isAuthenticated ? "Panel" : "Giriş"}
                       <ChevronRight className="w-4 h-4" />
                    </Link>
                    <p className="text-[10px] text-gray-400 font-medium tracking-widest text-center">Resmi Shopify Partneri</p>

@@ -144,6 +144,7 @@ export const login = createAsyncThunk(
     try {
       const { data } = await axios.post(`${server}/auth/login`, payload);
       localStorage.setItem("accessToken", data.user.token);
+      setTokenCookie(data.user.token);
       localStorage.setItem("userEmail", data.user.email);
       return data.user;
     } catch (error: any) {
@@ -174,6 +175,7 @@ export const googleAuth = createAsyncThunk(
     try {
       const { data } = await axios.post(`${server}/auth/google-auth`, payload);
       localStorage.setItem("accessToken", data.user.token);
+      setTokenCookie(data.user.token);
       localStorage.setItem("userEmail", data.user.email);
       return data.user;
     } catch (error: any) {
@@ -195,6 +197,7 @@ export const googleLogin = createAsyncThunk(
     try {
       const { data } = await axios.post(`${server}/auth/google-login`, payload);
       localStorage.setItem("accessToken", data.user.token);
+      setTokenCookie(data.user.token);
       localStorage.setItem("userEmail", data.user.email);
       return data.user;
     } catch (error: any) {
@@ -236,6 +239,7 @@ export const loadUser = createAsyncThunk(
       if (error.response?.status === 404) {
         // Clear invalid token and return silent error
         localStorage.removeItem("accessToken");
+        removeTokenCookie();
         localStorage.removeItem("userEmail");
         return thunkAPI.rejectWithValue("User not found");
       }
@@ -244,6 +248,7 @@ export const loadUser = createAsyncThunk(
       if (error.response?.status === 401 && error.response?.data?.requiresLogout) {
         // Clear local storage and return special error
         localStorage.removeItem("accessToken");
+        removeTokenCookie();
         localStorage.removeItem("userEmail");
         return thunkAPI.rejectWithValue({
           message: error.response.data.message,
@@ -266,11 +271,13 @@ export const logout = createAsyncThunk("user/logout", async (_, thunkAPI) => {
           },
         });
         localStorage.removeItem("accessToken");
+        removeTokenCookie();
         localStorage.removeItem("userEmail");
         return data.message;
       } catch (apiError: any) {
         // Even if API call fails, clear local storage
         localStorage.removeItem("accessToken");
+        removeTokenCookie();
         localStorage.removeItem("userEmail");
         // Return success message to allow logout to proceed
         return "Çıkış yapıldı";
