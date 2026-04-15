@@ -134,6 +134,7 @@ export default function AdminApplicationDetailPage({ params }: { params: Promise
                   app.status === "Tamamlandı" ? "bg-green-50 text-green-600 border-green-100" :
                   app.status === "İptal Edildi" ? "bg-red-50 text-red-600 border-red-100" :
                   app.status === "Onay Bekliyor" ? "bg-blue-50 text-blue-600 border-blue-100" :
+                  app.status === "Ödeme Bekleniyor" ? "bg-amber-50 text-amber-600 border-amber-100" :
                   "bg-orange-50 text-orange-600 border-orange-100"
                 )}>{app.status}</span>
               </div>

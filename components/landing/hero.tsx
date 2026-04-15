@@ -102,7 +102,8 @@ export function Hero() {
       {/* Hero CTA & Buttons */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
         <Link
-          href="/randevu"
+          href="https://wa.me/905323497255"
+          target="_blank"
           className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full text-white font-bold text-lg transition-all active:scale-95 shadow-[0_15px_35px_rgba(149,191,71,0.3)] hover:shadow-[0_20px_40px_rgba(149,191,71,0.4)] duration-300 overflow-hidden shrink-0"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-[#95BF47] to-[#5BB13C] transition-opacity group-hover:opacity-90"></div>
@@ -119,7 +120,7 @@ export function Hero() {
           </span>
         </Link>
         <Link
-          href="#cta"
+          href="/panel"
           className="group inline-flex items-center gap-3 px-10 py-4 rounded-full text-[#95BF47] border-2 border-[#95BF47]/20 font-bold text-lg transition-all hover:border-[#95BF47] hover:bg-[#95BF47]/5 active:scale-95 duration-300 shrink-0"
         >
           Hemen Başla

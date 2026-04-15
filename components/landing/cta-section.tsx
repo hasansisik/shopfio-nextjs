@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 export function CTASection() {
   return (
@@ -27,10 +28,13 @@ export function CTASection() {
                     </p>
                     
                     <div className="flex flex-col sm:flex-row items-center gap-6">
-                        <button className="group relative flex items-center gap-3 bg-white text-[#3D7A2F] px-10 py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-[0_20px_40px_rgba(0,0,0,0.15)]">
+                        <Link 
+                          href="/panel"
+                          className="group relative flex items-center gap-3 bg-white text-[#3D7A2F] px-10 py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
+                        >
                             Kurulumu Başlatın
                             <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
-                        </button>
+                        </Link>
                         
                         <div className="flex flex-col items-start">
                            <p className="text-white font-bold text-[13px] tracking-wide">

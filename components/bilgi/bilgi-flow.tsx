@@ -5,6 +5,7 @@ import { StepTerms, StepPreCheck, StepPersonal, StepBirthDate, StepIBAN, StepKYC
 import { AnimatePresence, motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { Star } from "lucide-react"
 import Image from "next/image"
 
 import { useSearchParams, useRouter } from "next/navigation"
@@ -28,7 +29,13 @@ export function BilgiFlow() {
 
   const planId = searchParams.get("plan") || "pro"
   const method = searchParams.get("method") || "transfer"
-  const selectedPlan = plans.find(p => p.id === planId) || plans[1]
+  
+  // Find if user has a valid entitlement for any package
+  const activeEntitlement = user?.entitlements?.find((e: any) => !e.isUsed);
+  
+  // Priority: 1. Active Entitlement, 2. URL param, 3. Default Pro
+  const finalPlanId = activeEntitlement?.packageId || planId;
+  const selectedPlan = plans.find(p => p.id === finalPlanId) || plans[1]
 
   const [step, setStep] = useState(1)
   const [hasShopify, setHasShopify] = useState<boolean | null>(null)
@@ -54,7 +61,7 @@ export function BilgiFlow() {
   const handleFinalSubmit = async () => {
     const payload = {
       package: selectedPlan,
-      paymentMethod: method,
+      paymentMethod: activeEntitlement ? 'card' : method, // If they have an entitlement, it means they already paid (usually via card/transfer confirmed)
       formData: {
         ...formData,
         hasShopify
@@ -64,6 +71,7 @@ export function BilgiFlow() {
     const result = await dispatch(createApplication(payload))
     if (createApplication.fulfilled.match(result)) {
       toast.success("Başvurunuz başarıyla alındı!")
+      dispatch(loadUser()) // Refresh entitlements
       nextStep()
     } else {
       toast.error(result.payload as string || "Bir hata oluştu")
@@ -96,6 +104,24 @@ export function BilgiFlow() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: "circOut" }}
             >
+              {/* Header Info for Entitlements */}
+              {activeEntitlement && step < (hasShopify ? 8 : 7) && (
+                <div className="mb-8 p-4 bg-[#95BF47]/10 border border-[#95BF47]/20 rounded-2xl flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#95BF47] flex items-center justify-center text-white">
+                      <Star className="w-5 h-5 fill-current" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-gray-900 leading-none">Satın Alınmış Paket Aktif</h4>
+                      <p className="text-[10px] font-bold text-[#95BF47] uppercase mt-1">{activeEntitlement.packageName} PAKETİ</p>
+                    </div>
+                  </div>
+                  <div className="px-3 py-1 bg-white rounded-lg border border-[#95BF47]/20 text-[10px] font-black text-[#95BF47]">
+                    ÖDENMİŞ
+                  </div>
+                </div>
+              )}
+
               {/* STEP 1: Terms */}
               {step === 1 && <StepTerms onNext={() => setStep(2)} />}
 

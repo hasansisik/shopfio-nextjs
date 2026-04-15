@@ -62,6 +62,7 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
                 "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide",
                 app.status === "Tamamlandı" ? "bg-green-50 text-green-600 border border-green-100" : 
                 app.status === "Onay Bekliyor" ? "bg-blue-50 text-blue-600 border border-blue-100" :
+                app.status === "Ödeme Bekleniyor" ? "bg-amber-50 text-amber-600 border border-amber-100" :
                 "bg-orange-50 text-orange-600 border border-orange-100"
               )}>
                 {app.status}

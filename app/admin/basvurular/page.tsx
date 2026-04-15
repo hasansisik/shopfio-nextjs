@@ -102,6 +102,7 @@ export default function AdminApplicationsPage() {
                 <option value="Tümü">Tüm Durumlar</option>
                 <option value="İnceleniyor">İnceleniyor</option>
                 <option value="Onay Bekliyor">Onay Bekliyor</option>
+                <option value="Ödeme Bekleniyor">Ödeme Bekleniyor</option>
                 <option value="Tamamlandı">Tamamlandı</option>
                 <option value="İptal Edildi">İptal Edildi</option>
               </select>
@@ -179,11 +180,13 @@ export default function AdminApplicationsPage() {
                           app.status === "Tamamlandı" ? "bg-green-50 text-green-600" :
                           app.status === "Onay Bekliyor" ? "bg-blue-50 text-blue-600" :
                           app.status === "İptal Edildi" ? "bg-red-50 text-red-600" :
+                          app.status === "Ödeme Bekleniyor" ? "bg-amber-50 text-amber-600" :
                           "bg-orange-50 text-orange-600"
                         )}
                       >
                         <option value="İnceleniyor">İnceleniyor</option>
                         <option value="Onay Bekliyor">Onay Bekliyor</option>
+                        <option value="Ödeme Bekleniyor">Ödeme Bekleniyor</option>
                         <option value="Tamamlandı">Tamamlandı</option>
                         <option value="İptal Edildi">İptal Edildi</option>
                       </select>

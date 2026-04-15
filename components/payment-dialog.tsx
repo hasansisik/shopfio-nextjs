@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button"
 import { plans, comparisonFeatures } from "@/lib/pricing-data"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { useAppSelector } from "@/redux/hook"
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import { server } from "@/config"
@@ -34,6 +35,8 @@ interface PaymentDialogProps {
 
 export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   const router = useRouter()
+  const { user } = useAppSelector((state) => state.user)
+
   const [step, setStep] = React.useState<"plans" | "payment" | "status">("plans")
   const [selectedPlan, setSelectedPlan] = React.useState<string | null>("pro")
   const [selectedMethod, setSelectedMethod] = React.useState<"transfer" | "card" | "payoneer" | "crypto">("transfer")
@@ -68,15 +71,25 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   }, [isOpen])
 
   React.useEffect(() => {
-    if (step === "payment" && selectedMethod === "card" && !paytrToken && !isLoadingPaytr) {
+    if (step === "payment" && selectedMethod === "card" && !paytrToken && !isLoadingPaytr && user) {
       setIsLoadingPaytr(true);
+      
+      const plan = plans.find(p => p.id === selectedPlan) || plans[1];
+      const amount = parseInt(plan.price.replace(/\./g, ''));
+      const token = localStorage.getItem('token');
+
       fetch(`${server}/paytr/token`, {
          method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
+         headers: { 
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+         },
          body: JSON.stringify({
-            amount: 1500, // Example package price or selected plan price
-            email: "musteri@ornek.com", // Müşteri detayları
-            merchantOid: "SF" + Date.now(),
+            amount,
+            email: user.email,
+            userName: user.name,
+            packageId: plan.id,
+            packageName: plan.name
          })
       })
       .then(r => r.json())
@@ -101,7 +114,7 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
          setIsLoadingPaytr(false);
       });
     }
-  }, [step, selectedMethod]);
+  }, [step, selectedMethod, user, selectedPlan]);
 
   const handleComplete = () => {
     onClose()
