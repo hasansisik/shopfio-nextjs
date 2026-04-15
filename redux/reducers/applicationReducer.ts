@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { 
     createApplication, 
     getUserApplications, 
-    getApplicationDetails 
+    getApplicationDetails,
+    getPublicSettings 
 } from "../actions/applicationActions";
 
 interface ApplicationState {
@@ -11,6 +12,7 @@ interface ApplicationState {
     loading: boolean;
     error: string | null;
     success: boolean;
+    globalSettings: any | null;
 }
 
 const initialState: ApplicationState = {
@@ -19,6 +21,7 @@ const initialState: ApplicationState = {
     loading: false,
     error: null,
     success: false,
+    globalSettings: null
 };
 
 const applicationSlice = createSlice({
@@ -72,6 +75,18 @@ const applicationSlice = createSlice({
                 state.currentApplication = action.payload;
             })
             .addCase(getApplicationDetails.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            // Get Public Settings
+            .addCase(getPublicSettings.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getPublicSettings.fulfilled, (state, action) => {
+                state.loading = false;
+                state.globalSettings = action.payload;
+            })
+            .addCase(getPublicSettings.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

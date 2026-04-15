@@ -92,3 +92,24 @@ export const uploadFile = createAsyncThunk(
         }
     }
 );
+
+export const getPublicSettings = createAsyncThunk(
+    "application/getSettings",
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) return rejectWithValue("Giriş yapmanız gerekiyor");
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+            };
+            const { data } = await axios.get(`${server}/auth/settings`, config);
+            return data.settings;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+);
