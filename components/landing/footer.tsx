@@ -85,13 +85,13 @@ export function Footer() {
               country: "Türkiye",
               address: "Mimarsinan Mah. Ceren Sok. No:6",
               city: "Çekmeköy / İstanbul",
-              phone: "+90 (532) 349 72 55",
+              phone: "+90 532 349 72 55",
             },
             {
               country: "United States",
               address: "350 Fifth Avenue, Suite 4100",
               city: "New York, NY 10118",
-              phone: "+1 (212) 555 0198",
+              phone: "+90 532 349 72 55",
             },
           ].map((office) => (
             <div
