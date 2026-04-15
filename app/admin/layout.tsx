@@ -16,11 +16,15 @@ export default function AdminLayout({
   const router = useRouter()
 
   useEffect(() => {
-    if (!loading && (!isAuthenticated || user?.role !== 'admin')) {
+    // Wait until loading is fully complete before making any routing decision
+    if (loading) return
+
+    if (!isAuthenticated || user?.role !== 'admin') {
       router.push('/panel')
     }
   }, [user, isAuthenticated, loading, router])
 
+  // Show spinner while loading OR while redirecting non-admins
   if (loading || !isAuthenticated || user?.role !== 'admin') {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-white">

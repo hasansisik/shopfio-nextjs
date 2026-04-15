@@ -8,10 +8,6 @@ import {
   Save, 
   Loader2, 
   Megaphone,
-  Clock,
-  Banknote,
-  Globe,
-  Monitor,
   Plus,
   Trash2
 } from "lucide-react"
@@ -91,112 +87,9 @@ export default function StoreSettingsPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Core Config */}
-        <div className="space-y-8">
-           <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
-              <div className="flex items-center gap-3 mb-2">
-                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500">
-                    <Banknote className="w-5 h-5" />
-                 </div>
-                 <h3 className="text-sm font-black text-gray-900 uppercase tracking-tight">Finansal Ayarlar</h3>
-              </div>
-
-              <div className="space-y-6">
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">MİNİMUM BAŞVURU ÜCRETİ ($)</label>
-                    <input 
-                      type="number" 
-                      value={storeConfig.minimumApplicationFee}
-                      onChange={(e) => setStoreConfig({...storeConfig, minimumApplicationFee: Number(e.target.value)})}
-                      className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-black focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all"
-                    />
-                 </div>
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">VARSAYILAN TERMİN SÜRESİ</label>
-                    <input 
-                      type="text" 
-                      value={storeConfig.defaultProcessingTime}
-                      onChange={(e) => setStoreConfig({...storeConfig, defaultProcessingTime: e.target.value})}
-                      placeholder="Örn: 48 Saat"
-                      className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-black focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all"
-                    />
-                 </div>
-              </div>
-           </div>
-
-           <div className="bg-[#1C1C1C] rounded-3xl p-8 text-white relative overflow-hidden group">
-              <Globe className="absolute -right-10 -bottom-10 w-48 h-48 text-white/5 group-hover:scale-125 transition-transform duration-700" />
-              <h4 className="text-xl font-black leading-tight relative z-10">Global Altyapı<br />Yönetimi</h4>
-              <p className="text-xs text-gray-400 mt-4 leading-relaxed font-medium relative z-10">Mağaza kurulum süreçleri sistem tarafından otomatik olarak yönetilmektedir. Varsayılan süreler müşteri beklentisini yönetmek için kullanılır.</p>
-           </div>
-        </div>
-
-        {/* Announcement Config */}
-        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8 flex flex-col">
-           <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-3">
-                 <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500">
-                    <Megaphone className="w-5 h-5" />
-                 </div>
-                 <h3 className="text-sm font-black text-gray-900 uppercase tracking-tight">Duyuru Paneli</h3>
-              </div>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">YAYINDA</span>
-                <input 
-                  type="checkbox" 
-                  checked={storeConfig.announcement?.isActive}
-                  onChange={(e) => setStoreConfig({
-                    ...storeConfig, 
-                    announcement: { ...storeConfig.announcement, isActive: e.target.checked }
-                  })}
-                  className="w-4 h-4 rounded text-[#95BF47] focus:ring-[#95BF47]/20 border-gray-200"
-                />
-              </label>
-           </div>
-
-           <div className="space-y-6 flex-1">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">DUYURU METNİ</label>
-                <textarea 
-                  value={storeConfig.announcement?.text}
-                  onChange={(e) => setStoreConfig({
-                    ...storeConfig, 
-                    announcement: { ...storeConfig.announcement, text: e.target.value }
-                  })}
-                  placeholder="Kullanıcı panelinde görünecek önemli duyuru..."
-                  className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all min-h-[120px] resize-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">HEDEF BAĞLANTI (URL)</label>
-                <input 
-                  type="text" 
-                  value={storeConfig.announcement?.link}
-                  onChange={(e) => setStoreConfig({
-                    ...storeConfig, 
-                    announcement: { ...storeConfig.announcement, link: e.target.value }
-                  })}
-                  placeholder="https://shopfio.com/..."
-                  className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-4 text-xs font-medium text-blue-600 focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all"
-                />
-              </div>
-
-              <div className="p-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200 mt-auto">
-                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <Monitor className="w-3 h-3" />
-                    ÖNİZLEME
-                 </p>
-                 <div className="bg-[#95BF47] text-white p-3 rounded-lg text-[10px] font-black text-center truncate">
-                    {storeConfig.announcement?.text || "Henüz bir duyuru girilmedi."}
-                 </div>
-              </div>
-           </div>
-        </div>
-
-        {/* Campaigns Management */}
-        <div className="md:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
+      <div className="space-y-8">
+        {/* Campaigns Management - Full Width */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
                  <div className="w-10 h-10 rounded-xl bg-[#95BF47]/10 flex items-center justify-center text-[#95BF47]">
