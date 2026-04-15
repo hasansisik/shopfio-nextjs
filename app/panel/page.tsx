@@ -11,7 +11,8 @@ import {
   MessageSquare,
   LayoutGrid,
   TrendingUp,
-  Activity
+  Activity,
+  X
 } from "lucide-react"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
@@ -21,6 +22,7 @@ import * as React from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { comparisonFeatures } from "@/lib/pricing-data"
 
 export default function PanelPage() {
   const dispatch = useAppDispatch()
@@ -260,14 +262,30 @@ export default function PanelPage() {
                      </p>
 
                      <div className="space-y-4">
-                        {[1, 2, 3].map((_, idx) => (
-                           <div key={idx} className="flex items-center gap-3">
-                              <div className={cn("w-5 h-5 rounded-full flex items-center justify-center shrink-0", tier.highlight ? "bg-white/20 text-white" : "bg-[#95BF47]/10 text-[#95BF47]")}>
-                                 <CheckCircle2 className="w-3 h-3 stroke-[3]" />
+                        {comparisonFeatures.map((feature, idx) => {
+                           const isAvailable = i === 0 ? feature.small : i === 1 ? feature.medium : feature.full;
+                           if (!isAvailable && i === 0) return null; // Like landing page, keep basic short
+
+                           return (
+                              <div key={idx} className={cn("flex items-center gap-3", !isAvailable && "opacity-40")}>
+                                 <div className={cn(
+                                    "w-5 h-5 rounded-full flex items-center justify-center shrink-0",
+                                    isAvailable 
+                                       ? (tier.highlight ? "bg-white/20 text-white" : "bg-[#95BF47]/10 text-[#95BF47]")
+                                       : (tier.highlight ? "bg-black/10 text-white/50" : "bg-gray-100 text-gray-400")
+                                 )}>
+                                    {isAvailable ? <CheckCircle2 className="w-3 h-3 stroke-[3]" /> : <X className="w-3 h-3" />}
+                                 </div>
+                                 <span className={cn(
+                                    "text-xs font-bold", 
+                                    tier.highlight ? "text-white/90" : "text-gray-600",
+                                    !isAvailable && (tier.highlight ? "text-white/50" : "text-gray-400 font-medium")
+                                 )}>
+                                    {feature.name}
+                                 </span>
                               </div>
-                              <span className={cn("text-xs font-bold", tier.highlight ? "text-white/90" : "text-gray-600")}>Özel Özellik {idx + 1}</span>
-                           </div>
-                        ))}
+                           )
+                        })}
                      </div>
                   </div>
 
