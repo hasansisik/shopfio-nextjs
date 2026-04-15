@@ -303,8 +303,14 @@ export const verifyEmail = createAsyncThunk(
     try {
       const { data } = await axios.post(`${server}/auth/verify-email`, payload);
 
+      if (data.user?.token) {
+        localStorage.setItem("accessToken", data.user.token);
+        setTokenCookie(data.user.token);
+      }
+
       return {
-        message: data.message
+        message: data.message,
+        user: data.user
       };
     } catch (error: any) {
       return thunkAPI.rejectWithValue(

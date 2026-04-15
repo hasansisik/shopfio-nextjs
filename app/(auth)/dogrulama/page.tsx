@@ -59,8 +59,8 @@ function DogrulamaForm() {
 
     if (verifyEmail.fulfilled.match(result)) {
       setTimeout(() => {
-        router.push("/giris")
-      }, 2000)
+        router.push("/panel")
+      }, 1000)
     }
   }
 
