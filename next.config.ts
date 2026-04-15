@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "adsaify.com",
+        hostname: "shopfio.com",
       },
       {
         protocol: "https",

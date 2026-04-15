@@ -56,7 +56,7 @@ const data = {
       badge: "Yakında",
     },
     {
-      title: "Adsaify",
+      title: "shopfio",
       url: "#",
       icon: Megaphone,
       disabled: true,
@@ -124,7 +124,7 @@ const adminData = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
   const isAdminPath = pathname.startsWith('/admin')
-  
+
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.user)
 
