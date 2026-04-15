@@ -108,3 +108,18 @@ export const adminGetStats = createAsyncThunk(
     }
   }
 );
+
+export const adminGetApplication = createAsyncThunk(
+  "admin/getApplication",
+  async (id: string, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const { data } = await axios.get(`${server}/admin/applications/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data.application;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);

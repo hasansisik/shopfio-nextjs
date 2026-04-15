@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
   adminGetAllApplications,
+  adminGetApplication,
   adminUpdateApplication,
   adminGetAllTickets,
   adminReplyTicket,
@@ -11,6 +12,7 @@ import {
 
 interface AdminState {
   applications: any[];
+  currentApplication: any | null;
   tickets: any[];
   settings: any | null;
   stats: any | null;
@@ -20,6 +22,7 @@ interface AdminState {
 
 const initialState: AdminState = {
   applications: [],
+  currentApplication: null,
   tickets: [],
   settings: null,
   stats: null,
@@ -44,10 +47,24 @@ export const adminReducer = createReducer(initialState, (builder) => {
     
     // Update Application
     .addCase(adminUpdateApplication.fulfilled, (state, action) => {
+      state.currentApplication = action.payload;
       const index = state.applications.findIndex(a => a._id === action.payload._id);
       if (index !== -1) {
         state.applications[index] = action.payload;
       }
+    })
+
+    // Get Single Application
+    .addCase(adminGetApplication.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(adminGetApplication.fulfilled, (state, action) => {
+      state.loading = false;
+      state.currentApplication = action.payload;
+    })
+    .addCase(adminGetApplication.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
     })
 
     // Get Tickets

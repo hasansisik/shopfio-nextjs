@@ -79,16 +79,16 @@ export function Footer() {
         </div>
 
         {/* Address Bar */}
-        <div className="w-full mb-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="w-full mb-10 grid grid-cols-1 md:grid-cols-2 gap-6 border-t pt-2">
           {[
             {
-              country: "🇹🇷 Türkiye",
+              country: "Türkiye",
               address: "Mimarsinan Mah. Ceren Sok. No:6",
               city: "Çekmeköy / İstanbul",
               phone: "+90 (532) 123 45 67",
             },
             {
-              country: "🇺🇸 United States",
+              country: "United States",
               address: "350 Fifth Avenue, Suite 4100",
               city: "New York, NY 10118",
               phone: "+1 (212) 555 0198",
@@ -96,7 +96,7 @@ export function Footer() {
           ].map((office) => (
             <div
               key={office.country}
-              className="flex items-start gap-4 p-6 rounded-3xl bg-white border border-gray-100 shadow-sm text-left hover:shadow-md transition-all"
+              className="flex items-start gap-4 p-6 rounded-3xl  text-left  transition-all"
             >
               <div className="w-10 h-10 rounded-2xl bg-[#95BF47]/10 flex items-center justify-center shrink-0 text-lg">
                 📍
