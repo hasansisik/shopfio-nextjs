@@ -20,6 +20,8 @@ import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+import Image from "next/image"
 import PaymentDialog from "@/components/payment-dialog"
 import {
   Sidebar,
@@ -75,10 +77,43 @@ const data = {
   ]
 }
 
-import Image from "next/image"
+const adminData = {
+  navMain: [
+    {
+      title: "Kullanıcılar",
+      url: "/admin/users",
+      icon: Users,
+    },
+    {
+      title: "Başvurular",
+      url: "/admin/basvurular",
+      icon: ClipboardList,
+    },
+    {
+      title: "Destek Talepleri",
+      url: "/admin/destek",
+      icon: MessageSquare,
+    },
+  ],
+  navFooter: [
+    {
+      title: "Ödeme Ayarları",
+      url: "/admin/odeme-ayarlari",
+      icon: Settings,
+    },
+    {
+      title: "Mağaza Ayarları",
+      url: "/admin/magaza-ayarlari",
+      icon: ShoppingBag,
+    },
+  ]
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
+  const pathname = usePathname()
+  const isAdminPath = pathname.startsWith('/admin')
+  
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.user)
 
@@ -127,9 +162,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </button>
       </SidebarHeader>
       <SidebarContent className="bg-[oklch(0.985_0.01_145)]">
-        <NavMain items={data.navMain} label="Yönetim" />
+        <NavMain items={isAdminPath ? adminData.navMain : data.navMain} label={isAdminPath ? "Sistem Yönetimi" : "Yönetim"} />
         <div className="mt-4">
-          <NavMain items={data.navFooter} label="Hesabım" />
+          <NavMain items={isAdminPath ? adminData.navFooter : data.navFooter} label={isAdminPath ? "Ayarlar" : "Hesabım"} />
         </div>
       </SidebarContent>
       <SidebarFooter className="bg-[oklch(0.985_0.01_145)] border-t border-gray-100/50">

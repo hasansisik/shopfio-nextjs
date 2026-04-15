@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "./reducers/userReducer";
 import { applicationReducer } from "./reducers/applicationReducer";
 import { supportReducer } from "./reducers/supportReducer";
+import { adminReducer } from "./reducers/adminReducer";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
     application: applicationReducer,
     support: supportReducer,
+    admin: adminReducer,
   },
 });
 

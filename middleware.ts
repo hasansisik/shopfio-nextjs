@@ -5,11 +5,9 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('accessToken')?.value
   const { pathname } = request.nextUrl
 
-  // Protected routes: /panel and its subroutes
-  if (!token && pathname.startsWith('/panel')) {
+  // Protected routes: /panel and /admin
+  if (!token && (pathname.startsWith('/panel') || pathname.startsWith('/admin'))) {
     const loginUrl = new URL('/giris', request.url)
-    // Optional: store the intended destination to redirect back after login
-    // loginUrl.searchParams.set('callbackUrl', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
@@ -25,6 +23,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/panel/:path*',
+    '/admin/:path*',
     '/giris',
     '/kayit'
   ],

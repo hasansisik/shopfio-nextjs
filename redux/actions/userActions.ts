@@ -218,11 +218,11 @@ export const loadUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const token = localStorage.getItem("accessToken");
-      
+
       if (!token) {
-        throw new Error("No token found");
+        throw new Error("Giriş Yapılmamış");
       }
-      
+
       const { data } = await axios.get(`${server}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -243,7 +243,7 @@ export const loadUser = createAsyncThunk(
         localStorage.removeItem("userEmail");
         return thunkAPI.rejectWithValue("User not found");
       }
-      
+
       // Handle inactive user case - user gets kicked out
       if (error.response?.status === 401 && error.response?.data?.requiresLogout) {
         // Clear local storage and return special error
@@ -302,7 +302,7 @@ export const verifyEmail = createAsyncThunk(
   async (payload: VerifyEmailPayload, thunkAPI) => {
     try {
       const { data } = await axios.post(`${server}/auth/verify-email`, payload);
-      
+
       return {
         message: data.message
       };
@@ -476,7 +476,7 @@ export const updateTheme = createAsyncThunk(
     if (!token) {
       return { theme }; // Return theme even if no token
     }
-    
+
     // Fire and forget - don't wait for response
     axios.post(
       `${server}/auth/edit-profile`,
@@ -491,7 +491,7 @@ export const updateTheme = createAsyncThunk(
     ).catch((error: AxiosError) => {
       // Silent fail for theme updates
     });
-    
+
     // Return immediately
     return { theme };
   }
