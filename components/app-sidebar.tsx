@@ -80,6 +80,11 @@ const data = {
 const adminData = {
   navMain: [
     {
+      title: "Dashboard",
+      url: "/admin",
+      icon: LayoutDashboard,
+    },
+    {
       title: "Kullanıcılar",
       url: "/admin/users",
       icon: Users,
@@ -153,13 +158,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
 
-        <button
-          onClick={() => setIsPaymentOpen(true)}
-          className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md"
-        >
-          <PlusCircle className="size-4" />
-          Başvuru Yap
-        </button>
+        {!isAdminPath && (
+          <button
+            onClick={() => setIsPaymentOpen(true)}
+            className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md"
+          >
+            <PlusCircle className="size-4" />
+            Başvuru Yap
+          </button>
+        )}
       </SidebarHeader>
       <SidebarContent className="bg-[oklch(0.985_0.01_145)]">
         <NavMain items={isAdminPath ? adminData.navMain : data.navMain} label={isAdminPath ? "Sistem Yönetimi" : "Yönetim"} />
