@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { getApplicationDetails } from "@/redux/actions/applicationActions"
+import { toast } from "sonner"
 
 export default function BasvuruDetayPage() {
   const { id } = useParams()
@@ -57,7 +58,8 @@ export default function BasvuruDetayPage() {
     )
   }
 
-  const copyToClipboard = (text: string, label: string) => {
+  const copyToClipboard = (text: string | undefined | null, label: string) => {
+    if (!text) return
     navigator.clipboard.writeText(text)
     toast.success(`${label} kopyalandı`)
   }
@@ -110,7 +112,7 @@ export default function BasvuruDetayPage() {
                              <p className="text-gray-500 text-xs font-medium">Kurulum tamamlandığında bu bilgilerle giriş yapabilirsiniz.</p>
                           </div>
                        </div>
-                       <Link href={app.credentials.url} target="_blank">
+                       <Link href={app.credentials?.url || "#"} target="_blank">
                           <Button className="rounded-2xl bg-white/10 text-white hover:bg-white/20 border border-white/10 h-12 px-6 text-xs font-black flex gap-2">
                              Panel <ExternalLink className="w-4 h-4" />
                           </Button>
@@ -182,7 +184,7 @@ export default function BasvuruDetayPage() {
                   {/* Vertical Track Line */}
                   <div className="absolute left-[20px] top-4 bottom-4 w-1 bg-gray-50 rounded-full" />
                   
-                  {app.steps.map((step, idx) => {
+                  {(app.steps || []).map((step: any, idx: number) => {
                     const isCompleted = step.completed
                     const isCurrent = step.current
                     const isUpcoming = step.upcoming
