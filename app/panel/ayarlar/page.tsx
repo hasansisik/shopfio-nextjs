@@ -139,7 +139,7 @@ export default function AyarlarPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight leading-none"
+            className="text-xl md:text-2xl font-black text-gray-900 tracking-tight leading-none"
           >
             Hesabınızı <span className="text-[#95BF47]">Yönetin</span>
           </motion.h1>
@@ -274,7 +274,7 @@ export default function AyarlarPage() {
                           </div>
                        </div>
                        <div className="text-center md:text-left space-y-1">
-                          <h2 className="text-xl font-black text-gray-900 tracking-tight">{user?.name}</h2>
+                          <h2 className="text-lg font-black text-gray-900 tracking-tight">{user?.name}</h2>
                           <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5">
                              <div className="flex items-center gap-2 px-2.5 py-1 bg-gray-50 rounded-lg border border-gray-100">
                                 <Mail className="w-3 h-3 text-gray-400" />
@@ -346,7 +346,7 @@ export default function AyarlarPage() {
                           <Shield className="w-7 h-7 text-orange-500" />
                        </div>
                        <div className="space-y-0.5">
-                          <h2 className="text-xl font-black text-gray-900 tracking-tight">Güvenlik</h2>
+                          <h2 className="text-lg font-black text-gray-900 tracking-tight">Güvenlik</h2>
                           <p className="text-gray-400 text-[10px] font-bold">Şifrenizi düzenli olarak güncelleyin.</p>
                        </div>
                     </div>

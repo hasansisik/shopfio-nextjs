@@ -12,11 +12,19 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { createApplication } from "@/redux/actions/applicationActions"
 import { plans } from "@/lib/pricing-data"
 
+import { loadUser } from "@/redux/actions/userActions"
+import * as React from "react"
+
 export function BilgiFlow() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const dispatch = useAppDispatch()
   const { loading } = useAppSelector((state) => state.application)
+  const { user } = useAppSelector((state) => state.user)
+
+  React.useEffect(() => {
+    dispatch(loadUser())
+  }, [dispatch])
 
   const planId = searchParams.get("plan") || "pro"
   const method = searchParams.get("method") || "transfer"

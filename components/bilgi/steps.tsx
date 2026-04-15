@@ -582,7 +582,10 @@ export function StepKYC({ data, updateData, onNext, onBack, loading }: any) {
             className="relative w-full aspect-[16/10] [transform-style:preserve-3d]"
           >
             {/* FRONT SIDE */}
-            <div className="absolute inset-0 [backface-visibility:hidden]">
+            <div className={cn(
+              "absolute inset-0 [backface-visibility:hidden]",
+              kycStep !== 1 && "pointer-events-none"
+            )}>
               <div className={cn(
                 "w-full h-full rounded-[2rem] border-2 border-dashed transition-all duration-300 relative overflow-hidden bg-white",
                 data.idFront ? "border-[#95BF47] shadow-2xl" : "border-gray-200"
@@ -612,7 +615,10 @@ export function StepKYC({ data, updateData, onNext, onBack, loading }: any) {
             {/* BACK SIDE */}
             <motion.div 
               style={{ rotateY: 180 }}
-              className="absolute inset-0 [backface-visibility:hidden]"
+              className={cn(
+                "absolute inset-0 [backface-visibility:hidden]",
+                kycStep !== 2 && "pointer-events-none"
+              )}
             >
               <div className={cn(
                 "w-full h-full rounded-[2rem] border-2 border-dashed transition-all duration-300 relative overflow-hidden bg-white",

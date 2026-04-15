@@ -30,7 +30,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { useAppSelector } from "@/redux/hook"
+import { useAppDispatch, useAppSelector } from "@/redux/hook"
+import { loadUser } from "@/redux/actions/userActions"
 
 const data = {
   navMain: [
@@ -78,7 +79,14 @@ import Image from "next/image"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
+  const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.user)
+
+  React.useEffect(() => {
+    if (!user) {
+      dispatch(loadUser())
+    }
+  }, [dispatch, user])
 
   const userData = {
     name: user?.name || "Kullanıcı",

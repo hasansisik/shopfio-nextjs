@@ -11,7 +11,22 @@ axios.interceptors.response.use(
       // Don't log 404 errors for /auth/me endpoint
       return Promise.reject(error);
     }
-    // Log other errors normally
+    return Promise.reject(error);
+  }
+);
+
+// Add global request interceptor to attach token to all outgoing requests
+axios.interceptors.request.use(
+  (config) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem("accessToken") : null;
+    if (token && !config.headers?.Authorization) {
+      if (config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
     return Promise.reject(error);
   }
 );

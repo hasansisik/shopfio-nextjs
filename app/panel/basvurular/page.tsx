@@ -163,6 +163,20 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
 
 export default function BasvurularPage() {
   const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
+  const dispatch = useAppDispatch()
+  const { applications, loading } = useAppSelector((state: any) => state.application)
+
+  React.useEffect(() => {
+    dispatch(getUserApplications())
+  }, [dispatch])
+
+  if (loading && applications.length === 0) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#95BF47]"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex-1 p-6 md:p-10  min-h-screen">
@@ -214,8 +228,8 @@ export default function BasvurularPage() {
         {/* Applications List */}
         <div className="space-y-8">
           <AnimatePresence mode="popLayout">
-            {applications.map((app, index) => (
-              <ApplicationTracker key={app.id} app={app} index={index} />
+            {applications.map((app: any, index: number) => (
+              <ApplicationTracker key={app._id} app={app} index={index} />
             ))}
           </AnimatePresence>
 
