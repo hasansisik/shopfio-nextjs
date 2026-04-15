@@ -78,7 +78,40 @@ export function Footer() {
             />
         </div>
 
-        {/* Bottom Bar - Positioned over background logo */}
+        {/* Address Bar */}
+        <div className="w-full mb-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            {
+              country: "🇹🇷 Türkiye",
+              address: "Mimarsinan Mah. Ceren Sok. No:6",
+              city: "Çekmeköy / İstanbul",
+              phone: "+90 (532) 123 45 67",
+            },
+            {
+              country: "🇺🇸 United States",
+              address: "350 Fifth Avenue, Suite 4100",
+              city: "New York, NY 10118",
+              phone: "+1 (212) 555 0198",
+            },
+          ].map((office) => (
+            <div
+              key={office.country}
+              className="flex items-start gap-4 p-6 rounded-3xl bg-white border border-gray-100 shadow-sm text-left hover:shadow-md transition-all"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-[#95BF47]/10 flex items-center justify-center shrink-0 text-lg">
+                📍
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-[#95BF47] uppercase tracking-widest mb-1">{office.country}</p>
+                <p className="text-sm font-bold text-gray-900 leading-snug">{office.address}</p>
+                <p className="text-sm font-bold text-gray-900 leading-snug">{office.city}</p>
+                <p className="text-[12px] font-medium text-gray-400 mt-2">{office.phone}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Bar */}
         <div className="w-full pt-10 border-t border-gray-100/50 flex flex-col md:flex-row items-center justify-between gap-8">
             {/* Copyright */}
             <p className="text-[13px] font-medium text-gray-500 md:w-1/3 md:text-left">

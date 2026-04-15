@@ -93,6 +93,13 @@ const adminData = {
       title: "Başvurular",
       url: "/admin/basvurular",
       icon: ClipboardList,
+      items: [
+        { title: "Tümü", url: "/admin/basvurular" },
+        { title: "İnceleniyor", url: "/admin/basvurular/inceleniyor" },
+        { title: "Onay Bekliyor", url: "/admin/basvurular/onay-bekliyor" },
+        { title: "Tamamlandı", url: "/admin/basvurular/tamamlandi" },
+        { title: "İptal Edildi", url: "/admin/basvurular/iptal-edildi" },
+      ]
     },
     {
       title: "Destek Talepleri",
