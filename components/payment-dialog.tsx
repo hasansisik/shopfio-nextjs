@@ -70,6 +70,11 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
     }
   }, [isOpen])
 
+  // Clear token on method or plan change to ensure fresh session
+  React.useEffect(() => {
+    setPaytrToken(null);
+  }, [selectedMethod, selectedPlan]);
+
   React.useEffect(() => {
     if (step === "payment" && selectedMethod === "card" && !paytrToken && !isLoadingPaytr && user) {
       setIsLoadingPaytr(true);

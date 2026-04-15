@@ -23,9 +23,26 @@ export function BilgiFlow() {
   const { loading } = useAppSelector((state) => state.application)
   const { user } = useAppSelector((state) => state.user)
 
+  const [retryCount, setRetryCount] = React.useState(0)
+  
   React.useEffect(() => {
     dispatch(loadUser())
   }, [dispatch])
+
+  // Poll for entitlements if user just paid but it's not detected yet
+  React.useEffect(() => {
+    const isSuccess = searchParams.get("paymentStatus") === "success";
+    const hasEntitlement = user?.entitlements?.some((e: any) => !e.isUsed);
+
+    if (isSuccess && !hasEntitlement && retryCount < 5) {
+      const timer = setTimeout(() => {
+        dispatch(loadUser()).then(() => {
+          setRetryCount(prev => prev + 1);
+        });
+      }, 2000); // Retry every 2 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams, user, retryCount, dispatch]);
 
   const planId = searchParams.get("plan") || "pro"
   const method = searchParams.get("method") || "transfer"

@@ -172,7 +172,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
 
         {!isAdminPath && (
-          <button onClick={() => setIsPaymentOpen(true)} className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md">
+          <button 
+            onClick={() => {
+              const hasEntitlement = user?.entitlements?.some((e: any) => !e.isUsed);
+              if (hasEntitlement) {
+                window.location.href = '/basvuru';
+              } else {
+                setIsPaymentOpen(true);
+              }
+            }} 
+            className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md"
+          >
             <PlusCircle className="size-4" />
             Başvuru Yap
           </button>
