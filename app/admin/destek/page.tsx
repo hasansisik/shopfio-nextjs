@@ -144,27 +144,30 @@ export default function AdminSupportPage() {
               </div>
 
               {/* Replies */}
-              {selectedTicket.replies?.map((reply: any, i: number) => (
-                <div key={i} className={`flex gap-4 ${reply.sender?.role === 'admin' ? 'flex-row-reverse' : ''}`}>
+              {selectedTicket.replies?.map((reply: any, i: number) => {
+                const isAdmin = reply.sender !== selectedTicket.user?._id;
+                
+                return (
+                <div key={i} className={`flex gap-4 ${isAdmin ? 'flex-row-reverse' : ''}`}>
                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${
-                      reply.sender?.role === 'admin' ? 'bg-[#95BF47] text-white' : 'bg-gray-100 text-gray-400'
+                      isAdmin ? 'bg-[#95BF47] text-white' : 'bg-gray-100 text-gray-400'
                    }`}>
-                      {reply.sender?.role === 'admin' ? 'A' : <UserIcon className="w-5 h-5" />}
+                      {isAdmin ? <span className="font-black text-[10px]">ADMIN</span> : <UserIcon className="w-5 h-5" />}
                    </div>
                    <div className={`flex-1 p-6 rounded-3xl border shadow-sm ${
-                      reply.sender?.role === 'admin' 
+                      isAdmin 
                       ? 'bg-[#1C1C1C] text-white border-transparent' 
                       : 'bg-white text-gray-700 border-gray-100'
                    }`}>
                       <p className="text-sm leading-relaxed">{reply.message}</p>
                       <p className={`mt-4 text-[10px] font-medium tracking-wide ${
-                        reply.sender?.role === 'admin' ? 'text-gray-400' : 'text-gray-400'
+                        isAdmin ? 'text-gray-400' : 'text-gray-400'
                       }`}>
                         {new Date(reply.createdAt).toLocaleString('tr-TR')}
                       </p>
                    </div>
                 </div>
-              ))}
+              )})}
             </div>
 
             {/* Reply Area */}
