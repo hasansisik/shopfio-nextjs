@@ -27,11 +27,42 @@ import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import { supportData as myTickets } from "@/lib/data/support"
+import { useAppDispatch, useAppSelector } from "@/redux/hook"
+import { createTicket, getUserTickets } from "@/redux/actions/supportActions"
+import { toast } from "sonner"
 
 export default function DestekPage() {
+  const dispatch = useAppDispatch()
+  const { tickets, loading, success } = useAppSelector((state) => state.support)
+  
+  const [ticketForm, setTicketForm] = React.useState({
+    subject: "",
+    message: ""
+  })
   const [selectedCategory, setSelectedCategory] = React.useState("Mağaza Ayarları")
   const [isCategoryOpen, setIsCategoryOpen] = React.useState(false)
+
+  React.useEffect(() => {
+    dispatch(getUserTickets())
+  }, [dispatch])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!ticketForm.subject || !ticketForm.message) {
+      return toast.error("Lütfen tüm alanları doldurun.")
+    }
+
+    const result = await dispatch(createTicket({
+      ...ticketForm,
+      category: selectedCategory
+    }))
+
+    if (createTicket.fulfilled.match(result)) {
+      setTicketForm({ subject: "", message: "" })
+    }
+  }
+
+  const myTickets = tickets || []
 
   const categories = [
     "Mağaza Ayarları",
@@ -101,7 +132,12 @@ export default function DestekPage() {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">KONU BAŞLIĞI</label>
-                       <Input placeholder="Yardım almak istediğiniz konuyu özetleyin" className="rounded-2xl h-14 border-gray-100 focus:ring-[#95BF47] text-xs font-bold" />
+                        <Input 
+                           value={ticketForm.subject}
+                           onChange={(e) => setTicketForm({ ...ticketForm, subject: e.target.value })}
+                           placeholder="Yardım almak istediğiniz konuyu özetleyin" 
+                           className="rounded-2xl h-14 border-gray-100 focus:ring-[#95BF47] text-xs font-bold" 
+                        />
                     </div>
                     
                     <div className="space-y-2">
@@ -147,7 +183,12 @@ export default function DestekPage() {
                  
                  <div className="space-y-2">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">MESAJINIZ</label>
-                    <Textarea placeholder="Sorunuzu buraya detaylıca yazabilirsiniz..." className="rounded-[32px] min-h-[160px] border-gray-100 focus:ring-[#95BF47] text-xs font-bold p-6" />
+                    <Textarea 
+                       value={ticketForm.message}
+                       onChange={(e) => setTicketForm({ ...ticketForm, message: e.target.value })}
+                       placeholder="Sorunuzu buraya detaylıca yazabilirsiniz..." 
+                       className="rounded-[32px] min-h-[160px] border-gray-100 focus:ring-[#95BF47] text-xs font-bold p-6" 
+                    />
                  </div>
 
                  <div className="flex items-center justify-between pt-4">
@@ -155,8 +196,12 @@ export default function DestekPage() {
                        <Zap className="w-4 h-4 text-orange-400" />
                        Ortalama yanıt süresi: <span className="text-gray-900 font-black">15 Dakika</span>
                     </div>
-                    <Button className="rounded-2xl bg-gray-900 text-white hover:bg-black font-black h-14 px-10 text-xs shadow-xl transition-all">
-                       Talep Gönder <Send className="w-4 h-4 ml-3" />
+                    <Button 
+                       onClick={handleSubmit}
+                       disabled={loading}
+                       className="rounded-2xl bg-gray-900 text-white hover:bg-black font-black h-14 px-10 text-xs shadow-xl transition-all disabled:opacity-50"
+                    >
+                       {loading ? "Gönderiliyor..." : "Talep Gönder"} <Send className="w-4 h-4 ml-3" />
                     </Button>
                  </div>
               </div>
@@ -180,7 +225,7 @@ export default function DestekPage() {
               
               <div className="space-y-4">
                  {myTickets.map((ticket, i) => (
-                    <Link key={i} href={`/panel/destek/${ticket.id}`} className="block">
+                    <Link key={i} href={`/panel/destek/${ticket._id}`} className="block">
                       <motion.div 
                         whileHover={{ x: 5 }}
                         className="p-5 rounded-[28px] border border-gray-50 hover:border-[#95BF47]/20 hover:bg-[#95BF47]/5 transition-all flex items-center justify-between group cursor-pointer"
@@ -192,7 +237,7 @@ export default function DestekPage() {
                             <div>
                                <h4 className="text-sm font-black text-gray-900 group-hover:text-[#95BF47] transition-colors">{ticket.subject}</h4>
                                <p className="text-[10px] text-gray-400 font-bold mt-0.5 uppercase tracking-widest">
-                                 {ticket.id} <span className="mx-1 text-gray-200">•</span> {ticket.category} <span className="mx-1 text-gray-200">•</span> {ticket.createdDate} açıldı
+                                 {ticket.ticketId} <span className="mx-1 text-gray-200">•</span> {ticket.category} <span className="mx-1 text-gray-200">•</span> {new Date(ticket.createdAt).toLocaleDateString('tr-TR')}
                                </p>
                             </div>
                          </div>

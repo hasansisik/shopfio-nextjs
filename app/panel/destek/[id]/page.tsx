@@ -21,11 +21,58 @@ import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { supportData } from "@/lib/data/support"
 
+import { useAppDispatch, useAppSelector } from "@/redux/hook"
+import { getTicketDetails, addReply } from "@/redux/actions/supportActions"
+import { toast } from "sonner"
+
 export default function DestekDetayPage() {
   const { id } = useParams()
-  
-  // Find ticket from our dynamic data source
-  const ticket = supportData.find(t => t.id === id) || supportData[0]
+  const dispatch = useAppDispatch()
+  const { currentTicket: ticket, loading } = useAppSelector((state) => state.support)
+  const [replyMessage, setReplyMessage] = React.useState("")
+
+  React.useEffect(() => {
+    if (id) {
+      dispatch(getTicketDetails(id as string))
+    }
+  }, [dispatch, id])
+
+  const handleSendReply = async () => {
+    if (!replyMessage.trim()) return
+    
+    await dispatch(addReply({ id: id as string, message: replyMessage }))
+    setReplyMessage("")
+  }
+
+  if (loading && !ticket) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-white h-screen">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-[#95BF47]/20 border-t-[#95BF47] rounded-full animate-spin" />
+          <p className="text-xs font-black text-gray-400 uppercase tracking-widest">Talep Yükleniyor...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!ticket) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-white h-screen">
+        <div className="text-center space-y-4">
+          <h2 className="text-xl font-black text-gray-900">Talep bulunamadı.</h2>
+          <Link href="/panel/destek">
+            <Button variant="link" className="text-[#95BF47]">Destek sayfasına dön</Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  const assignedExpert = {
+    name: "Destek Ekibi",
+    role: "Kıdemli Uzman",
+    avatar: "DE"
+  }
 
   return (
     <div className="flex-1 flex flex-col h-screen max-h-screen bg-white">
@@ -48,9 +95,9 @@ export default function DestekDetayPage() {
                </span>
             </div>
             <p className="text-xs text-gray-400 font-medium flex items-center gap-2">
-               Talep ID: <span className="text-gray-900 font-black">#{ticket.id}</span>
+               Talep ID: <span className="text-gray-900 font-black">#{ticket.ticketId}</span>
                <span className="w-1 h-1 rounded-full bg-gray-300" />
-               Açılış: <span className="text-gray-900 font-bold">{ticket.createdDate}</span>
+               Açılış: <span className="text-gray-900 font-bold">{new Date(ticket.createdAt).toLocaleDateString('tr-TR')}</span>
             </p>
           </div>
         </div>
@@ -58,7 +105,7 @@ export default function DestekDetayPage() {
         <div className="flex items-center gap-4">
            <div className="hidden md:flex flex-col items-end mr-4">
               <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">ATANAN UZMAN</span>
-              <p className="text-sm font-black text-gray-900">{ticket.assignedExpert.name}</p>
+              <p className="text-sm font-black text-gray-900">{assignedExpert.name}</p>
            </div>
            <Button variant="outline" size="icon" className="rounded-2xl border-gray-100">
               <MoreVertical className="w-5 h-5 text-gray-400" />
@@ -70,70 +117,69 @@ export default function DestekDetayPage() {
         {/* Chat Area */}
         <div className="flex-1 flex flex-col min-w-0 bg-[#fbfbfb]">
           <div className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8">
-             <AnimatePresence>
-                {ticket.messages.map((msg, idx) => (
-                  <motion.div 
-                    key={msg.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.1 }}
-                    className={cn(
-                      "flex gap-4 max-w-[85%] md:max-w-[70%]",
-                      msg.sender === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
-                    )}
-                  >
-                     {/* Avatar */}
-                     <div className={cn(
-                       "w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 font-black text-xs shadow-sm",
-                       msg.sender === "user" ? "bg-gray-900 text-white" : "bg-[#95BF47] text-white"
-                     )}>
-                        {msg.sender === "user" ? "H" : ticket.assignedExpert.avatar}
-                     </div>
-                     
-                     <div className={cn(
-                       "space-y-2",
-                       msg.sender === "user" ? "items-end" : "items-start"
-                     )}>
-                        <div className={cn(
-                           "p-5 rounded-[28px] shadow-sm relative",
-                           msg.sender === "user" ? "bg-white text-gray-900 rounded-tr-none border border-gray-100" : "bg-white text-gray-900 rounded-tl-none border border-gray-100"
-                        )}>
-                           <p className="text-sm font-medium leading-relaxed">{msg.message}</p>
-                           
-                           {/* Attachments */}
-                           {msg.attachments && msg.attachments.length > 0 && (
-                             <div className="mt-4 pt-4 border-t border-gray-50 space-y-2">
-                               {msg.attachments.map((file, fi) => (
-                                 <div key={fi} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl group cursor-pointer hover:bg-[#95BF47]/5 transition-all">
-                                    <div className="flex items-center gap-3">
-                                       <FileText className="w-4 h-4 text-gray-400 group-hover:text-[#95BF47]" />
-                                       <span className="text-[11px] font-black text-gray-700">{file.name}</span>
-                                    </div>
-                                    <Download className="w-4 h-4 text-gray-300 group-hover:text-[#95BF47]" />
-                                 </div>
-                               ))}
-                             </div>
-                           )}
-                        </div>
-                        <p className="text-[10px] text-gray-400 font-bold px-2">{msg.time}</p>
-                     </div>
-                  </motion.div>
-                ))}
-             </AnimatePresence>
+              <AnimatePresence>
+                {[
+                  { sender: "user", message: ticket.message, createdAt: ticket.createdAt, id: "initial" },
+                  ...ticket.replies
+                ].map((msg, idx) => {
+                  const isUser = msg.sender === "user" || (msg.sender?._id === ticket.user?._id) || (msg.sender === ticket.user);
+                  
+                  return (
+                    <motion.div 
+                      key={msg.id || idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className={cn(
+                        "flex gap-4 max-w-[85%] md:max-w-[70%]",
+                        isUser ? "ml-auto flex-row-reverse" : "mr-auto"
+                      )}
+                    >
+                       {/* Avatar */}
+                       <div className={cn(
+                         "w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 font-black text-xs shadow-sm",
+                         isUser ? "bg-gray-900 text-white" : "bg-[#95BF47] text-white"
+                       )}>
+                          {isUser ? "H" : assignedExpert.avatar}
+                       </div>
+                       
+                       <div className={cn(
+                         "space-y-2",
+                         isUser ? "items-end" : "items-start"
+                       )}>
+                          <div className={cn(
+                             "p-5 rounded-[28px] shadow-sm relative",
+                             isUser ? "bg-white text-gray-900 rounded-tr-none border border-gray-100" : "bg-white text-gray-900 rounded-tl-none border border-gray-100"
+                          )}>
+                             <p className="text-sm font-medium leading-relaxed">{msg.message}</p>
+                          </div>
+                          <p className="text-[10px] text-gray-400 font-bold px-2">
+                            {new Date(msg.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                       </div>
+                    </motion.div>
+                  )
+                })}
+              </AnimatePresence>
           </div>
 
           {/* Input Area */}
           <div className="p-6 md:p-10 shrink-0 bg-white border-t border-gray-100">
              <div className="max-w-4xl mx-auto relative group">
-                <Textarea 
-                  placeholder="Mesajınızı buraya yazın..."
-                  className="rounded-[32px] min-h-[100px] border-gray-200 focus:border-[#95BF47] focus:ring-[#95BF47]/10 p-6 pr-32 text-sm font-bold shadow-xl shadow-gray-100"
+                 <Textarea 
+                   value={replyMessage}
+                   onChange={(e) => setReplyMessage(e.target.value)}
+                   placeholder="Mesajınızı buraya yazın..."
+                   className="rounded-[32px] min-h-[100px] border-gray-200 focus:border-[#95BF47] focus:ring-[#95BF47]/10 p-6 pr-32 text-sm font-bold shadow-xl shadow-gray-100"
                 />
                 <div className="absolute right-4 bottom-4 flex items-center gap-2">
                    <Button variant="ghost" size="icon" className="rounded-xl hover:bg-gray-100 text-gray-400">
                       <Paperclip className="w-5 h-5" />
                    </Button>
-                   <Button className="rounded-2xl bg-[#95BF47] text-white hover:bg-[#86ac3f] font-black h-12 px-6 flex gap-2 shadow-lg shadow-[#95BF47]/20">
+                   <Button 
+                      onClick={handleSendReply}
+                      className="rounded-2xl bg-[#95BF47] text-white hover:bg-[#86ac3f] font-black h-12 px-6 flex gap-2 shadow-lg shadow-[#95BF47]/20"
+                   >
                       Gönder <Send className="w-4 h-4" />
                    </Button>
                 </div>
@@ -148,11 +194,11 @@ export default function DestekDetayPage() {
               <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">TALEBİ YÖNETEN</h4>
               <div className="bg-gray-50 rounded-[32px] p-6 text-center space-y-4">
                  <div className="w-16 h-16 mx-auto rounded-[24px] bg-[#95BF47] flex items-center justify-center text-xl font-black text-white shadow-lg">
-                    {ticket.assignedExpert.avatar}
+                    {assignedExpert.avatar}
                  </div>
                  <div>
-                    <p className="text-sm font-black text-gray-900">{ticket.assignedExpert.name}</p>
-                    <p className="text-[#95BF47] text-[10px] font-black uppercase tracking-widest mt-1">{ticket.assignedExpert.role}</p>
+                    <p className="text-sm font-black text-gray-900">{assignedExpert.name}</p>
+                    <p className="text-[#95BF47] text-[10px] font-black uppercase tracking-widest mt-1">{assignedExpert.role}</p>
                  </div>
                  <div className="pt-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 rounded-full">
@@ -172,7 +218,7 @@ export default function DestekDetayPage() {
                  </div>
                  <div className="flex justify-between items-center py-2 border-b border-gray-50">
                     <span className="text-[11px] text-gray-400 font-bold">Öncelik</span>
-                    <span className="text-[11px] text-gray-900 font-black">{ticket.priority}</span>
+                    <span className="text-[11px] text-gray-900 font-black">Yüksek</span>
                  </div>
                  <div className="flex justify-between items-center py-2">
                     <span className="text-[11px] text-gray-400 font-bold">Son İşlem</span>
