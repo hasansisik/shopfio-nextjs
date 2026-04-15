@@ -15,7 +15,8 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
-import { login } from "@/redux/actions/userActions"
+import { login, clearError } from "@/redux/actions/userActions"
+import { useEffect } from "react"
 
 export function LoginForm({
   className,
@@ -23,8 +24,18 @@ export function LoginForm({
 }: React.ComponentProps<"form">) {
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const { loading, error } = useAppSelector((state) => state.user)
+  const { loading, error, isAuthenticated } = useAppSelector((state) => state.user)
   
+  useEffect(() => {
+    dispatch(clearError())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/panel")
+    }
+  }, [isAuthenticated, router])
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 

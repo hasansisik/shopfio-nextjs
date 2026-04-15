@@ -15,17 +15,27 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
-import { verifyEmail, againEmail } from "@/redux/actions/userActions"
+import { verifyEmail, againEmail, clearError } from "@/redux/actions/userActions"
 
 function DogrulamaForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
-  const { loading, error, message } = useAppSelector((state) => state.user)
+  const { loading, error, message, isAuthenticated, isVerified } = useAppSelector((state) => state.user)
+
+  useEffect(() => {
+    if (isAuthenticated && isVerified) {
+      router.push("/panel")
+    }
+  }, [isAuthenticated, isVerified, router])
 
   const [email, setEmail] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
   const [showCodeInput, setShowCodeInput] = useState(false)
+
+  useEffect(() => {
+    dispatch(clearError())
+  }, [dispatch])
 
   useEffect(() => {
     const emailParam = searchParams.get("email")

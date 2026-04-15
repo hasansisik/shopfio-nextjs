@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
-import { resetPassword } from "@/redux/actions/userActions"
+import { resetPassword, clearError } from "@/redux/actions/userActions"
 
 export function SifreSifirlamaForm({
   className,
@@ -25,6 +25,10 @@ export function SifreSifirlamaForm({
   const dispatch = useAppDispatch()
   const { loading, error, message } = useAppSelector((state) => state.user)
   
+  useEffect(() => {
+    dispatch(clearError())
+  }, [dispatch])
+
   const [email, setEmail] = useState("")
   const [passwordToken, setPasswordToken] = useState("")
   const [newPassword, setNewPassword] = useState("")

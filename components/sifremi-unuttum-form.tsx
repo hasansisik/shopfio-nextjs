@@ -13,7 +13,8 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
-import { forgotPassword } from "@/redux/actions/userActions"
+import { forgotPassword, clearError } from "@/redux/actions/userActions"
+import { useEffect } from "react"
 
 export function SifremiUnuttumForm({
   className,
@@ -22,6 +23,10 @@ export function SifremiUnuttumForm({
   const dispatch = useAppDispatch()
   const { loading, error, message } = useAppSelector((state) => state.user)
   
+  useEffect(() => {
+    dispatch(clearError())
+  }, [dispatch])
+
   const [email, setEmail] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {

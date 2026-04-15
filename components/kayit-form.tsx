@@ -15,7 +15,8 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
-import { register } from "@/redux/actions/userActions"
+import { register, clearError } from "@/redux/actions/userActions"
+import { useEffect } from "react"
 
 export function KayitForm({
   className,
@@ -23,8 +24,18 @@ export function KayitForm({
 }: React.ComponentProps<"form">) {
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const { loading, error } = useAppSelector((state) => state.user)
+  const { loading, error, isAuthenticated } = useAppSelector((state) => state.user)
   
+  useEffect(() => {
+    dispatch(clearError())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/panel")
+    }
+  }, [isAuthenticated, router])
+
   const [name, setName] = useState("")
   const [surname, setSurname] = useState("")
   const [email, setEmail] = useState("")
