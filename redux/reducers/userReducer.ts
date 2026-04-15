@@ -35,9 +35,10 @@ interface UserState {
 
 const initialState: UserState = {
   users: [],
-  user: {},
+  user: null,
   loading: false,
   error: null,
+  isAuthenticated: false,
   allUsers: [],
   userStats: null,
   usersLoading: false,

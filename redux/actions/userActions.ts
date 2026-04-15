@@ -2,6 +2,19 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { server } from "@/config";
 
+// Helper to manage cookies for middleware access
+const setTokenCookie = (token: string) => {
+  if (typeof window !== 'undefined') {
+    document.cookie = `accessToken=${token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
+  }
+};
+
+const removeTokenCookie = () => {
+  if (typeof window !== 'undefined') {
+    document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+};
+
 // Add axios interceptor to suppress 404 errors in console
 axios.interceptors.response.use(
   (response: AxiosResponse) => response,
@@ -110,6 +123,7 @@ export const googleRegister = createAsyncThunk(
     try {
       const { data } = await axios.post(`${server}/auth/google-register`, payload);
       localStorage.setItem("accessToken", data.user.token);
+      setTokenCookie(data.user.token);
       return data.user;
     } catch (error: any) {
       // Handle inactive user case
@@ -215,6 +229,7 @@ export const loadUser = createAsyncThunk(
       if (data.user.email) {
         localStorage.setItem("userEmail", data.user.email);
       }
+      setTokenCookie(token); // Refresh cookie on load
       return data.user;
     } catch (error: any) {
       // Handle 404 errors silently (user not found or invalid token)
@@ -263,7 +278,8 @@ export const logout = createAsyncThunk("user/logout", async (_, thunkAPI) => {
     } else {
       // No token, just clear local storage
       localStorage.removeItem("accessToken");
-      localStorage.removeItem("userEmail");
+      removeTokenCookie();
+      localStorage.setItem("userEmail", "");
       return "Çıkış yapıldı";
     }
   } catch (error: any) {
