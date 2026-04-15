@@ -72,7 +72,7 @@ export function Header() {
         {/* Global CTA & Mobile Toggle */}
         <div className="flex items-center gap-4 pointer-events-auto">
           <Link
-            href={isAuthenticated ? "/panel" : "/giris"}
+            href={isAuthenticated ? (user?.role === 'admin' ? "/admin/users" : "/panel") : "/giris"}
             className={cn(
               "hidden sm:flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
               isScrolled 
@@ -150,7 +150,7 @@ export function Header() {
 
                 <div className="mt-auto space-y-4">
                    <Link
-                      href={user ? "/panel" : "/giris"}
+                      href={isAuthenticated ? (user?.role === 'admin' ? "/admin/users" : "/panel") : "/giris"}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="w-full flex items-center justify-center gap-2 bg-[#1C1C1C] text-white py-4 rounded-2xl font-bold text-sm"
                    >
