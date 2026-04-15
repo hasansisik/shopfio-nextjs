@@ -7,7 +7,8 @@ import {
   adminReplyTicket,
   adminGetSettings,
   adminUpdateSettings,
-  adminGetStats
+  adminGetStats,
+  adminGetAllPurchases
 } from "../actions/adminActions";
 
 interface AdminState {
@@ -16,6 +17,7 @@ interface AdminState {
   tickets: any[];
   settings: any | null;
   stats: any | null;
+  purchases: any[];
   loading: boolean;
   error: string | null;
 }
@@ -26,6 +28,7 @@ const initialState: AdminState = {
   tickets: [],
   settings: null,
   stats: null,
+  purchases: [],
   loading: false,
   error: null,
 };
@@ -107,6 +110,19 @@ export const adminReducer = createReducer(initialState, (builder) => {
       state.stats = action.payload;
     })
     .addCase(adminGetStats.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    })
+    
+    // Get Purchases
+    .addCase(adminGetAllPurchases.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(adminGetAllPurchases.fulfilled, (state, action) => {
+      state.loading = false;
+      state.purchases = action.payload;
+    })
+    .addCase(adminGetAllPurchases.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     });

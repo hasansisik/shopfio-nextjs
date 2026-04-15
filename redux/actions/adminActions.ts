@@ -123,3 +123,18 @@ export const adminGetApplication = createAsyncThunk(
     }
   }
 );
+
+export const adminGetAllPurchases = createAsyncThunk(
+  "admin/getAllPurchases",
+  async (_, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const { data } = await axios.get(`${server}/admin/purchases`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data.purchases;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);

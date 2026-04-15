@@ -13,7 +13,8 @@ import {
   HelpCircle,
   MessageSquare,
   Truck,
-  Megaphone
+  Megaphone,
+  CreditCard
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -88,6 +89,11 @@ const adminData = {
       title: "Kullanıcılar",
       url: "/admin/users",
       icon: Users,
+    },
+    {
+      title: "Satın Alımlar",
+      url: "/admin/alimlar",
+      icon: CreditCard,
     },
     {
       title: "Başvurular",
