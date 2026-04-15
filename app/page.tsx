@@ -16,7 +16,6 @@ export default function Home() {
         <Hero />
         <Features />
         <Onboarding />
-        <CaseStudies />
         <Pricing />
         <FAQ />
         <CTASection />

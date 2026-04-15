@@ -4,7 +4,6 @@ import { use, useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { adminGetAllApplications, adminUpdateApplication } from "@/redux/actions/adminActions"
 import {
-  ClipboardList,
   Search,
   Clock,
   ChevronRight,
@@ -12,16 +11,22 @@ import {
   CheckCircle2,
   XCircle,
   HelpCircle,
-  Eye
+  User,
+  Calendar,
+  Zap,
+  ArrowUpRight,
+  MoreVertical
 } from "lucide-react"
 import { toast } from "sonner"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 // Maps URL slug → actual DB status value
 const STATUS_MAP: Record<string, { label: string; dbValue: string; color: string; icon: any }> = {
   "inceleniyor":    { label: "İnceleniyor",    dbValue: "İnceleniyor",    color: "amber",  icon: Clock },
-  "onay-bekliyor":  { label: "Onay Bekliyor",  dbValue: "Onay Bekliyor",  color: "blue",   icon: Eye },
+  "onay-bekliyor":  { label: "Onay Bekliyor",  dbValue: "Onay Bekliyor",  color: "blue",   icon: Search },
   "tamamlandi":     { label: "Tamamlandı",     dbValue: "Tamamlandı",     color: "green",  icon: CheckCircle2 },
   "iptal-edildi":   { label: "İptal Edildi",   dbValue: "İptal Edildi",   color: "red",    icon: XCircle },
 }
@@ -51,30 +56,32 @@ export default function FilteredApplicationsPage({ params }: { params: Promise<{
     .filter(a => statusInfo ? a.status === statusInfo.dbValue : true)
     .filter(a =>
       a.appId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      a.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      a.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      a.package?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
   const StatusIcon = statusInfo?.icon || HelpCircle
 
-  const statusBadgeClass = (status: string) => {
-    if (status === 'Tamamlandı') return 'bg-green-50 text-green-700 ring-green-500/20'
-    if (status === 'İptal Edildi') return 'bg-red-50 text-red-700 ring-red-500/20'
-    if (status === 'Onay Bekliyor') return 'bg-blue-50 text-blue-700 ring-blue-500/20'
-    return 'bg-amber-50 text-amber-700 ring-amber-500/20'
+  if (loading && applications.length === 0) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#95BF47]" />
+      </div>
+    )
   }
 
   return (
-    <div className="p-6 md:p-10 space-y-8 max-w-7xl mx-auto">
+    <div className="p-6 md:p-10 space-y-8 max-w-[1400px] mx-auto min-h-screen">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className={cn(
-            "w-14 h-14 rounded-2xl flex items-center justify-center",
-            statusInfo?.color === 'amber' && "bg-amber-50 text-amber-500",
-            statusInfo?.color === 'blue'  && "bg-blue-50 text-blue-500",
-            statusInfo?.color === 'green' && "bg-green-50 text-green-600",
-            statusInfo?.color === 'red'   && "bg-red-50 text-red-500",
-            !statusInfo && "bg-[#95BF47]/10 text-[#95BF47]"
+            "w-14 h-14 rounded-2xl flex items-center justify-center border shadow-sm",
+            statusInfo?.color === 'amber' && "bg-amber-50 text-amber-500 border-amber-100",
+            statusInfo?.color === 'blue'  && "bg-blue-50 text-blue-500 border-blue-100",
+            statusInfo?.color === 'green' && "bg-green-50 text-green-600 border-green-100",
+            statusInfo?.color === 'red'   && "bg-red-50 text-red-500 border-red-100",
+            !statusInfo && "bg-[#95BF47]/10 text-[#95BF47] border-[#95BF47]/20"
           )}>
             <StatusIcon className="w-7 h-7" />
           </div>
@@ -89,98 +96,91 @@ export default function FilteredApplicationsPage({ params }: { params: Promise<{
         </div>
 
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="App ID veya kullanıcı ara..."
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 stroke-[3]" />
+          <Input
+            placeholder="Arama yapın..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all w-64"
+            className="rounded-xl h-12 pl-14 pr-6 border-transparent bg-white shadow-sm focus-visible:ring-[#95BF47] text-xs font-bold transition-all w-72"
           />
         </div>
       </div>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {loading ? (
-          <div className="col-span-full py-24 flex justify-center">
-            <div className="w-12 h-12 border-4 border-[#95BF47]/20 border-t-[#95BF47] rounded-full animate-spin" />
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="col-span-full py-24 text-center">
-            <div className="w-16 h-16 rounded-3xl bg-gray-50 flex items-center justify-center mx-auto mb-4 text-gray-200">
-              <ClipboardList className="w-8 h-8" />
+      {/* Table Section */}
+      <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-gray-50">
+                <th className="px-8 py-6 text-[11px] font-black text-gray-400 uppercase tracking-widest">Başvuru / Paket</th>
+                <th className="px-6 py-6 text-[11px] font-black text-gray-400 uppercase tracking-widest">Kullanıcı</th>
+                <th className="px-6 py-6 text-[11px] font-black text-gray-400 uppercase tracking-widest">Tarih</th>
+                <th className="px-6 py-6 text-[11px] font-black text-gray-400 uppercase tracking-widest text-right">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.map((app) => (
+                <tr key={app._id} className="hover:bg-gray-50/50 transition-colors group">
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-4">
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-sm",
+                        app.package?.name?.includes("Full") ? "bg-orange-500" : 
+                        app.package?.name?.includes("Profesyonel") ? "bg-[#95BF47]" : "bg-blue-500"
+                      )}>
+                        {app.package?.name?.includes("Full") ? <Zap className="w-6 h-6" /> : <ShoppingBag className="w-6 h-6" />}
+                      </div>
+                      <div>
+                        <p className="text-xs font-black text-gray-400 mb-0.5 tracking-wider">#{app.appId}</p>
+                        <p className="text-sm font-black text-gray-900">{app.package?.name} Mağazası</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-[#95BF47]/10 group-hover:text-[#95BF47] transition-all">
+                        <User className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-900">{app.user?.name}</p>
+                        <p className="text-[11px] text-gray-400 font-medium">{app.user?.email}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-6 font-bold text-xs text-gray-600">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-3.5 h-3.5 text-gray-300" />
+                        {new Date(app.createdAt).toLocaleDateString('tr-TR')}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-8 py-6 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link href={`/admin/basvurular/detay/${app._id}`}>
+                        <Button variant="ghost" className="rounded-xl h-10 px-4 text-[11px] font-black flex gap-2 hover:bg-[#95BF47]/10 hover:text-[#95BF47]">
+                          DETAYLAR <ArrowUpRight className="w-3.5 h-3.5 text-[#95BF47]" />
+                        </Button>
+                      </Link>
+                      <Button variant="ghost" size="icon" className="rounded-xl h-10 w-10 text-gray-300 hover:text-gray-900">
+                        <MoreVertical className="w-5 h-5" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {filtered.length === 0 && (
+          <div className="py-24 text-center">
+            <div className="w-20 h-20 rounded-[28px] bg-gray-50 flex items-center justify-center text-gray-200 mx-auto mb-4">
+              <ShoppingBag className="w-10 h-10" />
             </div>
-            <p className="text-gray-400 font-bold text-sm">Bu kategoride başvuru bulunamadı.</p>
+            <p className="text-gray-400 font-bold text-sm italic">Bu kategoride başvuru bulunamadı.</p>
           </div>
-        ) : filtered.map((app) => (
-          <div key={app._id} className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 hover:shadow-lg transition-all group">
-            <div className="flex justify-between items-start mb-5">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-[#95BF47]/10 flex items-center justify-center">
-                  <ShoppingBag className="w-5 h-5 text-[#95BF47]" />
-                </div>
-                <div>
-                  <p className="text-xs font-black text-gray-900 tracking-tight">{app.appId}</p>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{app.package?.name}</p>
-                </div>
-              </div>
-
-              <select
-                value={app.status}
-                onChange={(e) => handleStatusChange(app._id, e.target.value)}
-                className={cn(
-                  "text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full appearance-none cursor-pointer focus:outline-none ring-1 ring-inset",
-                  statusBadgeClass(app.status)
-                )}
-              >
-                <option value="İnceleniyor">İnceleniyor</option>
-                <option value="Onay Bekliyor">Onay Bekliyor</option>
-                <option value="Tamamlandı">Tamamlandı</option>
-                <option value="İptal Edildi">İptal Edildi</option>
-              </select>
-            </div>
-
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-50/70 rounded-2xl space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Müşteri</span>
-                  <span className="text-xs font-bold text-gray-900">{app.user?.name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Ödeme</span>
-                  <span className="text-xs font-bold text-gray-700 uppercase">{app.paymentMethod}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tarih</span>
-                  <span className="text-xs font-bold text-gray-700">{new Date(app.createdAt).toLocaleDateString('tr-TR')}</span>
-                </div>
-              </div>
-
-              {/* Progress Bar */}
-              <div>
-                <div className="flex justify-between mb-1.5">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">İlerleme</span>
-                  <span className="text-[10px] font-black text-[#95BF47]">%{app.progress}</span>
-                </div>
-                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-[#95BF47] rounded-full transition-all duration-700"
-                    style={{ width: `${app.progress}%` }}
-                  />
-                </div>
-              </div>
-
-              <Link
-                href={`/panel/basvurular/${app._id}`}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-gray-900 text-white text-xs font-bold hover:bg-black transition-all active:scale-95"
-              >
-                Detayları İncele
-                <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        ))}
+        )}
       </div>
     </div>
   )
