@@ -67,6 +67,42 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
     }
   }, [isOpen])
 
+  React.useEffect(() => {
+    if (step === "payment" && selectedMethod === "card" && !paytrToken && !isLoadingPaytr) {
+      setIsLoadingPaytr(true);
+      fetch(`${server}/paytr/token`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            amount: 1500, // Example package price or selected plan price
+            email: "musteri@ornek.com", // Müşteri detayları
+            merchantOid: "SF" + Date.now(),
+         })
+      })
+      .then(r => r.json())
+      .then(data => {
+         if (data.token) {
+            setPaytrToken(data.token);
+            // inject iframe resizer
+            const script = document.createElement('script');
+            script.src = "https://www.paytr.com/js/iframeResizer.min.js";
+            script.onload = () => {
+                if ((window as any).iFrameResize) {
+                    (window as any).iFrameResize({},'#paytriframe');
+                }
+            }
+            document.body.appendChild(script);
+         } else {
+            console.error("PayTR Token Hatası", data);
+         }
+      })
+      .catch(console.error)
+      .finally(() => {
+         setIsLoadingPaytr(false);
+      });
+    }
+  }, [step, selectedMethod]);
+
   const handleComplete = () => {
     onClose()
     router.push("/basvuru")
@@ -457,36 +493,6 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                              step === "plans" 
                                ? () => {
                                    setStep("payment");
-                                   if (selectedMethod === "card") {
-                                      // Token talep et
-                                      fetch(`${server}/paytr/token`, {
-                                         method: 'POST',
-                                         headers: { 'Content-Type': 'application/json' },
-                                         body: JSON.stringify({
-                                            amount: 1500, // Example package price or selected plan price
-                                            email: "musteri@ornek.com", // Müşteri detayları
-                                            merchantOid: "SF" + Date.now(),
-                                         })
-                                      })
-                                      .then(r => r.json())
-                                      .then(data => {
-                                         if (data.token) {
-                                            setPaytrToken(data.token);
-                                            // inject iframe resizer
-                                            const script = document.createElement('script');
-                                            script.src = "https://www.paytr.com/js/iframeResizer.min.js";
-                                            script.onload = () => {
-                                                if ((window as any).iFrameResize) {
-                                                    (window as any).iFrameResize({},'#paytriframe');
-                                                }
-                                            }
-                                            document.body.appendChild(script);
-                                         } else {
-                                            console.error("PayTR Token Hatası", data);
-                                         }
-                                      })
-                                      .catch(console.error);
-                                   }
                                  }
                                : () => router.push(`/basvuru?plan=${selectedPlan}&method=${selectedMethod}`)
                            }
