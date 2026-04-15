@@ -76,7 +76,7 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
       
       const plan = plans.find(p => p.id === selectedPlan) || plans[1];
       const amount = parseInt(plan.price.replace(/\./g, ''));
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('accessToken');
 
       fetch(`${server}/paytr/token`, {
          method: 'POST',
