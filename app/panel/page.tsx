@@ -23,11 +23,13 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { comparisonFeatures } from "@/lib/pricing-data"
+import PaymentDialog from "@/components/payment-dialog"
 
 export default function PanelPage() {
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.user)
   const { applications, loading } = useAppSelector((state) => state.application)
+  const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
 
   React.useEffect(() => {
     dispatch(loadUser())
@@ -103,11 +105,9 @@ export default function PanelPage() {
            animate={{ opacity: 1, scale: 1 }}
            transition={{ delay: 0.3 }}
         >
-          <Link href="/basvuru">
-            <Button className="rounded-[22px] bg-[#95BF47] text-white hover:bg-[#86ac3f] font-black px-10 h-16 text-sm flex gap-3 shadow-2xl shadow-[#95BF47]/30 transition-all transform hover:-translate-y-1 active:scale-95">
-              <Plus className="w-5 h-5 stroke-[3]" /> Yeni Hizmet Al
-            </Button>
-          </Link>
+          <Button onClick={() => setIsPaymentOpen(true)} className="rounded-[22px] bg-[#95BF47] text-white hover:bg-[#86ac3f] font-black px-10 h-16 text-sm flex gap-3 shadow-2xl shadow-[#95BF47]/30 transition-all transform hover:-translate-y-1 active:scale-95">
+            <Plus className="w-5 h-5 stroke-[3]" /> Yeni Hizmet Al
+          </Button>
         </motion.div>
       </section>
 
@@ -214,11 +214,9 @@ export default function PanelPage() {
            </div>
            <h3 className="text-xl font-black text-gray-900">Henüz aktif bir süreciniz yok.</h3>
            <p className="text-gray-400 text-xs font-medium max-w-sm">Shopify mağazanızı hemen kurmak için yeni bir hizmet alarak süreci başlatabilirsiniz.</p>
-           <Link href="/basvuru">
-              <Button variant="outline" className="rounded-2xl border-gray-100 h-14 px-8 text-[11px] font-black hover:border-[#95BF47] hover:text-[#95BF47] transition-all">
-                Mağaza Kurulumunu Başlat
-              </Button>
-           </Link>
+           <Button onClick={() => setIsPaymentOpen(true)} variant="outline" className="rounded-2xl border-gray-100 h-14 px-8 text-[11px] font-black hover:border-gray-200 hover:bg-gray-50 transition-all group">
+             Mağaza Kurulumunu Başlat <ArrowRight className="w-4 h-4 ml-2 text-[#95BF47] group-hover:translate-x-1 transition-transform" />
+           </Button>
         </section>
       )}
 
@@ -289,11 +287,13 @@ export default function PanelPage() {
                      </div>
                   </div>
 
-                  <Button className={cn(
+                  <Button 
+                    onClick={() => setIsPaymentOpen(true)}
+                    className={cn(
                     "w-full mt-10 rounded-2xl h-14 text-xs font-black transition-all shadow-lg active:scale-95",
                     tier.highlight ? "bg-white text-[#95BF47] hover:bg-gray-100 shadow-white/10" : "bg-gray-900 text-white hover:bg-black"
                   )}>
-                     Paketi Detaylandır <ArrowUpRight className="w-4 h-4 ml-2" />
+                     Paketi Seç <ArrowUpRight className="w-4 h-4 ml-2" />
                   </Button>
                </motion.div>
             ))}
@@ -311,6 +311,8 @@ export default function PanelPage() {
          </motion.div>
       </div>
 
+      {/* Payment Dialog */}
+      <PaymentDialog isOpen={isPaymentOpen} onClose={() => setIsPaymentOpen(false)} />
     </div>
   )
 }

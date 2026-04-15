@@ -127,6 +127,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.user)
+  const [isPaymentOpen, setIsPaymentOpen] = React.useState(false)
 
   React.useEffect(() => {
     if (!user) {
@@ -165,10 +166,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
 
         {!isAdminPath && (
-          <Link href="/basvuru" className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md">
+          <button onClick={() => setIsPaymentOpen(true)} className="w-full bg-[#95BF47] hover:bg-[#86ac3f] text-white py-4 rounded-[2rem] font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-[#95BF47]/20 text-md">
             <PlusCircle className="size-4" />
             Başvuru Yap
-          </Link>
+          </button>
         )}
       </SidebarHeader>
       <SidebarContent className="bg-[oklch(0.985_0.01_145)]">
@@ -180,7 +181,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter className="bg-[oklch(0.985_0.01_145)] border-t border-gray-100/50">
         <NavUser user={userData} />
       </SidebarFooter>
-
+      <PaymentDialog isOpen={isPaymentOpen} onClose={() => setIsPaymentOpen(false)} />
     </Sidebar>
   )
 }

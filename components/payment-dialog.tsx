@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { createPortal } from "react-dom"
 import Image from "next/image"
+import { server } from "@/config"
 
 interface PaymentDialogProps {
   isOpen: boolean
@@ -37,13 +38,29 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   const [selectedPlan, setSelectedPlan] = React.useState<string | null>("pro")
   const [selectedMethod, setSelectedMethod] = React.useState<"transfer" | "card" | "payoneer" | "crypto">("transfer")
   const [mounted, setMounted] = React.useState(false)
+  const [bankMethods, setBankMethods] = React.useState<any[]>([])
+  const [paytrToken, setPaytrToken] = React.useState<string | null>(null)
+  const [isLoadingPaytr, setIsLoadingPaytr] = React.useState(false)
 
   React.useEffect(() => {
     setMounted(true)
+    
+    // Fetch dynamic public settings
+    fetch(`${server}/auth/settings`)
+      .then(res => res.json())
+      .then(data => {
+         if (data?.settings?.paymentMethods) {
+             setBankMethods(data.settings.paymentMethods)
+         }
+      })
+      .catch(console.error)
+
     if (isOpen) {
       document.body.style.overflow = "hidden"
     } else {
       document.body.style.overflow = "unset"
+      setStep("plans")
+      setPaytrToken(null)
     }
     return () => {
       document.body.style.overflow = "unset"
@@ -58,8 +75,6 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   const paymentMethods = [
     { id: "transfer", label: "Havale / EFT", icon: Building2, color: "bg-orange-500" },
     { id: "card", label: "Kredi Kartı (PayTR)", icon: CreditCard, color: "bg-blue-500" },
-    { id: "payoneer", label: "Payoneer", icon: Globe, color: "bg-[#95BF47]" },
-    { id: "crypto", label: "Bitcoin / BTC", icon: BtcIcon, color: "bg-yellow-500" },
   ]
 
   // Steps animations
@@ -263,17 +278,29 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                <div className="bg-white rounded-[32px] p-8 md:p-12 border border-gray-100 shadow-sm min-h-[350px] flex flex-col items-center justify-center text-center">
                                   {selectedMethod === "card" && (
                                      <div className="w-full space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500">
-                                        <div className="w-20 h-20 bg-blue-50 rounded-[2rem] flex items-center justify-center mx-auto mb-4 border border-blue-100">
-                                           <CreditCard className="w-10 h-10 text-blue-500" />
-                                        </div>
-                                        <div className="space-y-2">
-                                           <h4 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">Güvenli PayTR ödeme hattı</h4>
-                                           <p className="text-xs font-medium text-gray-400 max-w-sm mx-auto">Kart bilgileriniz PayTR altyapısı ile 256-bit SSL sertifikasıyla korunmaktadır.</p>
-                                        </div>
-                                        <div className="flex items-center justify-center gap-3">
+                                        {!paytrToken ? (
+                                          <div className="flex flex-col items-center justify-center py-10 space-y-4">
+                                             <div className="w-16 h-16 border-4 border-[#95BF47] border-t-transparent rounded-full animate-spin"></div>
+                                             <p className="text-gray-500 font-medium text-sm">Güvenli ödeme altyapısı yükleniyor...</p>
+                                          </div>
+                                        ) : (
+                                          <div className="w-full min-h-[500px] border border-gray-100 rounded-3xl overflow-hidden bg-white shadow-inner relative">
+                                            <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
+                                            <iframe 
+                                                src={`https://www.paytr.com/odeme/guvenli/${paytrToken}`} 
+                                                id="paytriframe" 
+                                                frameBorder="0" 
+                                                scrolling="no" 
+                                                style={{ width: "100%", minHeight: "600px" }}
+                                            />
+                                          </div>
+                                        )}
+                                        {/* Security Badges */}
+                                        <div className="flex items-center justify-center gap-3 opacity-50 mt-4">
                                           <div className="px-4 py-2 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-400">Mastercard</div>
                                           <div className="px-4 py-2 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-400">VISA</div>
                                           <div className="px-4 py-2 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-400">AMEX</div>
+                                          <div className="px-4 py-2 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-400">256-bit SSL</div>
                                         </div>
                                      </div>
                                   )}
@@ -285,15 +312,12 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                           <p className="text-xs text-gray-400">Ödemeyi aşağıdaki IBAN adresine gönderin.</p>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                          {[
-                                            { bank: "Ziraat Bankası", name: "Shopfio Teknoloji A.Ş.", iban: "TR00 0000 0000 0000 0000 0000 00" },
-                                            { bank: "Garanti BBVA", name: "Shopfio Teknoloji A.Ş.", iban: "TR11 1111 1111 1111 1111 1111 11" }
-                                          ].map((item, idx) => (
+                                          {bankMethods.length > 0 ? bankMethods.map((item, idx) => (
                                             <div key={idx} className="p-5 rounded-2xl border border-gray-100 bg-gray-50/50 space-y-3 relative group">
                                               <div className="flex justify-between items-start">
                                                 <div>
-                                                  <p className="text-[10px] font-bold text-[#95BF47]">{item.bank}</p>
-                                                  <p className="text-[11px] font-bold text-gray-900 mt-1">{item.name}</p>
+                                                  <p className="text-[10px] font-bold text-[#95BF47]">{item.name}</p>
+                                                  <p className="text-[11px] font-bold text-gray-900 mt-1">{item.holderName}</p>
                                                 </div>
                                                 <button className="text-gray-300 hover:text-[#95BF47] transition-colors">
                                                   <Copy className="w-4 h-4" />
@@ -301,47 +325,9 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                               </div>
                                               <p className="text-[10px] font-mono font-medium text-gray-500 break-all bg-white p-2 rounded-lg border border-gray-100">{item.iban}</p>
                                             </div>
-                                          ))}
-                                        </div>
-                                     </div>
-                                  )}
-
-                                  {selectedMethod === "payoneer" && (
-                                     <div className="w-full space-y-6 animate-in fade-in zoom-in duration-500 max-w-md mx-auto">
-                                        <div className="w-16 h-16 bg-[#95BF47]/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#95BF47]/20">
-                                           <Globe className="w-8 h-8 text-[#95BF47]" />
-                                        </div>
-                                        <div className="space-y-4">
-                                           <div className="space-y-1">
-                                              <h4 className="text-lg font-bold text-gray-900">Payoneer transferi</h4>
-                                              <p className="text-xs text-gray-400">Lütfen aşağıdaki e-posta adresine gönderim yapın.</p>
-                                           </div>
-                                           <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between">
-                                              <span className="text-xs font-bold text-gray-700">pay@shopfio.com</span>
-                                              <Copy className="w-4 h-4 text-gray-300" />
-                                           </div>
-                                           <p className="text-[10px] text-gray-400 leading-relaxed italic">Gönderim sonrası dekontu destek panelinden iletmeyi unutmayın.</p>
-                                        </div>
-                                     </div>
-                                  )}
-
-                                  {selectedMethod === "crypto" && (
-                                     <div className="w-full space-y-6 animate-in fade-in zoom-in duration-500 max-w-md mx-auto">
-                                        <div className="w-16 h-16 bg-yellow-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-yellow-100">
-                                           <BtcIcon className="w-8 h-8 text-yellow-500" />
-                                        </div>
-                                        <div className="space-y-4 text-center">
-                                           <div className="space-y-1">
-                                              <h4 className="text-lg font-bold text-gray-900">Bitcoin / USDT ödemesi</h4>
-                                              <p className="text-xs text-gray-400">ERC20 veya TRC20 ağını kullandığınızdan emin olun.</p>
-                                           </div>
-                                           <div className="bg-gray-900 p-4 rounded-xl border border-white/10 flex flex-col gap-2">
-                                              <div className="flex items-center justify-between">
-                                                <span className="text-[9px] font-bold text-gray-500 uppercase">Wallet Address (TRC20)</span>
-                                                <Copy className="w-4 h-4 text-gray-500" />
-                                              </div>
-                                              <span className="text-[10px] font-mono font-bold text-white break-all">TJp4Ue9H8mE2W7D8xS2Q1v9Z3Y5R7C6N1A</span>
-                                           </div>
+                                          )) : (
+                                             <div className="col-span-2 text-center py-4 text-xs font-bold text-gray-400">Aktif banka hesabı bulunamadı.</div>
+                                          )}
                                         </div>
                                      </div>
                                   )}
@@ -465,20 +451,54 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                             <ArrowLeft className="w-4 h-4 mr-2" /> Vazgeç
                          </Button>
                        )}
-                       <Button 
-                         onClick={
-                           step === "plans" 
-                             ? () => setStep("payment") 
-                             : () => router.push(`/basvuru?plan=${selectedPlan}&method=${selectedMethod}`)
-                         }
-                         disabled={step === "plans" && !selectedPlan}
-                         className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-12 md:h-15 px-8 md:px-14 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"
-                       >
-                          {step === "plans" 
-                            ? "Ödeme adımına geç" 
-                            : "Ödemeyi tamamla & başvur"}
-                          <ChevronRight className="w-4 h-4 ml-3" />
-                       </Button>
+                       {!(step === "payment" && selectedMethod === "card") && (
+                         <Button 
+                           onClick={
+                             step === "plans" 
+                               ? () => {
+                                   setStep("payment");
+                                   if (selectedMethod === "card") {
+                                      // Token talep et
+                                      fetch(`${server}/paytr/token`, {
+                                         method: 'POST',
+                                         headers: { 'Content-Type': 'application/json' },
+                                         body: JSON.stringify({
+                                            amount: 1500, // Example package price or selected plan price
+                                            email: "musteri@ornek.com", // Müşteri detayları
+                                            merchantOid: "SF" + Date.now(),
+                                         })
+                                      })
+                                      .then(r => r.json())
+                                      .then(data => {
+                                         if (data.token) {
+                                            setPaytrToken(data.token);
+                                            // inject iframe resizer
+                                            const script = document.createElement('script');
+                                            script.src = "https://www.paytr.com/js/iframeResizer.min.js";
+                                            script.onload = () => {
+                                                if ((window as any).iFrameResize) {
+                                                    (window as any).iFrameResize({},'#paytriframe');
+                                                }
+                                            }
+                                            document.body.appendChild(script);
+                                         } else {
+                                            console.error("PayTR Token Hatası", data);
+                                         }
+                                      })
+                                      .catch(console.error);
+                                   }
+                                 }
+                               : () => router.push(`/basvuru?plan=${selectedPlan}&method=${selectedMethod}`)
+                           }
+                           disabled={step === "plans" && !selectedPlan}
+                           className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-12 md:h-15 px-8 md:px-14 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"
+                         >
+                            {step === "plans" 
+                              ? "Ödeme adımına geç" 
+                              : "Ödemeyi tamamla & başvur"}
+                            <ChevronRight className="w-4 h-4 ml-3" />
+                         </Button>
+                       )}
                     </div>
                  </div>
               </div>

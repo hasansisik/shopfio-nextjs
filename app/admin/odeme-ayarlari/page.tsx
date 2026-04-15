@@ -19,6 +19,12 @@ export default function PaymentSettingsPage() {
   const dispatch = useAppDispatch()
   const { settings, loading } = useAppSelector((state) => state.admin)
   const [paymentMethods, setPaymentMethods] = useState<any[]>([])
+  const [paytrConfig, setPaytrConfig] = useState({
+     merchantId: "",
+     merchantKey: "",
+     merchantSalt: "",
+     isActive: true
+  })
   const [isUpdating, setIsUpdating] = useState(false)
 
   useEffect(() => {
@@ -26,8 +32,9 @@ export default function PaymentSettingsPage() {
   }, [dispatch])
 
   useEffect(() => {
-    if (settings?.paymentMethods) {
-      setPaymentMethods(settings.paymentMethods)
+    if (settings) {
+      if (settings.paymentMethods) setPaymentMethods(settings.paymentMethods)
+      if (settings.paytrConfig) setPaytrConfig(settings.paytrConfig)
     }
   }, [settings])
 
@@ -45,7 +52,7 @@ export default function PaymentSettingsPage() {
 
   const handleSave = async () => {
     setIsUpdating(true)
-    const result = await dispatch(adminUpdateSettings({ paymentMethods }))
+    const result = await dispatch(adminUpdateSettings({ paymentMethods, paytrConfig }))
     if (adminUpdateSettings.fulfilled.match(result)) {
       toast.success("Ödeme ayarları güncellendi")
     } else {
@@ -145,6 +152,65 @@ export default function PaymentSettingsPage() {
           <Plus className="w-6 h-6" />
           Yeni Ödeme Yöntemi Ekle
         </button>
+      </div>
+
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 group">
+         <div className="flex justify-between items-start mb-8">
+            <div className="flex items-center gap-4">
+               <div className="w-12 h-12 rounded-2xl bg-[#95BF47]/5 flex items-center justify-center border border-[#95BF47]/20">
+                  <span className="font-bold text-[#95BF47]">TR</span>
+               </div>
+               <div>
+                  <h3 className="text-lg font-black text-gray-900">PayTR Entegrasyonu</h3>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Kredi Kartı Altyapısı</p>
+               </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+               <label className="flex items-center gap-2 cursor-pointer">
+                 <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">AKTİF</span>
+                 <input 
+                   type="checkbox" 
+                   checked={paytrConfig.isActive}
+                   onChange={(e) => setPaytrConfig({ ...paytrConfig, isActive: e.target.checked })}
+                   className="w-4 h-4 rounded text-[#95BF47] focus:ring-[#95BF47]/20 border-gray-200"
+                 />
+               </label>
+            </div>
+         </div>
+
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-gray-50">
+            <div className="space-y-2">
+               <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Mağaza No</label>
+               <input 
+                  type="text" 
+                  value={paytrConfig.merchantId}
+                  onChange={(e) => setPaytrConfig({ ...paytrConfig, merchantId: e.target.value })}
+                  placeholder="687993"
+                  className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all placeholder:text-gray-300"
+               />
+            </div>
+            <div className="space-y-2">
+               <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Mağaza Parola</label>
+               <input 
+                  type="text" 
+                  value={paytrConfig.merchantSalt}
+                  onChange={(e) => setPaytrConfig({ ...paytrConfig, merchantSalt: e.target.value })}
+                  placeholder="YPr4XtfZzFYJ3DP4"
+                  className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all placeholder:text-gray-300"
+               />
+            </div>
+            <div className="space-y-2">
+               <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Mağaza Gizli Anahtar</label>
+               <input 
+                  type="text" 
+                  value={paytrConfig.merchantKey}
+                  onChange={(e) => setPaytrConfig({ ...paytrConfig, merchantKey: e.target.value })}
+                  placeholder="GZ31n5f1Yd5p7HHb"
+                  className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 transition-all placeholder:text-gray-300"
+               />
+            </div>
+         </div>
       </div>
 
       <div className="bg-amber-50 rounded-3xl p-6 flex gap-4 border border-amber-100 text-amber-900">
