@@ -469,18 +469,14 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                          onClick={
                            step === "plans" 
                              ? () => setStep("payment") 
-                             : step === "payment"
-                               ? () => setStep("status")
-                               : () => window.location.href = '/basvuru'
+                             : () => router.push(`/basvuru?plan=${selectedPlan}&method=${selectedMethod}`)
                          }
                          disabled={step === "plans" && !selectedPlan}
                          className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-12 md:h-15 px-8 md:px-14 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"
                        >
                           {step === "plans" 
                             ? "Ödeme adımına geç" 
-                            : step === "payment" 
-                              ? "Ödemeyi tamamla & başvur" 
-                              : "Kuruluma başla"}
+                            : "Ödemeyi tamamla & başvur"}
                           <ChevronRight className="w-4 h-4 ml-3" />
                        </Button>
                     </div>

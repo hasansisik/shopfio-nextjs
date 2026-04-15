@@ -34,6 +34,8 @@ import { AlertDialog } from "@/components/ui/alert-dialog"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { useAppDispatch } from "@/redux/hook"
+import { uploadFile } from "@/redux/actions/applicationActions"
 
 // Helper Card Component for selection steps
 function SelectionCard({
@@ -227,7 +229,7 @@ export function StepPersonal({ data, updateData, onNext }: any) {
 }
 
 // STEP 1-B: Shopify Login Information (for existing accounts)
-export function StepShopifyLogin({ data, updateData, onNext, onBack }: any) {
+export function StepShopifyLogin({ data, updateData, onNext, onBack, loading }: any) {
   const isFormValid = data.shopifyEmail && data.shopifyPassword;
 
   return (
@@ -277,12 +279,17 @@ export function StepShopifyLogin({ data, updateData, onNext, onBack }: any) {
         <div className="flex flex-col gap-4 pt-4 px-4">
           <Button
             onClick={onNext}
-            disabled={!isFormValid}
+            disabled={!isFormValid || loading}
             className="w-full h-14 rounded-full bg-black text-white hover:bg-gray-800 font-bold text-base transition-all transform active:scale-[0.98] disabled:opacity-50"
           >
-            Devam Et
+            {loading ? (
+              <div className="flex items-center gap-2">
+                 <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                 İşleniyor...
+              </div>
+            ) : "Devam Et"}
           </Button>
-          <button onClick={onBack} className="text-sm font-medium text-gray-400 hover:text-gray-900 transition-colors">Geri git</button>
+          <button onClick={onBack} disabled={loading} className="text-sm font-medium text-gray-400 hover:text-gray-900 transition-colors">Geri git</button>
         </div>
       </div>
     </div>
@@ -506,21 +513,26 @@ export function StepIBAN({ data, updateData, onNext, onBack }: any) {
 }
 
 // STEP 4: KYC Identity Verification
-export function StepKYC({ data, updateData, onNext, onBack }: any) {
+export function StepKYC({ data, updateData, onNext, onBack, loading }: any) {
   const [kycStep, setKycStep] = useState(1); // 1: Front, 2: Back
   const [isScanning, setIsScanning] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, side: "idFront" | "idBack") => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, side: "idFront" | "idBack") => {
     const file = e.target.files?.[0];
     if (file) {
       setIsScanning(true);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        updateData({ [side]: reader.result });
-        // Simulation delay for "scanning" effect
-        setTimeout(() => setIsScanning(false), 2000);
-      };
-      reader.readAsDataURL(file);
+      
+      const result = await dispatch(uploadFile(file));
+
+      if (uploadFile.fulfilled.match(result)) {
+        updateData({ [side]: result.payload });
+        toast.success(`${side === "idFront" ? "Ön" : "Arka"} yüz başarıyla yüklendi`);
+      } else {
+        toast.error("Dosya yüklenemedi: " + (result.payload as string));
+      }
+      
+      setIsScanning(false);
     }
   };
 
@@ -655,10 +667,15 @@ export function StepKYC({ data, updateData, onNext, onBack }: any) {
               <div className="flex flex-col gap-3">
                 <Button
                   onClick={onNext}
-                  disabled={!data.idBack}
+                  disabled={!data.idBack || loading}
                   className="w-full h-14 rounded-full bg-black text-white hover:bg-gray-800 font-bold text-base transition-all transform active:scale-[0.98] disabled:opacity-50 shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
                 >
-                  Onayla ve Bitir
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                       <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                       İşleniyor...
+                    </div>
+                  ) : "Onayla ve Bitir"}
                 </Button>
                 <button 
                   onClick={() => setKycStep(1)} 

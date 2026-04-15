@@ -16,11 +16,26 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
-import { applicationsData as applications } from "@/lib/data/applications"
 import PaymentDialog from "@/components/payment-dialog"
 import * as React from "react"
+import { useAppDispatch, useAppSelector } from "@/redux/hook"
+import { getUserApplications } from "@/redux/actions/applicationActions"
 
 function ApplicationTracker({ app, index }: { app: any, index: number }) {
+  const getIcon = (pkgName: string) => {
+    if (pkgName?.includes("Full")) return Zap
+    return ShoppingBag
+  }
+
+  const getColor = (pkgName: string) => {
+    if (pkgName?.includes("Full")) return "bg-orange-500"
+    if (pkgName?.includes("Profesyonel")) return "bg-[#95BF47]"
+    return "bg-blue-500"
+  }
+
+  const Icon = getIcon(app.package?.name)
+  const color = getColor(app.package?.name)
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -33,15 +48,15 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
         <div className="flex items-start gap-5 shrink-0">
           <div className={cn(
             "w-16 h-16 rounded-[22px] flex items-center justify-center text-white shadow-xl relative overflow-hidden group-hover:scale-105 transition-transform duration-500",
-            app.color
+            color
           )}>
             <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50" />
-            <app.icon className="w-8 h-8 relative z-10" />
+            <Icon className="w-8 h-8 relative z-10" />
           </div>
           <div className="space-y-1.5">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 bg-gray-50 text-[10px] text-gray-500 rounded-lg ">
-                {app.id}
+                #{app.appId}
               </span>
               <div className={cn(
                 "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide",
@@ -52,8 +67,8 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
                 {app.status}
               </div>
             </div>
-            <h3 className="text-lg md:text-xl font-black text-gray-900 group-hover/card:text-[#95BF47] transition-colors">{app.service}</h3>
-            <p className="text-[12px] text-gray-400 font-medium">{app.date} tarihinde başvuruldu</p>
+            <h3 className="text-lg md:text-xl font-black text-gray-900 group-hover/card:text-[#95BF47] transition-colors">{app.package?.name} Mağazası</h3>
+            <p className="text-[12px] text-gray-400 font-medium">{new Date(app.createdAt).toLocaleDateString('tr-TR')} tarihinde başvuruldu</p>
           </div>
         </div>
 
@@ -83,7 +98,7 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
             />
             
             <div className="relative flex justify-between">
-              {app.steps.map((step: any, idx: number) => {
+              {app.steps?.slice(0, 4).map((step: any, idx: number) => {
                 const isCompleted = step.completed
                 const isCurrent = step.current
                 
@@ -119,14 +134,6 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
                       )}>
                         {step.name}
                       </p>
-                      {isCurrent && (
-                        <motion.span 
-                          layoutId={`current-${app.id}`}
-                          className="block text-[8px] font-bold text-[#95BF47]/60 tracking-wider"
-                        >
-                          SÜRÜYOR
-                        </motion.span>
-                      )}
                     </div>
                   </div>
                 )
@@ -137,7 +144,7 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
 
         {/* Action Button */}
         <div className="shrink-0 flex items-center gap-3">
-           <Link href={`/panel/basvurular/${app.id}`} className="block">
+           <Link href={`/panel/basvurular/${app._id}`} className="block">
               <Button variant="ghost" className="rounded-2xl border border-gray-100 h-14 px-8 text-[11px] font-black hover:border-[#95BF47] hover:text-[#95BF47] hover:bg-white transition-all bg-white shadow-sm flex gap-3 group/btn">
                 Detayları Gör 
                 <div className="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center group-hover/btn:bg-[#95BF47] group-hover/btn:text-white transition-colors">
@@ -150,9 +157,6 @@ function ApplicationTracker({ app, index }: { app: any, index: number }) {
            </Button>
         </div>
       </div>
-
-      {/* Decorative Gradient Background */}
-      <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#95BF47]/5 blur-3xl rounded-full pointer-events-none group-hover:bg-[#95BF47]/10 transition-colors" />
     </motion.div>
   )
 }

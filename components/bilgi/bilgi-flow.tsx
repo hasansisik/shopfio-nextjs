@@ -7,7 +7,21 @@ import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import Image from "next/image"
 
+import { useSearchParams, useRouter } from "next/navigation"
+import { useAppDispatch, useAppSelector } from "@/redux/hook"
+import { createApplication } from "@/redux/actions/applicationActions"
+import { plans } from "@/lib/pricing-data"
+
 export function BilgiFlow() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const { loading } = useAppSelector((state) => state.application)
+
+  const planId = searchParams.get("plan") || "pro"
+  const method = searchParams.get("method") || "transfer"
+  const selectedPlan = plans.find(p => p.id === planId) || plans[1]
+
   const [step, setStep] = useState(1)
   const [hasShopify, setHasShopify] = useState<boolean | null>(null)
   const [formData, setFormData] = useState({
@@ -27,6 +41,25 @@ export function BilgiFlow() {
   const handlePreCheck = (choice: boolean) => {
     setHasShopify(choice)
     setStep(3)
+  }
+
+  const handleFinalSubmit = async () => {
+    const payload = {
+      package: selectedPlan,
+      paymentMethod: method,
+      formData: {
+        ...formData,
+        hasShopify
+      }
+    }
+
+    const result = await dispatch(createApplication(payload))
+    if (createApplication.fulfilled.match(result)) {
+      toast.success("Başvurunuz başarıyla alındı!")
+      nextStep()
+    } else {
+      toast.error(result.payload as string || "Bir hata oluştu")
+    }
   }
 
   const nextStep = () => {
@@ -72,16 +105,30 @@ export function BilgiFlow() {
               {step === 5 && <StepIBAN data={formData} updateData={updateData} onNext={nextStep} onBack={prevStep} />}
 
               {/* Step KYC */}
-              {step === 6 && <StepKYC data={formData} updateData={updateData} onNext={nextStep} onBack={prevStep} />}
+              {step === 6 && (
+                <StepKYC 
+                  data={formData} 
+                  updateData={updateData} 
+                  onNext={hasShopify ? nextStep : handleFinalSubmit} 
+                  onBack={prevStep} 
+                  loading={loading}
+                />
+              )}
 
               {/* Conditional Shopify Step (Moved to after KYC) */}
               {hasShopify && step === 7 && (
-                <StepShopifyLogin data={formData} updateData={updateData} onNext={nextStep} onBack={prevStep} />
+                <StepShopifyLogin 
+                  data={formData} 
+                  updateData={updateData} 
+                  onNext={handleFinalSubmit} 
+                  onBack={prevStep} 
+                  loading={loading}
+                />
               )}
 
               {/* Step Success */}
               {((hasShopify && step === 8) || (!hasShopify && step === 7)) && (
-                <StepSuccess onNext={() => window.location.href = "/panel"} />
+                <StepSuccess onNext={() => router.push("/panel/basvurular")} />
               )}
             </motion.div>
           </AnimatePresence>

@@ -23,15 +23,39 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
-import { applicationsData } from "@/lib/data/applications"
-import { toast } from "sonner"
+import { useAppDispatch, useAppSelector } from "@/redux/hook"
+import { getApplicationDetails } from "@/redux/actions/applicationActions"
 
 export default function BasvuruDetayPage() {
   const { id } = useParams()
+  const dispatch = useAppDispatch()
+  const { currentApplication: app, loading } = useAppSelector((state) => state.application)
   const [showPassword, setShowPassword] = React.useState(false)
 
-  // Find application from our data source
-  const app = applicationsData.find(a => a.id === id) || applicationsData[0]
+  React.useEffect(() => {
+    if (id) {
+      dispatch(getApplicationDetails(id as string))
+    }
+  }, [id, dispatch])
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-[600px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#95BF47]"></div>
+      </div>
+    )
+  }
+
+  if (!app) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center min-h-[600px] gap-4">
+        <p className="text-gray-500 font-bold">Başvuru bulunamadı.</p>
+        <Link href="/panel/basvurular">
+           <Button className="rounded-2xl bg-[#95BF47] text-white">Listeye Dön</Button>
+        </Link>
+      </div>
+    )
+  }
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text)
@@ -51,13 +75,13 @@ export default function BasvuruDetayPage() {
             </Link>
             <div>
               <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-2xl font-black text-gray-900 tracking-tight">{app.service}</h1>
+                <h1 className="text-2xl font-black text-gray-900 tracking-tight">{app.package?.name} Mağazası</h1>
                 <span className={cn(
                   "px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider",
                   app.status === "Tamamlandı" || app.status === "Tamamlanmak Üzere" ? "bg-green-50 text-green-600 border border-green-100" : "bg-orange-50 text-orange-600 border border-orange-100"
                 )}>{app.status}</span>
               </div>
-              <p className="text-gray-400 text-xs font-medium">Başvuru Kodu: <span className="text-gray-900 font-black">#{app.id}</span> • {app.date} tarihinde oluşturuldu</p>
+              <p className="text-gray-400 text-xs font-medium">Başvuru Kodu: <span className="text-gray-900 font-black">#{app.appId}</span> • {new Date(app.createdAt).toLocaleDateString('tr-TR')} tarihinde oluşturuldu</p>
             </div>
           </div>
         </div>
@@ -238,12 +262,22 @@ export default function BasvuruDetayPage() {
                      BAŞVURU DETAYLARI
                    </h3>
                    <div className="space-y-4">
-                      {app.details.map((detail, i) => (
-                        <div key={i} className="flex justify-between items-center py-3 border-b border-gray-50 last:border-0 hover:bg-gray-50/50 px-2 rounded-xl transition-colors">
-                           <span className="text-xs text-gray-400 font-bold">{detail.label}</span>
-                           <span className="text-xs text-gray-900 font-black">{detail.value}</span>
-                        </div>
-                      ))}
+                      <div className="flex justify-between items-center py-3 border-b border-gray-50 hover:bg-gray-50/50 px-2 rounded-xl transition-colors">
+                         <span className="text-xs text-gray-400 font-bold">Ad Soyad</span>
+                         <span className="text-xs text-gray-900 font-black">{app.formData?.name || "-"}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-3 border-b border-gray-50 hover:bg-gray-50/50 px-2 rounded-xl transition-colors">
+                         <span className="text-xs text-gray-400 font-bold">Doğum Tarihi</span>
+                         <span className="text-xs text-gray-900 font-black">{app.formData?.birthDate || "-"}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-3 border-b border-gray-50 hover:bg-gray-50/50 px-2 rounded-xl transition-colors">
+                         <span className="text-xs text-gray-400 font-bold">IBAN</span>
+                         <span className="text-xs text-gray-900 font-black">TR{app.formData?.iban || "-"}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-3 border-b border-gray-50 hover:bg-gray-50/50 px-2 rounded-xl transition-colors">
+                         <span className="text-xs text-gray-400 font-bold">Ödeme Yöntemi</span>
+                         <span className="text-xs text-gray-900 font-black uppercase">{app.paymentMethod || "Havale"}</span>
+                      </div>
                    </div>
                 </motion.div>
 
@@ -258,23 +292,39 @@ export default function BasvuruDetayPage() {
                      EKLİ DOSYALAR
                    </h3>
                    <div className="space-y-4">
-                      {app.documents.map((doc, i) => (
-                        <div key={i} className="p-4 rounded-2xl border border-gray-50 hover:border-[#95BF47]/30 hover:bg-[#95BF47]/5 transition-all flex items-center justify-between group cursor-pointer">
+                      {app.formData?.idFront && (
+                        <Link href={app.formData.idFront} target="_blank" className="p-4 rounded-2xl border border-gray-50 hover:border-[#95BF47]/30 hover:bg-[#95BF47]/5 transition-all flex items-center justify-between group cursor-pointer">
                            <div className="flex items-center gap-4">
                               <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-white transition-colors">
                                  <FileText className="w-5 h-5 text-gray-400 group-hover:text-[#95BF47]" />
                               </div>
                               <div>
-                                 <p className="text-xs font-black text-gray-900 truncate max-w-[150px]">{doc.name}</p>
-                                 <p className="text-[10px] text-gray-400 font-bold">{doc.size} • {doc.date}</p>
+                                 <p className="text-xs font-black text-gray-900 truncate max-w-[150px]">Kimlik Ön Yüz.jpg</p>
+                                 <p className="text-[10px] text-gray-400 font-bold">Sistem Kaydı</p>
                               </div>
                            </div>
                            <div className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center group-hover:bg-[#95BF47] group-hover:text-white transition-all">
                              <Download className="w-4 h-4" />
                            </div>
-                        </div>
-                      ))}
-                      {app.documents.length === 0 && (
+                        </Link>
+                      )}
+                      {app.formData?.idBack && (
+                        <Link href={app.formData.idBack} target="_blank" className="p-4 rounded-2xl border border-gray-50 hover:border-[#95BF47]/30 hover:bg-[#95BF47]/5 transition-all flex items-center justify-between group cursor-pointer">
+                           <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-white transition-colors">
+                                 <FileText className="w-5 h-5 text-gray-400 group-hover:text-[#95BF47]" />
+                              </div>
+                              <div>
+                                 <p className="text-xs font-black text-gray-900 truncate max-w-[150px]">Kimlik Arka Yüz.jpg</p>
+                                 <p className="text-[10px] text-gray-400 font-bold">Sistem Kaydı</p>
+                              </div>
+                           </div>
+                           <div className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center group-hover:bg-[#95BF47] group-hover:text-white transition-all">
+                             <Download className="w-4 h-4" />
+                           </div>
+                        </Link>
+                      )}
+                      {!(app.formData?.idFront || app.formData?.idBack) && (
                         <p className="text-xs text-gray-400 font-medium text-center py-10 italic">Henüz dosya eklenmemiş.</p>
                       )}
                    </div>
