@@ -56,7 +56,7 @@ export function Footer() {
         {/* Contact CTA */}
         <div className="flex flex-col items-center gap-4 mb-16">
             <a 
-                href="https://wa.me/905323497255" 
+                href="https://wa.me/08502551389" 
                 target="_blank" 
                 className="inline-flex items-center gap-2.5 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-[14px] shadow-lg shadow-green-500/10 transition-all hover:scale-105 active:scale-95"
             >
@@ -85,13 +85,13 @@ export function Footer() {
               country: "Türkiye",
               address: "Mimarsinan Mah. Ceren Sok. No:6",
               city: "Çekmeköy / İstanbul",
-              phone: "+90 532 349 72 55",
+              phone: "0850 255 13 89",
             },
             {
               country: "United States",
               address: "350 Fifth Avenue, Suite 4100",
               city: "New York, NY 10118",
-              phone: "+90 532 349 72 55",
+              phone: "0850 255 13 89",
             },
           ].map((office) => (
             <div

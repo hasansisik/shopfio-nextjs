@@ -4,6 +4,7 @@ import { userReducer } from "./reducers/userReducer";
 import { applicationReducer } from "./reducers/applicationReducer";
 import { supportReducer } from "./reducers/supportReducer";
 import { adminReducer } from "./reducers/adminReducer";
+import couponReducer from "./reducers/couponReducer";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     application: applicationReducer,
     support: supportReducer,
     admin: adminReducer,
+    coupon: couponReducer,
   },
 });
 

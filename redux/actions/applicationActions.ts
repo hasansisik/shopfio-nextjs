@@ -116,7 +116,7 @@ export const getPublicSettings = createAsyncThunk(
 
 export const initTransfer = createAsyncThunk(
     "application/initTransfer",
-    async (payload: { package: any }, { rejectWithValue }) => {
+    async (payload: { package: any, couponCode?: string }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) return rejectWithValue("Giriş yapmanız gerekiyor");

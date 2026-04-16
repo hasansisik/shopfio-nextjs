@@ -14,7 +14,8 @@ import {
   MessageSquare,
   Truck,
   Megaphone,
-  CreditCard
+  CreditCard,
+  Tag
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -62,6 +63,11 @@ const data = {
       icon: Megaphone,
       disabled: true,
       badge: "Yakında",
+    },
+    {
+      title: "Kuponlarım",
+      url: "/panel/kuponlar",
+      icon: Tag,
     },
   ],
   navFooter: [
@@ -111,6 +117,11 @@ const adminData = {
       title: "Destek Talepleri",
       url: "/admin/destek",
       icon: MessageSquare,
+    },
+    {
+      title: "Kuponlar",
+      url: "/admin/kuponlar",
+      icon: Tag,
     },
   ],
   navFooter: [

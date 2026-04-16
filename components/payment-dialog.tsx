@@ -17,7 +17,10 @@ import {
   Copy,
   Plus,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  Tag,
+  Percent,
+  Banknote
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { plans, comparisonFeatures } from "@/lib/pricing-data"
@@ -25,6 +28,8 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useAppSelector, useAppDispatch } from "@/redux/hook"
 import { initTransfer } from "@/redux/actions/applicationActions"
+import { validateCoupon } from "@/redux/actions/couponActions"
+import { removeActiveCoupon } from "@/redux/reducers/couponReducer"
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import { server } from "@/config"
@@ -48,6 +53,8 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   const [isLoadingPaytr, setIsLoadingPaytr] = React.useState(false)
   const [paytrActive, setPaytrActive] = React.useState(true)
   const [transferActive, setTransferActive] = React.useState(true)
+  const [couponInput, setCouponInput] = React.useState("")
+  const { activeCoupon, loading: couponLoading, error: couponError } = useAppSelector((state) => state.coupon)
 
   React.useEffect(() => {
     setMounted(true)
@@ -72,6 +79,8 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
       document.body.style.overflow = "unset"
       setStep("plans")
       setPaytrToken(null)
+      dispatch(removeActiveCoupon())
+      setCouponInput("")
     }
     return () => {
       document.body.style.overflow = "unset"
@@ -113,7 +122,8 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
             email: user.email,
             userName: user.name,
             packageId: plan.id,
-            packageName: plan.name
+            packageName: plan.name,
+            couponCode: activeCoupon?.code
          })
       })
       .then(r => r.json())
@@ -458,10 +468,37 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                            <span className="text-white">{plans.find(p => p.id === selectedPlan)?.name}</span>
                                         </div>
                                         <div className="w-full h-[1px] bg-white/10" />
+                                        {activeCoupon && (
+                                          <>
+                                            <div className="flex justify-between items-center text-[11px] font-semibold text-gray-400">
+                                               <span>İndirim ({activeCoupon.code})</span>
+                                               <span className="text-[#95BF47]">
+                                                   {activeCoupon.discountType === 'percentage' 
+                                                       ? `-%${activeCoupon.discountValue}` 
+                                                       : `-₺${activeCoupon.discountValue}`}
+                                               </span>
+                                            </div>
+                                            <div className="w-full h-[1px] bg-white/10" />
+                                          </>
+                                        )}
                                         <div className="flex justify-between items-end">
                                            <span className="text-[10px] font-bold text-[#95BF47] mb-2">Toplam tutar</span>
                                            <div className="text-right">
-                                              <p className="text-4xl font-bold tracking-tighter">₺{plans.find(p => p.id === selectedPlan)?.price}</p>
+                                              <p className="text-4xl font-bold tracking-tighter">
+                                                 ₺{(() => {
+                                                    const plan = plans.find(p => p.id === selectedPlan) || plans[1];
+                                                    const rawPrice = parseInt(plan.price.replace(/\./g, ''));
+                                                    if (!activeCoupon) return plan.price;
+                                                    
+                                                    let finalPrice = rawPrice;
+                                                    if (activeCoupon.discountType === 'percentage') {
+                                                       finalPrice = rawPrice * (1 - activeCoupon.discountValue / 100);
+                                                    } else {
+                                                       finalPrice = Math.max(0, rawPrice - activeCoupon.discountValue);
+                                                     }
+                                                     return Math.round(finalPrice).toLocaleString('tr-TR').replace(/,/g, '.');
+                                                  })()}
+                                               </p>
                                               <p className="text-[10px] font-medium text-gray-500 mt-1">Vergiler dahil</p>
                                            </div>
                                         </div>
@@ -476,15 +513,47 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                   </div>
                                </div>
                                
-                               <div className="bg-white rounded-[32px] p-8 border border-gray-100 flex items-center gap-5 shadow-sm">
-                                  <div className="w-12 h-12 bg-[#95BF47]/10 rounded-2xl flex items-center justify-center shrink-0">
-                                     <Building2 className="w-6 h-6 text-[#95BF47]" />
-                                  </div>
-                                  <div className="space-y-0.5">
-                                     <p className="text-[11px] font-bold text-gray-900">PCI-DSS Uyumlu</p>
-                                     <p className="text-[10px] font-medium text-gray-400 tracking-tight">Küresel güvenlik standardı</p>
-                                  </div>
-                               </div>
+                                <div className="bg-white rounded-[32px] p-6 border border-gray-100 shadow-sm space-y-4">
+                                   <div className="flex items-center gap-3 px-1">
+                                      <Tag className="w-4 h-4 text-[#95BF47]" />
+                                      <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest">İndirim Kuponu</span>
+                                   </div>
+                                   
+                                   <div className="flex gap-2">
+                                      <input 
+                                         type="text"
+                                         placeholder="Kupon kodu girin"
+                                         value={couponInput}
+                                         onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                                         className="flex-1 h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 text-xs font-bold focus:bg-white focus:border-[#95BF47] outline-none transition-all"
+                                      />
+                                      <Button 
+                                         onClick={() => dispatch(validateCoupon({ code: couponInput, packageId: selectedPlan || "pro" }))}
+                                         disabled={couponLoading || !couponInput}
+                                         className="h-12 px-5 rounded-xl bg-[#95BF47] hover:bg-black text-white font-bold text-[11px] transition-all"
+                                      >
+                                         {couponLoading ? "..." : "Uygula"}
+                                      </Button>
+                                   </div>
+                                   
+                                   {couponError && (
+                                      <p className="text-[10px] font-bold text-red-500 px-1">{couponError}</p>
+                                   )}
+                                   {activeCoupon?.success && (
+                                      <div className="flex items-center justify-between px-1">
+                                         <p className="text-[10px] font-bold text-[#95BF47]">Kupon uygulandı!</p>
+                                         <button 
+                                            onClick={() => {
+                                               dispatch(removeActiveCoupon());
+                                               setCouponInput("");
+                                            }}
+                                            className="text-[10px] font-bold text-gray-400 hover:text-red-500 transition-colors"
+                                         >
+                                            Kaldır
+                                         </button>
+                                      </div>
+                                   )}
+                                </div>
                             </div>
                          </motion.div>
                        ) : (
@@ -532,7 +601,10 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                onClick={async () => {
                                  if (selectedMethod === "transfer") {
                                    const planObj = plans.find(p => p.id === selectedPlan);
-                                   await dispatch(initTransfer({ package: planObj }));
+                                   await dispatch(initTransfer({ 
+                                      package: planObj,
+                                      couponCode: activeCoupon?.code
+                                   }));
                                  }
                                  const statusParam = selectedMethod === "card" ? "&paymentStatus=success" : "";
                                  window.location.href = `/basvuru?plan=${selectedPlan}&method=${selectedMethod}${statusParam}`;
@@ -549,9 +621,9 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
               </div>
 
               {/* Footer */}
-              <div className="p-5 md:p-8 bg-white border-t border-gray-100 sticky bottom-0 z-20">
-                 <div className="max-w-[1200px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div className="hidden md:flex items-center gap-3 bg-gray-50 px-6 py-3 rounded-2xl border border-gray-100">
+              <div className="p-4 md:py-4 md:px-10 bg-white border-t border-gray-100 sticky bottom-0 z-20">
+                 <div className="max-w-[1200px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="hidden md:flex items-center gap-3 bg-gray-50 px-5 py-2 rounded-2xl border border-gray-100">
                        <Check className="w-4 h-4 text-[#95BF47] stroke-[4]" />
                        <span className="text-[10px] font-semibold text-gray-500">Kesintisiz teknik destek paneli</span>
                     </div>
@@ -561,7 +633,7 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                          <Button 
                            variant="ghost" 
                            onClick={() => setStep("plans")}
-                           className="flex-1 md:flex-none rounded-2xl h-12 md:h-14 px-8 text-[11px] font-bold text-gray-400 hover:text-gray-900 bg-gray-50 hover:bg-gray-100"
+                           className="flex-1 md:flex-none rounded-2xl h-10 md:h-11 px-6 text-[11px] font-bold text-gray-400 hover:text-gray-900 bg-gray-50 hover:bg-gray-100"
                          >
                             <ArrowLeft className="w-4 h-4 mr-2" /> Vazgeç
                          </Button>
@@ -576,7 +648,7 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                  : () => router.push(`/basvuru?plan=${selectedPlan}&method=${selectedMethod}`)
                            }
                            disabled={step === "plans" && !selectedPlan}
-                           className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-12 md:h-15 px-8 md:px-14 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"
+                           className="flex-1 md:flex-none rounded-2xl bg-[#95BF47] text-white hover:bg-black font-bold h-10 md:h-11 px-8 md:px-12 text-[12px] shadow-lg shadow-[#95BF47]/20 transition-all transform hover:-translate-y-0.5 active:scale-95"
                          >
                             {step === "plans" 
                               ? "Ödeme adımına geç" 

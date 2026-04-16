@@ -102,7 +102,7 @@ export function Hero() {
       {/* Hero CTA & Buttons */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
         <Link
-          href="https://wa.me/905323497255"
+          href="https://wa.me/08502551389"
           target="_blank"
           className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full text-white font-bold text-lg transition-all active:scale-95 shadow-[0_15px_35px_rgba(149,191,71,0.3)] hover:shadow-[0_20px_40px_rgba(149,191,71,0.4)] duration-300 overflow-hidden shrink-0"
         >
