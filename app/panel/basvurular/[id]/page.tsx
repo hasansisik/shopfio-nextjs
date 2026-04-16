@@ -86,6 +86,14 @@ export default function BasvuruDetayPage() {
               <p className="text-gray-400 text-xs font-medium">Başvuru Kodu: <span className="text-gray-900 font-black">#{app.appId}</span> • {new Date(app.createdAt).toLocaleDateString('tr-TR')} tarihinde oluşturuldu</p>
             </div>
           </div>
+
+          {app.status === "Bilgi Bekleniyor" && (
+            <Link href="/basvuru">
+              <Button className="w-full md:w-auto rounded-2xl bg-[#95BF47] text-white hover:bg-black font-black h-12 px-8 shadow-lg shadow-[#95BF47]/20 transition-all flex gap-2 items-center justify-center">
+                Kuruluma Devam Et <ChevronRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

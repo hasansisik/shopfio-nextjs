@@ -12,6 +12,7 @@ import { useSearchParams, useRouter } from "next/navigation"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { createApplication } from "@/redux/actions/applicationActions"
 import { plans } from "@/lib/pricing-data"
+import { server } from "@/config"
 
 import { loadUser, createSubs } from "@/redux/actions/userActions"
 import * as React from "react"
@@ -125,6 +126,51 @@ export function BilgiFlow() {
     } else {
       setStep(prev => Math.max(prev - 1, 1))
     }
+  };
+  const [isAuthorized, setIsAuthorized] = React.useState<boolean | null>(null)
+
+  // Authorization Check
+  React.useEffect(() => {
+    if (!user) return;
+
+    const checkAuth = async () => {
+      // Check for active entitlement (card)
+      const hasEntitlement = user.entitlements?.some((e: any) => !e.isUsed);
+      
+      // Check for pending skeleton app (transfer/card)
+      let hasPendingApp = false;
+      try {
+        const token = localStorage.getItem("accessToken");
+        const res = await fetch(`${server}/applications`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        hasPendingApp = data.applications?.some((a: any) => 
+            a.status === 'Ödeme Bekleniyor' || a.status === 'Bilgi Bekleniyor'
+        );
+      } catch (e) {
+        console.error("Auth check failed", e);
+      }
+
+      if (!hasEntitlement && !hasPendingApp) {
+        toast.error("Geçerli bir ödemeniz bulunmuyor. Lütfen önce plan seçin.");
+        router.push("/panel");
+        setIsAuthorized(false);
+      } else {
+        setIsAuthorized(true);
+      }
+    };
+
+    checkAuth();
+  }, [user, router]);
+
+  if (isAuthorized === null || loading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 gap-4">
+        <div className="w-12 h-12 border-4 border-[#95BF47]/20 border-t-[#95BF47] rounded-full animate-spin" />
+        <p className="text-sm font-bold text-gray-400 animate-pulse uppercase tracking-widest">Yetkilendirme kontrol ediliyor...</p>
+      </div>
+    )
   }
 
   return (
