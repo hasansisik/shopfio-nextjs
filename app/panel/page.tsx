@@ -106,14 +106,7 @@ export default function PanelPage() {
            transition={{ delay: 0.3 }}
         >
           <Button 
-            onClick={() => {
-              const hasEntitlement = user?.entitlements?.some((e: any) => !e.isUsed);
-              if (hasEntitlement) {
-                window.location.href = '/basvuru';
-              } else {
-                setIsPaymentOpen(true);
-              }
-            }} 
+            onClick={() => setIsPaymentOpen(true)} 
             className="rounded-[22px] bg-[#95BF47] text-white hover:bg-[#86ac3f] font-black px-10 h-16 text-sm flex gap-3 shadow-2xl shadow-[#95BF47]/30 transition-all transform hover:-translate-y-1 active:scale-95"
           >
             <Plus className="w-5 h-5 stroke-[3]" /> Yeni Hizmet Al
@@ -309,14 +302,7 @@ export default function PanelPage() {
                   </div>
 
                   <Button 
-                    onClick={() => {
-                      const hasEntitlement = user?.entitlements?.some((e: any) => !e.isUsed);
-                      if (hasEntitlement) {
-                        window.location.href = '/basvuru';
-                      } else {
-                        setIsPaymentOpen(true);
-                      }
-                    }}
+                    onClick={() => setIsPaymentOpen(true)}
                     className={cn(
                     "w-full mt-10 rounded-2xl h-14 text-xs font-black transition-all shadow-lg active:scale-95",
                     tier.highlight ? "bg-white text-[#95BF47] hover:bg-gray-100 shadow-white/10" : "bg-gray-900 text-white hover:bg-black"

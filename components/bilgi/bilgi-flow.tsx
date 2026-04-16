@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { createApplication } from "@/redux/actions/applicationActions"
 import { plans } from "@/lib/pricing-data"
 
-import { loadUser } from "@/redux/actions/userActions"
+import { loadUser, createSubs } from "@/redux/actions/userActions"
 import * as React from "react"
 
 export function BilgiFlow() {
@@ -24,15 +24,25 @@ export function BilgiFlow() {
   const { user } = useAppSelector((state) => state.user)
 
   const [retryCount, setRetryCount] = React.useState(0)
+  const processedRef = React.useRef<Set<string>>(new Set());
   
   React.useEffect(() => {
     dispatch(loadUser())
   }, [dispatch])
 
-  // Poll for entitlements if user just paid but it's not detected yet
+  // Trigger createSubs and then poll for entitlements
   React.useEffect(() => {
     const isSuccess = searchParams.get("paymentStatus") === "success";
+    const oid = searchParams.get("oid");
     const hasEntitlement = user?.entitlements?.some((e: any) => !e.isUsed);
+
+    // Frontend guard: Only trigger once per OID in this component instance
+    if (isSuccess && oid && !hasEntitlement && !processedRef.current.has(oid)) {
+      processedRef.current.add(oid);
+      dispatch(createSubs(oid)).then(() => {
+        dispatch(loadUser());
+      });
+    }
 
     if (isSuccess && !hasEntitlement && retryCount < 5) {
       const timer = setTimeout(() => {
@@ -129,20 +139,38 @@ export function BilgiFlow() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: "circOut" }}
             >
-              {/* Header Info for Entitlements */}
-              {activeEntitlement && step < (hasShopify ? 8 : 7) && (
-                <div className="mb-8 p-4 bg-[#95BF47]/10 border border-[#95BF47]/20 rounded-2xl flex items-center justify-between">
+              {/* Header Info for Entitlements or Transfer */}
+              {(activeEntitlement || method === 'transfer') && step < (hasShopify ? 8 : 7) && (
+                <div className={cn(
+                  "mb-8 p-4 border rounded-2xl flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-500",
+                  activeEntitlement ? "bg-[#95BF47]/10 border-[#95BF47]/20" : "bg-orange-50 border-orange-100"
+                )}>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#95BF47] flex items-center justify-center text-white">
+                    <div className={cn(
+                      "w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg",
+                      activeEntitlement ? "bg-[#95BF47] shadow-[#95BF47]/20" : "bg-orange-500 shadow-orange-500/20"
+                    )}>
                       <Star className="w-5 h-5 fill-current" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-black text-gray-900 leading-none">Satın Alınmış Paket Aktif</h4>
-                      <p className="text-[10px] font-bold text-[#95BF47] uppercase mt-1">{activeEntitlement.packageName} PAKETİ</p>
+                      <h4 className="text-xs font-black text-gray-900 leading-none">
+                        {activeEntitlement ? "Satın Alınmış Paket Aktif" : "Havale / EFT Ödemesi Seçildi"}
+                      </h4>
+                      <p className={cn(
+                        "text-[10px] font-bold uppercase mt-1",
+                        activeEntitlement ? "text-[#95BF47]" : "text-orange-500"
+                      )}>
+                        {activeEntitlement ? activeEntitlement.packageName : selectedPlan.name} PAKETİ
+                      </p>
                     </div>
                   </div>
-                  <div className="px-3 py-1 bg-white rounded-lg border border-[#95BF47]/20 text-[10px] font-black text-[#95BF47]">
-                    ÖDENMİŞ
+                  <div className={cn(
+                    "px-3 py-1 rounded-lg border text-[10px] font-black",
+                    activeEntitlement 
+                      ? "bg-white border-[#95BF47]/20 text-[#95BF47]" 
+                      : "bg-white border-orange-100 text-orange-500"
+                  )}>
+                    {activeEntitlement ? "ÖDENMİŞ" : "ÖDEME BEKLENİYOR"}
                   </div>
                 </div>
               )}
@@ -187,7 +215,10 @@ export function BilgiFlow() {
 
               {/* Step Success */}
               {((hasShopify && step === 8) || (!hasShopify && step === 7)) && (
-                <StepSuccess onNext={() => router.push("/panel/basvurular")} />
+                <StepSuccess 
+                  onNext={() => router.push("/panel/basvurular")} 
+                  isTransfer={method === 'transfer' && !activeEntitlement}
+                />
               )}
             </motion.div>
           </AnimatePresence>

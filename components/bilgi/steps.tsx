@@ -753,10 +753,10 @@ function ScanningOverlay({ side }: { side: string }) {
 }
 
 // STEP 5: Success
-export function StepSuccess({ onNext }: any) {
+export function StepSuccess({ onNext, isTransfer }: any) {
   const stages = [
     { id: 1, label: "Başvuru alındı", desc: "Başvurunuz sistemimize başarıyla ulaştı ve kayıt edildi.", active: true },
-    { id: 2, label: "Başvuru işleme alındı", desc: "Uzman ekibimiz belgelerinizi ve bilgilerinizi inceliyor.", active: false },
+    { id: 2, label: isTransfer ? "Ödeme Onayı Bekleniyor" : "Başvuru işleme alındı", desc: isTransfer ? "Banka transferiniz onaylandığında süreciniz otomatik olarak devam edecektir." : "Uzman ekibimiz belgelerinizi ve bilgilerinizi inceliyor.", active: isTransfer },
     { id: 3, label: "Kurulum tamamlandı", desc: "Tüm entegrasyonlar tamamlandı ve mağazanız satışa hazır.", active: false },
   ];
 

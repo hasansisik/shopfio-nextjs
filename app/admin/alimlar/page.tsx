@@ -158,18 +158,26 @@ export default function AdminPurchasesPage() {
                         "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider",
                         purchase.isUsed 
                           ? "bg-green-50 text-green-600 border border-green-100" 
-                          : "bg-blue-50 text-blue-600 border border-blue-100"
+                          : (purchase.paymentType === 'transfer' ? "bg-orange-50 text-orange-600 border border-orange-100" : "bg-blue-50 text-blue-600 border border-blue-100")
                       )}>
                         {purchase.isUsed ? (
                           <><Check className="w-3 h-3" /> KULLANILDI</>
                         ) : (
-                          <><History className="w-3 h-3" /> BEKLEMEDE</>
+                          purchase.paymentType === 'transfer' ? (
+                            <><Clock className="w-3 h-3" /> ÖDEME BEKLENİYOR</>
+                          ) : (
+                            <><History className="w-3 h-3" /> BEKLEMEDE</>
+                          )
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-50 border border-gray-100 text-[10px] font-black text-gray-500">
-                          <CreditCard className="w-3 h-3" /> KREDİ KARTI
+                       <div className={cn(
+                         "inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-black",
+                         purchase.paymentType === 'transfer' ? "bg-orange-50 text-orange-600 border-orange-100" : "bg-gray-50 text-gray-400 border-gray-100"
+                       )}>
+                          {purchase.paymentType === 'transfer' ? <Zap className="w-3 h-3" /> : <CreditCard className="w-3 h-3" />}
+                          {purchase.paymentType === 'transfer' ? "HAVALE / EFT" : "KREDİ KARTI"}
                        </div>
                     </td>
                   </tr>

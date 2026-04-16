@@ -17,6 +17,7 @@ import {
   updateUserRole,
   updateTheme,
   clearError,
+  createSubs,
 } from "../actions/userActions";
 
 interface UserState {
@@ -305,6 +306,18 @@ export const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(updateTheme.rejected, (state, action) => {
       // Silent fail - don't show error to user
+    })
+    // Create Subscription (Client-side fallback)
+    .addCase(createSubs.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(createSubs.fulfilled, (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    })
+    .addCase(createSubs.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
     })
     // Clear Error
     .addCase(clearError.fulfilled, (state) => {

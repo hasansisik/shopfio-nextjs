@@ -113,3 +113,25 @@ export const getPublicSettings = createAsyncThunk(
         }
     }
 );
+
+export const initTransfer = createAsyncThunk(
+    "application/initTransfer",
+    async (payload: { package: any }, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) return rejectWithValue("Giriş yapmanız gerekiyor");
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+            };
+            const { data } = await axios.post(`${API_URL}/init-transfer`, payload, config);
+            return data.application;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+);

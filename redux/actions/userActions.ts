@@ -503,6 +503,33 @@ export const updateTheme = createAsyncThunk(
   }
 );
 
+export const createSubs = createAsyncThunk(
+  "user/createSubs",
+  async (merchantOid: string, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        `${server}/paytr/create-subs`,
+        { merchantOid },
+        config
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);
+
 // Clear Error Action
 export const clearError = createAsyncThunk(
   "user/clearError",

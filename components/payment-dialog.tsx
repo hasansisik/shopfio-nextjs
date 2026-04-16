@@ -23,7 +23,8 @@ import { Button } from "@/components/ui/button"
 import { plans, comparisonFeatures } from "@/lib/pricing-data"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
-import { useAppSelector } from "@/redux/hook"
+import { useAppSelector, useAppDispatch } from "@/redux/hook"
+import { initTransfer } from "@/redux/actions/applicationActions"
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import { server } from "@/config"
@@ -35,6 +36,7 @@ interface PaymentDialogProps {
 
 export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.user)
 
   const [step, setStep] = React.useState<"plans" | "payment" | "status">("plans")
@@ -44,6 +46,8 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   const [bankMethods, setBankMethods] = React.useState<any[]>([])
   const [paytrToken, setPaytrToken] = React.useState<string | null>(null)
   const [isLoadingPaytr, setIsLoadingPaytr] = React.useState(false)
+  const [paytrActive, setPaytrActive] = React.useState(true)
+  const [transferActive, setTransferActive] = React.useState(true)
 
   React.useEffect(() => {
     setMounted(true)
@@ -54,6 +58,10 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
       .then(data => {
          if (data?.settings?.paymentMethods) {
              setBankMethods(data.settings.paymentMethods)
+             setTransferActive(data.settings.paymentMethods.length > 0)
+         }
+         if (data?.settings?.paytrActive !== undefined) {
+             setPaytrActive(data.settings.paytrActive)
          }
       })
       .catch(console.error)
@@ -138,9 +146,19 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
   }
 
   const paymentMethods = [
-    { id: "transfer", label: "Havale / EFT", icon: Building2, color: "bg-orange-500" },
-    { id: "card", label: "Kredi Kartı (PayTR)", icon: CreditCard, color: "bg-blue-500" },
-  ]
+    { id: "transfer", label: "Havale / EFT", icon: Building2, color: "bg-orange-500", active: transferActive },
+    { id: "card", label: "Kredi Kartı (PayTR)", icon: CreditCard, color: "bg-blue-500", active: paytrActive },
+  ].filter(m => m.active)
+
+  // Auto-select first active method if current selection is inactive or not set
+  React.useEffect(() => {
+    if (paymentMethods.length > 0) {
+      const isSelectedActive = paymentMethods.find(m => m.id === selectedMethod);
+      if (!isSelectedActive) {
+        setSelectedMethod(paymentMethods[0].id as any);
+      }
+    }
+  }, [paymentMethods, selectedMethod]);
 
   // Steps animations
   const stepsVariants = {
@@ -227,6 +245,29 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                                  Bütçenize ve ihtiyacınıza uygun Shopify paketlerinden birini seçin.
                                </p>
                             </div>
+
+                            {user?.entitlements?.filter((e: any) => !e.isUsed).length > 0 && (
+                              <div className="bg-[#95BF47]/10 border border-[#95BF47]/20 rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 animate-in fade-in slide-in-from-top-4 duration-500">
+                                <div className="flex items-center gap-5">
+                                  <div className="w-14 h-14 bg-[#95BF47] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-[#95BF47]/20">
+                                     <Star className="w-7 h-7 fill-white" />
+                                  </div>
+                                  <div>
+                                     <h4 className="text-gray-900 font-bold text-lg">Aktif kullanım hakkınız var!</h4>
+                                     <p className="text-gray-500 text-sm font-medium">Zaten satın aldığınız <span className="text-[#95BF47] font-bold">{user.entitlements.filter((e: any) => !e.isUsed).length} adet</span> paketiniz bulunuyor.</p>
+                                  </div>
+                                </div>
+                                <Button 
+                                  onClick={() => {
+                                    onClose();
+                                    router.push("/basvuru");
+                                  }}
+                                  className="bg-[#95BF47] text-white hover:bg-black rounded-xl h-12 px-8 font-bold transition-all shadow-lg shadow-[#95BF47]/10"
+                                >
+                                  Hemen Kuruluma Başlat <ChevronRight className="w-4 h-4 ml-2" />
+                                </Button>
+                              </div>
+                            )}
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6">
                                {plans.map((plan, i) => {
@@ -316,28 +357,30 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                            className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start"
                          >
                             <div className="lg:col-span-8 space-y-10">
-                               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                  {paymentMethods.map((method) => (
-                                     <button
-                                        key={method.id}
-                                        onClick={() => setSelectedMethod(method.id as any)}
-                                        className={cn(
-                                           "p-4 md:p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 group aspect-square justify-center",
-                                           selectedMethod === method.id 
-                                              ? "border-[#95BF47] bg-white shadow-lg shadow-[#95BF47]/5" 
-                                              : "border-gray-50 bg-white hover:border-[#95BF47]/20"
-                                        )}
-                                     >
-                                        <div className={cn("w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105", method.color)}>
-                                           <method.icon className="w-6 h-6 md:w-7 md:h-7" />
-                                        </div>
-                                        <span className={cn(
-                                           "text-[10px] font-bold text-center leading-tight",
-                                           selectedMethod === method.id ? "text-gray-900" : "text-gray-400"
-                                        )}>{method.label}</span>
-                                     </button>
-                                  ))}
-                               </div>
+                                {paymentMethods.length > 1 && (
+                                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                      {paymentMethods.map((method) => (
+                                         <button
+                                            key={method.id}
+                                            onClick={() => setSelectedMethod(method.id as any)}
+                                            className={cn(
+                                               "p-4 md:p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 group aspect-square justify-center",
+                                               selectedMethod === method.id 
+                                                  ? "border-[#95BF47] bg-white shadow-lg shadow-[#95BF47]/5" 
+                                                  : "border-gray-50 bg-white hover:border-[#95BF47]/20"
+                                            )}
+                                         >
+                                            <div className={cn("w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105", method.color)}>
+                                               <method.icon className="w-6 h-6 md:w-7 md:h-7" />
+                                            </div>
+                                            <span className={cn(
+                                               "text-[10px] font-bold text-center leading-tight",
+                                               selectedMethod === method.id ? "text-gray-900" : "text-gray-400"
+                                            )}>{method.label}</span>
+                                         </button>
+                                      ))}
+                                   </div>
+                                )}
 
                                {/* Method Selection Feedback UI */}
                                <div className="bg-white rounded-[32px] p-8 md:p-12 border border-gray-100 shadow-sm min-h-[350px] flex flex-col items-center justify-center text-center">
@@ -486,7 +529,11 @@ export default function PaymentDialog({ isOpen, onClose }: PaymentDialogProps) {
                             </div>
 
                             <Button 
-                               onClick={() => {
+                               onClick={async () => {
+                                 if (selectedMethod === "transfer") {
+                                   const planObj = plans.find(p => p.id === selectedPlan);
+                                   await dispatch(initTransfer({ package: planObj }));
+                                 }
                                  const statusParam = selectedMethod === "card" ? "&paymentStatus=success" : "";
                                  window.location.href = `/basvuru?plan=${selectedPlan}&method=${selectedMethod}${statusParam}`;
                                }}

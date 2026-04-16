@@ -1,2 +1,2 @@
-export const server = process.env.NEXT_PUBLIC_API_URL || "https://shopfio-server.vercel.app/v1";
+export const server = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3040/v1";
 
