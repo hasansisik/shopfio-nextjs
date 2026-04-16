@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { adminGetStats } from "@/redux/actions/adminActions"
 import { 
@@ -19,18 +19,11 @@ import Link from "next/link"
 export default function AdminDashboard() {
   const dispatch = useAppDispatch()
   const { stats, loading } = useAppSelector((state) => state.admin)
+  const [period, setPeriod] = useState('all')
 
   useEffect(() => {
-    dispatch(adminGetStats())
-  }, [dispatch])
-
-  if (loading && !stats) {
-    return (
-      <div className="flex-1 flex items-center justify-center bg-gray-50/50">
-        <Loader2 className="w-8 h-8 animate-spin text-[#95BF47]" />
-      </div>
-    )
-  }
+    dispatch(adminGetStats(period))
+  }, [dispatch, period])
 
   const statCards = [
     {
@@ -63,14 +56,14 @@ export default function AdminDashboard() {
       icon: DollarSign,
       color: "emerald",
       link: "/admin/basvurular",
-      subText: "Tamamlanan projelerden elde edilen"
+      subText: period === 'all' ? "Tüm zamanların toplam hasılatı" : "Seçili dönemde elde edilen hasılat"
     }
   ]
 
   return (
     <div className="p-6 md:p-10 space-y-10 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-3">
             <TrendingUp className="w-8 h-8 text-[#95BF47]" />
@@ -79,41 +72,75 @@ export default function AdminDashboard() {
           <p className="text-gray-500 text-sm mt-1 font-medium italic">Shopfio operasyonel durum ve sistem istatistikleri.</p>
         </div>
         
-        <div className="bg-white px-4 py-2 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-3">
-           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-           <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">SİSTEM CANLI</span>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <select 
+              value={period}
+              onChange={(e) => setPeriod(e.target.value)}
+              className="appearance-none bg-white border border-gray-100 rounded-2xl px-6 py-3 pr-12 text-sm font-bold text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#95BF47]/20 focus:border-[#95BF47] transition-all cursor-pointer"
+            >
+              <option value="all">Tüm Zamanlar</option>
+              <option value="today">Bugün</option>
+              <option value="yesterday">Dün</option>
+              <option value="thisWeek">Bu Hafta</option>
+              <option value="thisMonth">Bu Ay</option>
+              <option value="3months">Son 3 Ay</option>
+              <option value="6months">Son 6 Ay</option>
+              <option value="thisYear">Bu Yıl</option>
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+              <Clock className="w-4 h-4" />
+            </div>
+          </div>
+
+          <div className="hidden md:flex bg-white px-4 py-3 rounded-2xl border border-gray-100 shadow-sm items-center gap-3">
+             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+             <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">SİSTEM CANLI</span>
+          </div>
         </div>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((card, i) => (
-          <Link 
-            key={i} 
-            href={card.link}
-            className="group bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-[#95BF47]/5 transition-all duration-500 relative overflow-hidden"
-          >
-            <div className={`absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 rounded-full opacity-[0.03] group-hover:scale-150 transition-transform duration-700 bg-${card.color}-500`} />
-            
-            <div className="relative z-10 space-y-4">
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:rotate-12 bg-${card.color}-50 text-${card.color}-500`}>
-                <card.icon className="w-7 h-7" />
-              </div>
+        {loading && !stats ? (
+           Array.from({ length: 4 }).map((_, i) => (
+             <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm h-48 animate-pulse flex flex-col justify-between">
+                <div className="w-14 h-14 bg-gray-50 rounded-2xl" />
+                <div className="space-y-2">
+                   <div className="w-20 h-3 bg-gray-50 rounded" />
+                   <div className="w-32 h-8 bg-gray-50 rounded" />
+                </div>
+             </div>
+           ))
+        ) : (
+          statCards.map((card, i) => (
+            <Link 
+              key={i} 
+              href={card.link}
+              className="group bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-[#95BF47]/5 transition-all duration-500 relative overflow-hidden"
+            >
+              <div className={`absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 rounded-full opacity-[0.03] group-hover:scale-150 transition-transform duration-700 bg-${card.color}-500`} />
               
-              <div>
-                <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-0.5">{card.title}</p>
-                <h2 className="text-3xl font-black text-gray-900 mt-1">{card.value}</h2>
-              </div>
-
-              <div className="pt-4 flex items-center justify-between">
-                <p className="text-[10px] font-bold text-gray-400 leading-tight w-2/3">{card.subText}</p>
-                <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#95BF47] group-hover:text-white transition-all duration-300">
-                  <ArrowRight className="w-4 h-4" />
+              <div className="relative z-10 space-y-4">
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:rotate-12 bg-${card.color}-50 text-${card.color}-500`}>
+                  <card.icon className="w-7 h-7" />
+                </div>
+                
+                <div>
+                  <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-0.5">{card.title}</p>
+                  <h2 className="text-3xl font-black text-gray-900 mt-1">{card.value}</h2>
+                </div>
+  
+                <div className="pt-4 flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-gray-400 leading-tight w-2/3">{card.subText}</p>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#95BF47] group-hover:text-white transition-all duration-300">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

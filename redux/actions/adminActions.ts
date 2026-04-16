@@ -96,10 +96,10 @@ export const adminUpdateSettings = createAsyncThunk(
 
 export const adminGetStats = createAsyncThunk(
   "admin/getStats",
-  async (_, thunkAPI) => {
+  async (period: string = 'all', thunkAPI) => {
     try {
       const token = localStorage.getItem("accessToken");
-      const { data } = await axios.get(`${server}/admin/stats`, {
+      const { data } = await axios.get(`${server}/admin/stats?period=${period}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data.stats;
