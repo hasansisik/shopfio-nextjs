@@ -68,6 +68,7 @@ export function BilgiFlow() {
   
   // Find if user has a valid entitlement for any package
   const activeEntitlement = user?.entitlements?.find((e: any) => !e.isUsed);
+  const isPayTRSuccess = searchParams.get("paymentStatus") === "success";
   
   // Priority: 1. Active Entitlement, 2. URL param, 3. Default Pro
   const finalPlanId = activeEntitlement?.packageId || planId;
@@ -97,7 +98,7 @@ export function BilgiFlow() {
   const handleFinalSubmit = async () => {
     const payload = {
       package: selectedPlan,
-      paymentMethod: activeEntitlement ? 'card' : method, // If they have an entitlement, it means they already paid (usually via card/transfer confirmed)
+      paymentMethod: (activeEntitlement || isPayTRSuccess) ? 'card' : method,
       formData: {
         ...formData,
         hasShopify
@@ -152,7 +153,7 @@ export function BilgiFlow() {
         console.error("Auth check failed", e);
       }
 
-      if (!hasEntitlement && !hasPendingApp) {
+      if (!hasEntitlement && !hasPendingApp && !isPayTRSuccess) {
         toast.error("Geçerli bir ödemeniz bulunmuyor. Lütfen önce plan seçin.");
         router.push("/panel");
         setIsAuthorized(false);
@@ -162,7 +163,7 @@ export function BilgiFlow() {
     };
 
     checkAuth();
-  }, [user, router]);
+  }, [user, router, isPayTRSuccess]);
 
   if (isAuthorized === null || loading) {
     return (
@@ -186,25 +187,25 @@ export function BilgiFlow() {
               transition={{ duration: 0.5, ease: "circOut" }}
             >
               {/* Header Info for Entitlements or Transfer */}
-              {(activeEntitlement || method === 'transfer') && step < (hasShopify ? 8 : 7) && (
+              {(activeEntitlement || isPayTRSuccess || method === 'transfer') && step < (hasShopify ? 8 : 7) && (
                 <div className={cn(
                   "mb-8 p-4 border rounded-2xl flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-500",
-                  activeEntitlement ? "bg-[#95BF47]/10 border-[#95BF47]/20" : "bg-orange-50 border-orange-100"
+                  (activeEntitlement || isPayTRSuccess) ? "bg-[#95BF47]/10 border-[#95BF47]/20" : "bg-orange-50 border-orange-100"
                 )}>
                   <div className="flex items-center gap-3">
                     <div className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg",
-                      activeEntitlement ? "bg-[#95BF47] shadow-[#95BF47]/20" : "bg-orange-500 shadow-orange-500/20"
+                      (activeEntitlement || isPayTRSuccess) ? "bg-[#95BF47] shadow-[#95BF47]/20" : "bg-orange-500 shadow-orange-500/20"
                     )}>
                       <Star className="w-5 h-5 fill-current" />
                     </div>
                     <div>
                       <h4 className="text-xs font-black text-gray-900 leading-none">
-                        {activeEntitlement ? "Satın Alınmış Paket Aktif" : "Havale / EFT Ödemesi Seçildi"}
+                        {(activeEntitlement || isPayTRSuccess) ? "Kredi Kartı Ödemesi Onaylandı" : "Havale / EFT Ödemesi Seçildi"}
                       </h4>
                       <p className={cn(
                         "text-[10px] font-bold uppercase mt-1",
-                        activeEntitlement ? "text-[#95BF47]" : "text-orange-500"
+                        (activeEntitlement || isPayTRSuccess) ? "text-[#95BF47]" : "text-orange-500"
                       )}>
                         {activeEntitlement ? activeEntitlement.packageName : selectedPlan.name} PAKETİ
                       </p>
@@ -212,11 +213,11 @@ export function BilgiFlow() {
                   </div>
                   <div className={cn(
                     "px-3 py-1 rounded-lg border text-[10px] font-black",
-                    activeEntitlement 
+                    (activeEntitlement || isPayTRSuccess) 
                       ? "bg-white border-[#95BF47]/20 text-[#95BF47]" 
                       : "bg-white border-orange-100 text-orange-500"
                   )}>
-                    {activeEntitlement ? "ÖDENMİŞ" : "ÖDEME BEKLENİYOR"}
+                    {(activeEntitlement || isPayTRSuccess) ? "ÖDEME ONAYLANDI" : "ÖDEME BEKLENİYOR"}
                   </div>
                 </div>
               )}
