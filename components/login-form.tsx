@@ -33,9 +33,9 @@ export function LoginForm({
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push("/panel")
+      window.location.href = "/panel"
     }
-  }, [isAuthenticated, router])
+  }, [isAuthenticated])
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -47,9 +47,9 @@ export function LoginForm({
     const result = await dispatch(login({ email, password }))
     
     if (login.fulfilled.match(result)) {
-      router.push("/panel")
+      window.location.href = "/panel"
     } else if (result.payload && typeof result.payload === 'object' && 'requiresVerification' in result.payload) {
-      router.push(`/dogrulama?email=${encodeURIComponent(email)}`)
+      window.location.href = `/dogrulama?email=${encodeURIComponent(email)}`
     }
   }
 

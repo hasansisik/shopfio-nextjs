@@ -154,7 +154,7 @@ export function NavUser({
         actionLabel="Evet, Çıkış Yap"
         onAction={async () => {
           await dispatch(logout())
-          router.push("/giris")
+          window.location.href = "/giris"
         }}
       />
     </>

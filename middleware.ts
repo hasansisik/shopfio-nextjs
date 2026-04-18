@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Optional: Redirect away from auth pages if already logged in
-  if (token && (pathname === '/giris' || pathname === '/kayit')) {
+  if (token && (pathname === '/giris' || pathname === '/kayitol')) {
     return NextResponse.redirect(new URL('/panel', request.url))
   }
 
@@ -25,6 +25,6 @@ export const config = {
     '/panel/:path*',
     '/admin/:path*',
     '/giris',
-    '/kayit'
+    '/kayitol'
   ],
 }
