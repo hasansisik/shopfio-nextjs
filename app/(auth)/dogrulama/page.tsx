@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { MailCheck } from "lucide-react"
+import { Phone, MailCheck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,21 +15,22 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
-import { verifyEmail, againEmail, clearError } from "@/redux/actions/userActions"
+import { verifyEmail, verifySMS, againEmail, againSMS, clearError } from "@/redux/actions/userActions"
 
 function DogrulamaForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
-  const { loading, error, message, isAuthenticated, isVerified } = useAppSelector((state) => state.user)
+  const { loading, error, message, isAuthenticated, isVerified, isPhoneVerified } = useAppSelector((state) => state.user)
 
   useEffect(() => {
-    if (isAuthenticated && isVerified) {
+    if (isAuthenticated && isVerified && isPhoneVerified) {
       router.push("/panel")
     }
-  }, [isAuthenticated, isVerified, router])
+  }, [isAuthenticated, isVerified, isPhoneVerified, router])
 
   const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
   const [showCodeInput, setShowCodeInput] = useState(false)
 
@@ -39,8 +40,13 @@ function DogrulamaForm() {
 
   useEffect(() => {
     const emailParam = searchParams.get("email")
+    const phoneParam = searchParams.get("phone")
     if (emailParam) {
       setEmail(emailParam)
+      setShowCodeInput(true)
+    }
+    if (phoneParam) {
+      setPhone(phoneParam)
       setShowCodeInput(true)
     }
   }, [searchParams])
@@ -48,16 +54,15 @@ function DogrulamaForm() {
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!email || !verificationCode) {
+    if ((!email && !phone) || !verificationCode) {
       return
     }
 
-    const result = await dispatch(verifyEmail({
-      email,
-      verificationCode: Number(verificationCode)
-    }))
+    const result = phone 
+      ? await dispatch(verifySMS({ phone, verificationCode: Number(verificationCode) }))
+      : await dispatch(verifyEmail({ email, verificationCode: Number(verificationCode) }))
 
-    if (verifyEmail.fulfilled.match(result)) {
+    if (verifySMS.fulfilled.match(result) || verifyEmail.fulfilled.match(result)) {
       setTimeout(() => {
         router.push("/panel")
       }, 1000)
@@ -65,8 +70,11 @@ function DogrulamaForm() {
   }
 
   const handleResend = async () => {
-    if (!email) return
-    await dispatch(againEmail(email))
+    if (phone) {
+      await dispatch(againSMS(phone))
+    } else if (email) {
+      await dispatch(againEmail(email))
+    }
   }
 
   return (
@@ -82,12 +90,16 @@ function DogrulamaForm() {
             <FieldGroup className="gap-4">
               <div className="flex flex-col items-center gap-4 text-center">
                 <div className="bg-primary/10 text-primary flex size-16 items-center justify-center rounded-full">
-                  <MailCheck className="size-8" />
+                  {phone ? <Phone className="size-8" /> : <MailCheck className="size-8" />}
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h1 className="text-2xl font-bold">E-postanızı Doğrulayın</h1>
+                  <h1 className="text-2xl font-bold">
+                    {phone ? "Telefonunuzu Doğrulayın" : "E-postanızı Doğrulayın"}
+                  </h1>
                   <p className="text-muted-foreground text-sm text-balance">
-                    E-posta adresinize gönderdiğimiz doğrulama kodunu girin
+                    {phone 
+                      ? `${phone} numaralı telefonunuza gönderdiğimiz doğrulama kodunu girin`
+                      : `${email} adresinize gönderdiğimiz doğrulama kodunu girin`}
                   </p>
                 </div>
               </div>
@@ -101,16 +113,19 @@ function DogrulamaForm() {
               )}
               {showCodeInput ? (
                 <form onSubmit={handleVerify} className="flex flex-col gap-4">
-                  {!email && (
+                  {!email && !phone && (
                     <Field>
-                      <FieldLabel htmlFor="email">E-posta</FieldLabel>
+                      <FieldLabel htmlFor="email">E-posta veya Telefon</FieldLabel>
                       <Input
                         id="email"
-                        type="email"
-                        placeholder="ornek@email.com"
+                        type="text"
+                        placeholder="ornek@email.com veya 05XX..."
                         required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={email || phone}
+                        onChange={(e) => {
+                          if (e.target.value.includes('@')) setEmail(e.target.value);
+                          else setPhone(e.target.value);
+                        }}
                         disabled={loading}
                         className="rounded-full"
                       />
@@ -130,7 +145,9 @@ function DogrulamaForm() {
                       className="rounded-full"
                     />
                     <FieldDescription>
-                      E-postanıza gönderilen 4 haneli kodu girin
+                      {phone 
+                        ? "Telefonunuza gönderilen 4 haneli kodu girin"
+                        : "E-postanıza gönderilen 4 haneli kodu girin"}
                     </FieldDescription>
                   </Field>
                   <Field>
@@ -143,8 +160,9 @@ function DogrulamaForm() {
                 <>
                   <Field>
                     <FieldDescription className="text-center">
-                      E-postanızı kontrol edin ve doğrulama kodunu girin.
-                      Eğer e-postayı görmediyseniz spam klasörünü kontrol edin.
+                      {phone 
+                        ? "Telefonunuzu kontrol edin ve doğrulama kodunu girin."
+                        : "E-postanızı kontrol edin ve doğrulama kodunu girin. Eğer e-postayı görmediyseniz spam klasörünü kontrol edin."}
                     </FieldDescription>
                   </Field>
                   <Field>
@@ -152,9 +170,9 @@ function DogrulamaForm() {
                       type="button"
                       className="w-full rounded-full"
                       onClick={handleResend}
-                      disabled={loading || !email}
+                      disabled={loading || (!email && !phone)}
                     >
-                      {loading ? "Gönderiliyor..." : "Doğrulama E-postasını Tekrar Gönder"}
+                      {loading ? "Gönderiliyor..." : phone ? "Doğrulama Kodunu Tekrar Gönder" : "Doğrulama E-postasını Tekrar Gönder"}
                     </Button>
                   </Field>
                 </>

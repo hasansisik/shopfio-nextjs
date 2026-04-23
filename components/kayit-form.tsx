@@ -40,6 +40,7 @@ export function KayitForm({
   const [name, setName] = useState("")
   const [surname, setSurname] = useState("")
   const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -56,14 +57,14 @@ export function KayitForm({
     const lastName = lastNameParts.join(" ") || surname
 
     const result = await dispatch(register({ 
-      name: firstName, 
-      surname: lastName || firstName,
+      name, 
       email, 
+      phone,
       password 
     }))
     
     if (register.fulfilled.match(result)) {
-      router.push(`/dogrulama?email=${encodeURIComponent(email)}`)
+      router.push(`/dogrulama?phone=${encodeURIComponent(phone)}`)
     }
   }
 
@@ -101,6 +102,19 @@ export function KayitForm({
             required 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+            className="rounded-full"
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="phone">Telefon Numarası</FieldLabel>
+          <Input 
+            id="phone" 
+            type="tel" 
+            placeholder="05XX XXX XX XX" 
+            required 
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             disabled={loading}
             className="rounded-full"
           />

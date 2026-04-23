@@ -8,7 +8,9 @@ import {
   loadUser,
   logout,
   verifyEmail,
+  verifySMS,
   againEmail,
+  againSMS,
   forgotPassword,
   resetPassword,
   editProfile,
@@ -27,6 +29,7 @@ interface UserState {
   error: string | null;
   isAuthenticated?: boolean;
   isVerified?: boolean;
+  isPhoneVerified?: boolean;
   message?: string | null;
   allUsers: any[];
   userStats: any;
@@ -203,6 +206,21 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.loading = false;
       state.error = action.payload as string;
     })
+    // Verify SMS
+    .addCase(verifySMS.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(verifySMS.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isPhoneVerified = true;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+    })
+    .addCase(verifySMS.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    })
     // Again Email
     .addCase(againEmail.pending, (state) => {
       state.loading = true;
@@ -212,6 +230,18 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.message = "E-posta başarıyla tekrar gönderildi.";
     })
     .addCase(againEmail.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    })
+    // Again SMS
+    .addCase(againSMS.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(againSMS.fulfilled, (state) => {
+      state.loading = false;
+      state.message = "Doğrulama kodu başarıyla tekrar gönderildi.";
+    })
+    .addCase(againSMS.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     })

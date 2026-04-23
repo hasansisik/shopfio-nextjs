@@ -46,14 +46,13 @@ axios.interceptors.request.use(
 
 export interface RegisterPayload {
   name: string;
-  surname: string;
   email: string;
+  phone: string;
   password: string;
-  birthDate?: string;
 }
 
 export interface LoginPayload {
-  email: string;
+  identifier: string;
   password: string;
 }
 
@@ -67,6 +66,11 @@ export interface GoogleLoginPayload {
 
 export interface VerifyEmailPayload {
   email: string;
+  verificationCode: number;
+}
+
+export interface VerifySMSPayload {
+  phone: string;
   verificationCode: number;
 }
 
@@ -148,12 +152,12 @@ export const login = createAsyncThunk(
       localStorage.setItem("userEmail", data.user.email);
       return data.user;
     } catch (error: any) {
-      // Handle email verification required case
+      // Handle phone verification required case
       if (error.response?.status === 403 && error.response?.data?.requiresVerification) {
-        // Don't set this as an error, it's handled by redirect
         return thunkAPI.rejectWithValue({
           message: error.response.data.message,
           requiresVerification: true,
+          phone: error.response.data.phone,
           email: error.response.data.email
         });
       }
@@ -322,11 +326,52 @@ export const verifyEmail = createAsyncThunk(
   }
 );
 
+export const verifySMS = createAsyncThunk(
+  "user/verifySMS",
+  async (payload: VerifySMSPayload, thunkAPI) => {
+    try {
+      const { data } = await axios.post(`${server}/auth/verify-sms`, payload);
+
+      if (data.user?.token) {
+        localStorage.setItem("accessToken", data.user.token);
+        setTokenCookie(data.user.token);
+      }
+
+      return {
+        message: data.message,
+        user: data.user
+      };
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);
+
 export const againEmail = createAsyncThunk(
   "user/againEmail",
   async (email: string, thunkAPI) => {
     try {
       await axios.post(`${server}/auth/again-email`, { email });
+      return;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);
+
+export const againSMS = createAsyncThunk(
+  "user/againSMS",
+  async (phone: string, thunkAPI) => {
+    try {
+      await axios.post(`${server}/auth/again-sms`, { phone });
       return;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(

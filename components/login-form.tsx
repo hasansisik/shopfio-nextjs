@@ -37,19 +37,21 @@ export function LoginForm({
     }
   }, [isAuthenticated])
 
-  const [email, setEmail] = useState("")
+  const [identifier, setIdentifier] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    const result = await dispatch(login({ email, password }))
+    const result = await dispatch(login({ identifier, password } as any))
     
     if (login.fulfilled.match(result)) {
       window.location.href = "/panel"
     } else if (result.payload && typeof result.payload === 'object' && 'requiresVerification' in result.payload) {
-      window.location.href = `/dogrulama?email=${encodeURIComponent(email)}`
+      const payload = result.payload as any;
+      const param = payload.phone ? `phone=${encodeURIComponent(payload.phone)}` : `email=${encodeURIComponent(payload.email)}`;
+      window.location.href = `/dogrulama?${param}`
     }
   }
 
@@ -59,21 +61,21 @@ export function LoginForm({
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Giriş Yap</h1>
           <p className="text-muted-foreground text-sm text-balance">
-            Hesabınıza giriş yapmak için e-posta ve şifrenizi girin
+            Hesabınıza giriş yapmak için bilgilerinizi girin
           </p>
         </div>
         {error && typeof error === 'string' && (
           <FieldError>{error}</FieldError>
         )}
         <Field>
-          <FieldLabel htmlFor="email">E-posta</FieldLabel>
+          <FieldLabel htmlFor="identifier">E-posta veya Telefon</FieldLabel>
           <Input 
-            id="email" 
-            type="email" 
-            placeholder="ornek@email.com" 
+            id="identifier" 
+            type="text" 
+            placeholder="ornek@email.com veya 05XX..." 
             required 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
             disabled={loading}
             className="rounded-full"
           />
