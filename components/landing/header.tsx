@@ -3,13 +3,17 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ChevronRight, Menu, X } from "lucide-react"
+import { ChevronRight, Menu, X, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
-import { useAppSelector } from "@/redux/hook"
+import { useAppSelector, useAppDispatch } from "@/redux/hook"
+import { logout } from "@/redux/actions/userActions"
+import { useRouter } from "next/navigation"
 
 export function Header() {
   const { user, isAuthenticated } = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -21,6 +25,12 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const handleLogout = async () => {
+    await dispatch(logout())
+    router.push("/")
+    setIsMobileMenuOpen(false)
+  }
+
   const navLinks = [
     { name: "Özellikler", href: "#features" },
     { name: "Nasıl Çalışır?", href: "#onboarding" },
@@ -28,6 +38,8 @@ export function Header() {
     { name: "Ücretlendirme", href: "#pricing" },
     { name: "SSS", href: "#faq" },
   ]
+
+  const panelHref = user?.role === 'admin' ? "/admin/users" : "/panel"
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-2 px-4 transition-all duration-300 pointer-events-none">
@@ -39,18 +51,15 @@ export function Header() {
             : "w-full max-w-7xl bg-transparent px-6 py-6"
         )}
       >
-        {/* Logo Group */}
+        {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-1 group">
-            <Image 
-              src="/logo.png" 
-              alt="shopfio logo" 
-              width={250} 
+            <Image
+              src="/logo.png"
+              alt="shopfio logo"
+              width={250}
               height={100}
-              className={cn(
-                  "w-auto transition-all duration-500",
-                  isScrolled ? "h-14" : "h-16"
-              )}
+              className={cn("w-auto transition-all duration-500", isScrolled ? "h-14" : "h-16")}
               priority
             />
           </Link>
@@ -69,38 +78,76 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Global CTA & Mobile Toggle */}
-        <div className="flex items-center gap-4 pointer-events-auto">
-          <Link
-            href={isAuthenticated ? (user?.role === 'admin' ? "/admin/users" : "/panel") : "/giris"}
-            className={cn(
-              "hidden sm:flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
-              isScrolled 
-                ? "bg-[#95BF47] text-white hover:bg-[#5BB13C] shadow-lg shadow-[#95BF47]/20"
-                : "bg-[#95BF47] text-white hover:bg-[#5BB13C]"
-            )}
-          >
-            {isAuthenticated ? "Panel" : "Giriş"}
-            <ChevronRight className="w-4 h-4" />
-          </Link>
+        {/* Desktop CTA Buttons */}
+        <div className="flex items-center gap-3 pointer-events-auto">
+          {isAuthenticated ? (
+            <>
+              <button
+                onClick={handleLogout}
+                className={cn(
+                  "hidden sm:flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-all duration-300 border",
+                  isScrolled
+                    ? "border-gray-300 text-gray-600 hover:border-red-400 hover:text-red-500 bg-white/50"
+                    : "border-gray-300 text-gray-600 hover:border-red-400 hover:text-red-500"
+                )}
+              >
+                <LogOut className="w-4 h-4" />
+                Çıkış Yap
+              </button>
+              <Link
+                href={panelHref}
+                className={cn(
+                  "hidden sm:flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
+                  isScrolled
+                    ? "bg-[#95BF47] text-white hover:bg-[#5BB13C] shadow-lg shadow-[#95BF47]/20"
+                    : "bg-[#95BF47] text-white hover:bg-[#5BB13C]"
+                )}
+              >
+                Panel
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/giris"
+                className={cn(
+                  "hidden sm:flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-all duration-300 border",
+                  isScrolled
+                    ? "border-gray-300 text-gray-700 hover:border-gray-500 bg-white/50"
+                    : "border-gray-300 text-gray-700 hover:border-gray-500"
+                )}
+              >
+                Giriş Yap
+              </Link>
+              <Link
+                href="/kayitol"
+                className={cn(
+                  "hidden sm:flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
+                  isScrolled
+                    ? "bg-[#95BF47] text-white hover:bg-[#5BB13C] shadow-lg shadow-[#95BF47]/20"
+                    : "bg-[#95BF47] text-white hover:bg-[#5BB13C]"
+                )}
+              >
+                Kayıt Ol
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </>
+          )}
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className={cn(
-                "lg:hidden p-2 rounded-full transition-all duration-300",
-                "bg-black/5 text-black hover:bg-black/10"
-            )}
+            className="lg:hidden p-2 rounded-full bg-black/5 text-black hover:bg-black/10 transition-all duration-300"
           >
             <Menu className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Mobile Sidebar Navigation */}
+        {/* Mobile Sidebar */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <>
-              {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -108,8 +155,6 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] cursor-pointer pointer-events-auto"
               />
-              
-              {/* Drawer Content */}
               <motion.div
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
@@ -118,15 +163,15 @@ export function Header() {
                 className="fixed top-0 right-0 h-full w-[280px] bg-white z-[101] shadow-2xl flex flex-col p-8 pointer-events-auto"
               >
                 <div className="flex items-center justify-between mb-12">
-                   <div className="w-8 h-8 flex items-center justify-center bg-[#95BF47]/10 rounded-lg">
-                      <Image src="/logo.png" alt="logo" width={20} height={20} className="object-contain" />
-                   </div>
-                   <button 
+                  <div className="w-8 h-8 flex items-center justify-center bg-[#95BF47]/10 rounded-lg">
+                    <Image src="/logo.png" alt="logo" width={20} height={20} className="object-contain" />
+                  </div>
+                  <button
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="p-2 rounded-full bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-100 transition-all"
-                   >
-                     <X className="w-5 h-5" />
-                   </button>
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
 
                 <nav className="flex flex-col gap-6">
@@ -148,16 +193,42 @@ export function Header() {
                   ))}
                 </nav>
 
-                <div className="mt-auto space-y-4">
-                   <Link
-                      href={isAuthenticated ? (user?.role === 'admin' ? "/admin/users" : "/panel") : "/giris"}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="w-full flex items-center justify-center gap-2 bg-[#1C1C1C] text-white py-4 rounded-2xl font-bold text-sm"
-                   >
-                      {isAuthenticated ? "Panel" : "Giriş"}
-                      <ChevronRight className="w-4 h-4" />
-                   </Link>
-                   <p className="text-[10px] text-gray-400 font-medium tracking-widest text-center">Resmi Shopify Partneri</p>
+                <div className="mt-auto space-y-3">
+                  {isAuthenticated ? (
+                    <>
+                      <Link
+                        href={panelHref}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="w-full flex items-center justify-center gap-2 bg-[#95BF47] text-white py-4 rounded-2xl font-bold text-sm"
+                      >
+                        Panel <ChevronRight className="w-4 h-4" />
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-600 hover:text-red-500 hover:border-red-300 py-4 rounded-2xl font-bold text-sm transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" /> Çıkış Yap
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/kayitol"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="w-full flex items-center justify-center gap-2 bg-[#1C1C1C] text-white py-4 rounded-2xl font-bold text-sm"
+                      >
+                        Kayıt Ol <ChevronRight className="w-4 h-4" />
+                      </Link>
+                      <Link
+                        href="/giris"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-700 py-4 rounded-2xl font-bold text-sm"
+                      >
+                        Giriş Yap
+                      </Link>
+                    </>
+                  )}
+                  <p className="text-[10px] text-gray-400 font-medium tracking-widest text-center">Resmi Shopify Partneri</p>
                 </div>
               </motion.div>
             </>
