@@ -23,7 +23,8 @@ export default function PaymentSettingsPage() {
      merchantId: "",
      merchantKey: "",
      merchantSalt: "",
-     isActive: true
+     isActive: true,
+     testMode: false
   })
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -166,7 +167,17 @@ export default function PaymentSettingsPage() {
                </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-6">
+               <label className="flex items-center gap-2 cursor-pointer">
+                 <span className="text-[10px] font-black uppercase tracking-widest text-amber-600">TEST MODU</span>
+                 <input 
+                   type="checkbox" 
+                   checked={paytrConfig.testMode}
+                   onChange={(e) => setPaytrConfig({ ...paytrConfig, testMode: e.target.checked })}
+                   className="w-4 h-4 rounded text-amber-500 focus:ring-amber-500/20 border-gray-200"
+                 />
+               </label>
+
                <label className="flex items-center gap-2 cursor-pointer">
                  <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">AKTİF</span>
                  <input 
