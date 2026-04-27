@@ -1,6 +1,7 @@
 
 
 import { LoginForm } from "@/components/login-form"
+import { AuthBackgroundSlider } from "@/components/auth-background-slider"
 
 export default function LoginPage() {
   return (
@@ -20,12 +21,8 @@ export default function LoginPage() {
           <img src="https://gegify.com/assets/images/logo-black.png" alt="Gegify Logo" className="h-16" />
         </div>
       </div>
-      <div className="bg-muted relative hidden lg:block">
-        <img
-          src="/authbg.png"
-          alt="Auth Background"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+      <div className="bg-muted relative hidden lg:block border-l">
+        <AuthBackgroundSlider />
       </div>
     </div>
   )

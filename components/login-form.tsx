@@ -13,7 +13,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { login, clearError } from "@/redux/actions/userActions"
@@ -38,13 +38,21 @@ export function LoginForm({
   }, [isAuthenticated])
 
   const [identifier, setIdentifier] = useState("")
+  const [loginMethod, setLoginMethod] = useState<"email" | "phone">("email")
+  const [countryCode, setCountryCode] = useState("+90")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    const result = await dispatch(login({ identifier, password } as any))
+    let finalIdentifier = identifier
+    if (loginMethod === "phone") {
+      const cleanedIdentifier = identifier.replace(/^0+/, '')
+      finalIdentifier = `${countryCode}${cleanedIdentifier}`
+    }
+
+    const result = await dispatch(login({ identifier: finalIdentifier, password } as any))
     
     if (login.fulfilled.match(result)) {
       window.location.href = "/panel"
@@ -64,21 +72,72 @@ export function LoginForm({
             Hesabınıza giriş yapmak için bilgilerinizi girin
           </p>
         </div>
-        {error && typeof error === 'string' && (
+        {error && typeof error === 'string' && error !== "Giriş Yapılmamış" && (
           <FieldError>{error}</FieldError>
         )}
+        <div className="flex bg-muted/50 p-1 rounded-full w-full border border-input/20">
+          <button
+            type="button"
+            onClick={() => {
+              setLoginMethod("email")
+              setIdentifier("")
+            }}
+            className={cn(
+              "flex-1 py-1.5 text-sm rounded-full transition-all duration-200",
+              loginMethod === "email" ? "bg-white shadow-sm font-medium text-foreground" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            E-posta
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setLoginMethod("phone")
+              setIdentifier("")
+            }}
+            className={cn(
+              "flex-1 py-1.5 text-sm rounded-full transition-all duration-200",
+              loginMethod === "phone" ? "bg-white shadow-sm font-medium text-foreground" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Telefon
+          </button>
+        </div>
         <Field>
-          <FieldLabel htmlFor="identifier">E-posta veya Telefon</FieldLabel>
-          <Input 
-            id="identifier" 
-            type="text" 
-            placeholder="ornek@email.com veya 05XX..." 
-            required 
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-            disabled={loading}
-            className="rounded-full"
-          />
+          <FieldLabel htmlFor="identifier">
+            {loginMethod === "email" ? "E-posta Adresi" : "Telefon Numarası"}
+          </FieldLabel>
+          <div className="flex gap-2">
+            {loginMethod === "phone" && (
+              <div className="relative">
+                <select
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                  disabled={loading}
+                  className="rounded-full border border-input bg-white pl-3 pr-8 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:opacity-50 appearance-none cursor-pointer h-9"
+                >
+                  <option value="+90">🇹🇷 +90</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+39">🇮🇹 +39</option>
+                  <option value="+994">🇦🇿 +994</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-muted-foreground pointer-events-none" />
+              </div>
+            )}
+            <Input 
+              id="identifier" 
+              type={loginMethod === "email" ? "email" : "tel"} 
+              placeholder={loginMethod === "email" ? "ornek@email.com" : "5XX XXX XX XX"} 
+              required 
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              disabled={loading}
+              className="rounded-full flex-1"
+            />
+          </div>
         </Field>
         <Field>
           <div className="flex items-center">
