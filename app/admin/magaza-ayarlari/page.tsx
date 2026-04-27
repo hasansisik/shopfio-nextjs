@@ -13,6 +13,7 @@ import {
   Trash2,
   MessageSquare
 } from "lucide-react"
+import { server } from "@/config"
 import { toast } from "sonner"
 
 export default function StoreSettingsPage() {
@@ -49,7 +50,7 @@ export default function StoreSettingsPage() {
     const fetchStatus = async () => {
       try {
         const token = localStorage.getItem("accessToken")
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3040'}/v1/admin/whatsapp-status`, {
+        const response = await fetch(`${server}/admin/whatsapp-status`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         const data = await response.json()
