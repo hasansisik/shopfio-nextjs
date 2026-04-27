@@ -20,6 +20,7 @@ import {
 import { toast } from "sonner"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { server } from "@/config"
 
 export default function UsersPage() {
   const dispatch = useAppDispatch()
@@ -72,7 +73,7 @@ export default function UsersPage() {
     setIsSending(true)
     try {
       const token = localStorage.getItem("accessToken")
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3040'}/v1/admin/whatsapp-bulk`, {
+      const response = await fetch(`${server}/admin/whatsapp-bulk`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
