@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 };
 
 import { Toaster } from "sonner";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function RootLayout({
   children,
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Providers>
           {children}
           <Toaster position="bottom-center" />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
